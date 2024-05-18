@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 // import {Link}
 
 // import loginCancel from "../../assets/images/group-7-PLd.png";
@@ -262,6 +262,12 @@ const Header = ({ active }) => {
     );
     e.target.setAttribute("data-placeholder", "");
   };
+
+  useEffect(()=>{
+//     setLoginDrop(true)
+//     setIsLoginForm(false)
+// setIscreatePassOpen(true)
+  },[])
   return (
     <div>
       <Signup

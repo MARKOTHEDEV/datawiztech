@@ -9,6 +9,7 @@ import { Toaster } from "react-hot-toast";
 import ErrorBoundary from "./components/ErrorPage/ErrorBoundary";
 import Error from "./components/ErrorPage/Error";
 
+// const queryClient = new QueryClient();
 const queryClient = new QueryClient();
 
 ReactDOM.render(

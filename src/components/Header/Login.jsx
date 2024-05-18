@@ -8,7 +8,10 @@ import { useNavigate } from "react-router-dom";
 import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import OtpInput from "react-otp-input";
-import { BASE_URL } from '../../hooks/api/api';
+import { BASE_URL } from '../../api/api';
+// import { useMutation } from "react-query";
+import { sendForgotPasswordVerificationEmail } from "../../api/user.api";
+import { useMutation } from "@tanstack/react-query";
 // import { BASE_URL } from "../../api/api";
 
 // import { Link } from "react-router-dom";
@@ -63,6 +66,20 @@ const Login = ({
     setEmail(e.target.value);
   };
 
+  const {mutate:sendForgotPasswordMail,...rest} = useMutation({
+    mutationFn:sendForgotPasswordVerificationEmail,
+    onSuccess:()=>{
+      setOtpLoading(false)
+    toggleViaEmail();
+
+    },
+    onError:()=>{
+      setOtpLoading(false)
+
+      toast.error('Some error occured please try again.')
+    }
+  })
+
   const confirmEmail = () => {
     if (!email) {
       toast.error("Email can not be empty !");
@@ -75,8 +92,9 @@ const Login = ({
       toast.error("Invalid email address !");
       return;
     }
+    setOtpLoading(true)
+    sendForgotPasswordMail({email})
 
-    toggleViaEmail();
   };
 
   // const { name, value } = e.target;
@@ -501,7 +519,7 @@ const Login = ({
                     onClick={confirmEmail}
                     style={{ cursor: otpLoading ? "not-allowed" : "pointer" }}
                   >
-                    {otpLoading ? <ActionLoader /> : "Send OTP"}
+                    {otpLoading ? <ActionLoader /> : "Send Email"}
                   </div>
                 </div>
               </div>
@@ -527,7 +545,7 @@ const Login = ({
                         : "text-center"
                     }`}
                   >
-                    OTP will be sent to {email}
+                    Email will be sent to {email}
                   </p>
                   <div
                     className="login-btn-primary"
@@ -536,7 +554,7 @@ const Login = ({
                       cursor: sendOtpLoading ? "not-allowed" : "pointer",
                     }}
                   >
-                    {sendOtpLoading ? <ActionLoader /> : "Send OTP"}
+                    {sendOtpLoading ? <ActionLoader /> : "Email Sent"}
                   </div>
                 </div>
               </div>

@@ -37,6 +37,7 @@ const CorperateSignup = ({
     organizationType: "",
     address: "",
     country: "",
+    gender:""
   });
 
   const handlecorperateInputChange = (e) => {
@@ -65,26 +66,29 @@ const CorperateSignup = ({
     }
     try {
       const response = await axios.post(
-        "https://datawiztechapi.onrender.com/api/v1/register",
+        "https://datawiztech-backend.onrender.com/api/v1/auth/sign_up/corporate_user",
         {
           email: formData.email,
           password: formData.password,
           first_name: formData.first_name,
           last_name: formData.last_name,
-          phone_number: formData.phone_number,
-          role: formData.role,
-          organizationName: formData.organizationName,
-          organizationType: formData.organizationType,
-          address: formData.address,
+          phone_no: formData.phone_number,
+          user_type: 'corporate_user',
+          organization_name: formData.organizationName,
+          organization_type: formData.organizationType,
+          country_code: formData.address,
           country: formData.country,
+          gender:formData.gender
         }
       );
       // console.log(response)
-      if (response && response.status === 200) {
+      if (response && response.status === 201) {
         setLoading(false);
-        setToken(response.data.token);
-        localStorage.setItem("datawiztoken", response.data.token);
-        toast.success(response.data.message);
+      toast.success("Account created, please check for a verification mail");
+
+        // setToken(response.data.token);
+        // localStorage.setItem("datawiztoken", response.data.token);
+        // toast.success(response.data.message);
         toggleCorperatePhone(formData.email);
         setFormData({
           first_name: "",
@@ -96,6 +100,7 @@ const CorperateSignup = ({
           phone_number: "",
           password: "",
           role: "Corperate",
+          gender:""
         });
       } else {
         setLoading(false);
@@ -173,6 +178,33 @@ const CorperateSignup = ({
               Phone Number
             </label>
           </div>
+
+
+          <div className="input__wrapper emailinputcontainer mb-3">
+              <select
+                className="input__field email-input"
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                name="gender"
+                value={formData.gender}
+                onChange={handlecorperateInputChange}
+                id="individualGender"
+                autoComplete="off"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              <label
+                htmlhtmlFor="individualGender"
+                className="input__label email-label"
+              >
+                Gender
+              </label>
+            </div>
+
+          
           <div className="input__wrapper emailinputcontainer mb-3">
             <input
               type="email"
