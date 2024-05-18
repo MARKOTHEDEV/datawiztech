@@ -15,52 +15,53 @@ const CartContent = ({
   const reload = () => {
     window.location.reload();
   };
-  const { data, isLoading, error } = FectchCarts();
+  // const { data, isLoading, error } = FectchCarts();
 
-  if (isLoading) {
-    return <DataLoader active={true} />;
-  }
+  // if (isLoading) {
+  //   return <DataLoader active={true} />;
+  // }
 
-  if (error) {
-    <div className="pb-1">
-      <div className={`search-result-card active`}>
-        <div className="empty-pending-friends">
-          <div className="error-text-section">
-            You have not posted any article
-          </div>
-          <div className="btn btn-outline-success" onClick={reload}>
-            Reload
-          </div>
-        </div>
-      </div>
-    </div>;
-  }
+  // if (error) {
+  //   <div className="pb-1">
+  //     <div className={`search-result-card active`}>
+  //       <div className="empty-pending-friends">
+  //         <div className="error-text-section">
+  //           You have not posted any article
+  //         </div>
+  //         <div className="btn btn-outline-success" onClick={reload}>
+  //           Reload
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>;
+  // }
 
-  if (!data || !data.data || !data.data.carts) {
-    <div className="pb-1">
-      <div className={`search-result-card active`}>
-        <div className="empty-pending-friends">
-          <div className="error-text-section">You have no cart list</div>
-        </div>
-      </div>
-    </div>;
-  }
+  // if (!data || !data.data || !data.data.carts) {
+  //   <div className="pb-1">
+  //     <div className={`search-result-card active`}>
+  //       <div className="empty-pending-friends">
+  //         <div className="error-text-section">You have no cart list</div>
+  //       </div>
+  //     </div>
+  //   </div>;
+  // }
 
-  if (data.data.carts.length === 0) {
-    return (
-      <div className="pb-1">
-        <div className={`search-result-card active`}>
-          <div className="empty-pending-friends">
-            <div className="error-text-section">You have no cart list</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (data.data.carts.length === 0) {
+  //   return (
+  //     <div className="pb-1">
+  //       <div className={`search-result-card active`}>
+  //         <div className="empty-pending-friends">
+  //           <div className="error-text-section">You have no cart list</div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  const carts = data.data.carts;
+  // const carts = data.data.carts;
 
   // console.log(carts)
+  const carts =[];
   return (
     <div>
       {carts.map((item, index) => (

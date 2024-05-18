@@ -111,19 +111,22 @@ export const AuthContextProvider = ({ children }) => {
     country,
     address
   ) => {
+    // ''
     const response = await axios.post(
-      "https://datawiztechapi.onrender.com/api/v1/register",
+      // "https://datawiztechapi.onrender.com/api/v1/register",
+      "https://datawiztech-backend.onrender.com/api/v1/auth/sign_up/individual_user",
       {
-        email: email,
-        password: password,
         first_name: first_name,
         last_name: last_name,
-        phone_number: phone_number,
+        phone_no: phone_number,
         gender: gender,
-        role: role,
-        username: username,
         country: country,
-        address: address,
+        email: email,
+        username: username,
+        role: 'individual_user',
+        password: password,
+        // address: address,
+        country_code:address
       },
       {
         headers: {
@@ -131,11 +134,12 @@ export const AuthContextProvider = ({ children }) => {
         },
       }
     );
-    if (response.status === 200) {
-      toast.success("Account created, verify email");
-      const userToken = response.data.token 
-      setToken(userToken);
-      localStorage.setItem("datawiztoken", userToken);
+    if (response.status === 201) {
+      toast.success("Account created, please check for a verification mail");
+      // setLoginDrop(true)
+      // const userToken = response.data.token 
+      // setToken(userToken);
+      // localStorage.setItem("datawiztoken", userToken);
     }
     return response;
   };

@@ -63,7 +63,7 @@ const IndividualSignup = ({
         formData.address, 
       );
       // console.log(response)
-      if (response.status === 200) {
+      if (response.status === 201) {
         setLoading(false);
         toast.success(response.message)
         signupToggle(formData.email)
@@ -83,7 +83,7 @@ const IndividualSignup = ({
         toast.error("Error occured")
       }
     } catch (error) {
-      console.log("Error registering user:", error.message);
+      console.log("Error registering user:", error);
       setLoading(false);
       if(error.response.data){
       toast.error(error.response.data.message)

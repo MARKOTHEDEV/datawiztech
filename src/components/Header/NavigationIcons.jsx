@@ -15,7 +15,7 @@ const NavigationIcons = ({ toggleSignupForm, toggleLoginForm }) => {
   const user = useIsUser(currentUser);
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
-
+  console.log({currentUser,user})
   return (
     <>
       <div className="navbar2">
@@ -33,7 +33,7 @@ const NavigationIcons = ({ toggleSignupForm, toggleLoginForm }) => {
             </Link>
             <Link to="/cart">
               <div className="cart-btn nav-icon-container">
-                <UpdateCart cartIcon={cartIcon} />
+                {/* <UpdateCart cartIcon={cartIcon} /> */}
               </div>
             </Link>
             <UpdateUser currentUser={currentUser} profilepic={profilepic} />

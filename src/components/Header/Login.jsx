@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import OtpInput from "react-otp-input";
+import { BASE_URL } from '../../hooks/api/api';
+// import { BASE_URL } from "../../api/api";
 
 // import { Link } from "react-router-dom";
 
@@ -35,7 +37,7 @@ const Login = ({
   handleInputFocus,
   handleInputBlur,
 }) => {
-  const { saveTokenAndUserDetails } = UserAuth();
+  const { saveTokenAndUserDetails,setIsAuthenticated ,setLoginDrop} = UserAuth();
   const Navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [showPassword, setshowPassword] = useState(false);
@@ -132,37 +134,64 @@ const Login = ({
         toast.error("Invalid email address !");
         return;
       }
-
+      const formdata = new FormData()
+      formdata.append('username',loginData.email)
+      formdata.append('password',loginData.password)
       const response = await axios.post(
-        "https://datawiztechapi.onrender.com/api/v1/login",
+        `${BASE_URL}/auth/signin`,
+        // "https://datawiztechapi.onrender.com/api/v1/login",
         // "http://localhost:7001/api/v1/login",
-        loginData
+        // loginData
+        formdata
       );
-      console.log(response);
       if (response && response.status === 200 && response.data) {
-        const verified = response.data.verified;
-        if (verified === true) {
-          toast.success("Logged in successfully");
-          setLoginLoading(false);
-          const data = response.data;
-          saveTokenAndUserDetails(data?.token, data?.user, data?.role);
-          if (!data.occupation || !data.bio) {
-            Navigate("/profile/update");
-          }
-
-          if (!data.reference) {
-            Navigate("/profile/verify-account");
-          }
-          Navigate("/profile");
-          toggleLoginForm(true);
-          setLoginLoading(false);
-          return;
-        } else {
-          // signupToggle(loginData.email);
-          toast.error("Email not verified, check email to verify")
-          setLoginLoading(false);
-          return;
+        console.log({response})
+        setIsAuthenticated(true)
+        const user = {
+          "first_name": "Nwokolo",
+          "last_name": "Matthew",
+          "phone_no": "08162047348",
+          "gender": "Male",
+          "country": "Nigeria",
+          "email": "markothedevmail@gmail.com",
+          "country_code": "081",
+          "username": "markothedevmail@gmail.com",
+          "user_type": "individual_user",
         }
+        saveTokenAndUserDetails(
+          JSON.stringify(response),
+          user,
+          'individual_user'
+        )
+        setLoginLoading(false);
+        setLoginDrop(false)
+        toast.success('Login successful')
+        toggleLoginForm(false);
+
+
+        // const verified = response.data.verified;
+        // if (verified === true) {
+        //   toast.success("Logged in successfully");
+        //   setLoginLoading(false);
+        //   const data = response.data;
+        //   saveTokenAndUserDetails(data?.token, data?.user, data?.role);
+        //   if (!data.occupation || !data.bio) {
+        //     Navigate("/profile/update");
+        //   }
+
+        //   if (!data.reference) {
+        //     Navigate("/profile/verify-account");
+        //   }
+        //   Navigate("/profile");
+        //   toggleLoginForm(true);
+        //   setLoginLoading(false);
+        //   return;
+        // } else {
+        //   // signupToggle(loginData.email);
+        //   toast.error("Email not verified, check email to verify")
+        //   setLoginLoading(false);
+        //   return;
+        // }
       } else {
         toast.error("Server Error !");
         setLoginLoading(false);

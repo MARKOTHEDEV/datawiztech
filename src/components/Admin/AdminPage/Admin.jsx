@@ -84,21 +84,22 @@ const Admin = () => {
     return;
   }
 
-  if (!data.data || !data.data.user) {
-    Navigate("/forbidden");
-    return;
-  }
+  // if (!data.data || !data.data.user) {
+  //   Navigate("/forbidden");
+  //   return;
+  // }
 
-  if (data.data.user.role !== "Admin") {
-    Navigate("/forbidden");
-    return;
-  }
+  // if (data?.data?.user.role !== "Admin") {
+  //   Navigate("/forbidden");
+  //   return;
+  // }
 
   // if (currentUser.role !== "Admin") {
   //   // toast.error("You have not permission");
   //   Navigate("/forbidden");
   // }
 
+  console.log("PLayed this Admin")
   return (
     <div className="container-fluid">
       <div className="admin-wholebar">

@@ -24,12 +24,12 @@ const MessageAside = () => {
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
   const { data, isLoading, error } = FetchDetails();
+  console.log({profilepic})
 
   if (isLoading) {
     return <DataLoader />;
   }
 
-  console.log(data)
 
   if (error || !data || !data.data || !data.data.user.friends) {
     return <div className="messages-box-wrapper active">
