@@ -4,13 +4,13 @@ import "./Signup.css";
 import "./Login.css";
 import { UserAuth } from "../../useContext/useContext";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import OtpInput from "react-otp-input";
 import { BASE_URL } from '../../api/api';
 // import { useMutation } from "react-query";
-import { sendForgotPasswordVerificationEmail } from "../../api/user.api";
+import { resetPasswordApi, sendForgotPasswordVerificationEmail } from "../../api/user.api";
 import { useMutation } from "@tanstack/react-query";
 // import { BASE_URL } from "../../api/api";
 
@@ -59,6 +59,7 @@ const Login = ({
     newPassword: "",
     repeatPassword: "",
   });
+  const  [searchParams, setSearchParams]  = useSearchParams()
 
   const [email, setEmail] = useState("");
 
@@ -66,7 +67,7 @@ const Login = ({
     setEmail(e.target.value);
   };
 
-  const {mutate:sendForgotPasswordMail,...rest} = useMutation({
+  const {mutate:sendForgotPasswordMail} = useMutation({
     mutationFn:sendForgotPasswordVerificationEmail,
     onSuccess:()=>{
       setOtpLoading(false)
@@ -77,6 +78,26 @@ const Login = ({
       setOtpLoading(false)
 
       toast.error('Some error occured please try again.')
+    }
+  })
+  const {mutate:sendRestPasswordMail,} = useMutation({
+    mutationFn:resetPasswordApi,
+    onSuccess:()=>{
+      setResetLoading(false)
+      toggleLogin();
+      toast.success('Password Reset Successful')
+
+
+    },
+    onError:(error)=>{
+      setResetLoading(false)
+console.log({error})
+if(error?.response?.data?.detail){
+  toast.error(error?.response?.data?.detail)
+}else{
+  toast.error('Some error occured please try again.')
+
+}
     }
   })
 
@@ -229,7 +250,7 @@ const Login = ({
   };
 
   const resetPassword = async () => {
-    setResetLoading(true);
+    // setResetLoading(true);
     const emptyField = [];
     try {
       if (!resetData.newPassword) {
@@ -250,23 +271,29 @@ const Login = ({
         setResetLoading(false);
         return toast.error("Passwords does not match !");
       }
-
-      const response = await axios.post(
-        `https://datawiztechapi.onrender.com/api/v1/reset-password/${otp}`,
-        { password: resetData.newPassword }
-      );
-      if (response && response.status === 200) {
-        toast.success("Password reset successfully");
-        setResetLoading(false);
-        toggleLogin();
-        return;
-      } else if (response.status === 404) {
-        toast.error("Email/Password mismatch");
-      } else if (response.status === 400) {
-        toast.error("Bad request");
-      } else {
-        toast.error("Server Error !");
-      }
+      const email=searchParams.get('email')
+      const token=searchParams.get('token')
+      sendRestPasswordMail({
+        email,
+        token,
+        password:resetData.newPassword
+      })
+      // const response = await axios.post(
+      //   `https://datawiztechapi.onrender.com/api/v1/reset-password/${otp}`,
+      //   { password: resetData.newPassword }
+      // );
+      // if (response && response.status === 200) {
+      //   toast.success("Password reset successfully");
+      //   setResetLoading(false);
+      //   toggleLogin();
+      //   return;
+      // } else if (response.status === 404) {
+      //   toast.error("Email/Password mismatch");
+      // } else if (response.status === 400) {
+      //   toast.error("Bad request");
+      // } else {
+      //   toast.error("Server Error !");
+      // }
     } catch (error) {
       console.error("Error during login:", error);
       if (error && error.response && error.response.data) {

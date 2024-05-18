@@ -9,3 +9,11 @@ export const sendForgotPasswordVerificationEmail = async(data)=>{
     return response.data
 
 }
+
+export const resetPasswordApi = async (data)=>{
+
+    const response = await axios.put(`${BASE_URL}/auth/reset-password`,data);
+
+    return response.data
+
+}

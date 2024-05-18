@@ -12,6 +12,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import Head from "./Head";
 import { UserAuth } from "../../useContext/useContext";
+import { useParams, useSearchParams } from "react-router-dom";
 // import { Link } from "react-router-dom";
 
 const Header = ({ active }) => {
@@ -262,11 +263,18 @@ const Header = ({ active }) => {
     );
     e.target.setAttribute("data-placeholder", "");
   };
-
+const  [searchParams, setSearchParams]  = useSearchParams()
   useEffect(()=>{
-//     setLoginDrop(true)
-//     setIsLoginForm(false)
-// setIscreatePassOpen(true)
+
+const isResetPassword  = searchParams.get('reset_password')
+if(isResetPassword){
+      console.log({
+        token:searchParams.get('token')
+      })
+  setLoginDrop(true)
+  setIsLoginForm(false)
+setIscreatePassOpen(true)
+}
   },[])
   return (
     <div>
