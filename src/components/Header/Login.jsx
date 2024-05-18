@@ -250,7 +250,7 @@ if(error?.response?.data?.detail){
   };
 
   const resetPassword = async () => {
-    // setResetLoading(true);
+    console.log("loading stuff")
     const emptyField = [];
     try {
       if (!resetData.newPassword) {
@@ -261,18 +261,20 @@ if(error?.response?.data?.detail){
       }
 
       if (emptyField.length > 0) {
-        setResetLoading(false);
+        // setResetLoading(false);
         return toast.error(
           `This field ${emptyField.join(", ")} can not be empty`
         );
       }
 
       if (resetData.newPassword !== resetData.repeatPassword) {
-        setResetLoading(false);
+        // setResetLoading(false);
         return toast.error("Passwords does not match !");
       }
       const email=searchParams.get('email')
       const token=searchParams.get('token')
+    setResetLoading(true);
+
       sendRestPasswordMail({
         email,
         token,
@@ -303,7 +305,7 @@ if(error?.response?.data?.detail){
         toast.error("Error Occured !");
       }
     } finally {
-      setResetLoading(false);
+      // setResetLoading(false);
     }
   };
 
@@ -576,7 +578,7 @@ if(error?.response?.data?.detail){
                   </p>
                   <div
                     className="login-btn-primary"
-                    onClick={sendOtp}
+                    // onClick={sendOtp}
                     style={{
                       cursor: sendOtpLoading ? "not-allowed" : "pointer",
                     }}
