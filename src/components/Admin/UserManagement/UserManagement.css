@@ -1,0 +1,53 @@
+.activate-user {
+  padding: 0.5rem 0.8rem;
+  background-color: #4eb473;
+  color: white;
+  border-radius: 0.35rem;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.suspend-user {
+  padding: 0.5rem 0.8rem;
+  background-color: #f7f7f7;
+  color: black;
+  border-radius: 0.35rem;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.delete-user {
+  padding: 0.5rem 0.8rem;
+  background-color: red;
+  color: white;
+  border-radius: 0.35rem;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+
+
+
+.activate-user:hover {
+    padding: 0.5rem 0.8rem;
+    background-color: white;
+    color: #4eb473;
+    border: 1px solid #4eb473;
+    border-radius: 0.35rem;
+  }
+  
+  .suspend-user:hover {
+    padding: 0.5rem 0.8rem;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    border-radius: 0.35rem;
+  }
+  
+  .delete-user:hover {
+    padding: 0.5rem 0.8rem;
+    background-color: white;
+    border: 1px solid red;
+    color: red;
+    border-radius: 0.35rem;
+  }

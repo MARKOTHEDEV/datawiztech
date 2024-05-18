@@ -1,0 +1,37 @@
+.admin-header-container{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.admin-heading-title{
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #bdbdbd;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+  @media screen and (max-width: 980px) {
+    font-size: 0.9rem;
+  }
+}
+
+.admin-notification{
+    width: 2rem;
+    height: 2rem;
+}
+
+.admin-profile-image{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+
+.admin-header-icons{
+    display: flex;
+    gap: 1rem;
+}

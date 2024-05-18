@@ -1,0 +1,134 @@
+.referee-inputs{
+    width: 100%;
+}
+
+.referee-select{
+    width: 15%;
+    padding: 0.7rem 0;
+    text-align: center;
+    border: 0;
+    color: #a7a7a7;
+    outline: none;
+    border: 0.01rem solid #d8d8d8;
+    position: relative;
+}
+
+/* .referee-select::before{
+    content: "";
+    height: 100%;
+    width: 3px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #a7a7a7;
+} */
+
+.referee-select:focus{
+    color: #17b24e;
+    border-color: #17b24e;
+    outline: 0;
+}
+
+
+.referee_input__field{
+    width: 80%;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    font-size: 15px;
+    /* color: var(--text); */
+    padding: 0.85rem 1rem;
+    padding-right: 32px;
+    background-color: white;
+}
+
+.referee_input__field::placeholder{
+    color: white;
+    font-size: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.referee_input__field:placeholder-shown~.referee_input__label{
+    font-size: 14px;
+    cursor: text;
+    top: 20%;
+    transition: top 0.5s ease;
+}
+
+.referee_input__label,
+.referee_input__field:focus~.referee_input__label{
+    position: absolute;
+    top: -20%;
+    transition: top 0.5s ease;
+    display: block;
+    left: 3%;
+    background-color: white;
+    width: fit-content;
+    font-size: 0.8rem;
+    color: #17b24e;
+    transition: 0.3s;
+    padding: 0 0.2rem 0.3rem 0.5rem;
+}
+
+label{
+    color: #a7a7a7;
+}
+
+/* .referee_input__field:focus ~ .input__wrapper{
+    border: solid 0.15rem #17b24e;
+} */
+
+
+.referee_input__field:focus{
+    color: #17b24e;
+    background-color: white;
+}
+.referee_input__label{
+    /* display: none; */
+    transition: color 0.3s ease;
+    font-size: 13px;
+    position: absolute;
+    left: 20% !important;
+}
+
+
+/* .referee_input__field:focus{
+    border-bottom: 2px solid var(--primary);
+} */
+
+.referee_input__field:focus .input__icon{
+    color: #17b24e;
+}
+
+
+.referee-section-container{
+    height: 0px;
+    overflow: hidden;
+    transition: height 0.5s ease;
+}
+
+.referee-section-container.active{
+    height: fit-content;
+    transition: height 0.5s ease;
+}
+
+.add-referees-btn{
+    padding: 0.6rem 0;
+    cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #ffffff;
+  font-family: Open Sans, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.2rem 0.4rem rgba(23, 178, 78, 0.2300000042);
+  background-color: #4eb473;
+  border-radius: 0.3rem;
+  flex-shrink: 0;
+}

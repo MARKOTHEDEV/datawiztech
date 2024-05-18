@@ -1,0 +1,252 @@
+.signup-container {
+  height: 0;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.089);
+  backdrop-filter: blur(5px);
+  transition: height 0.4s ease;
+}
+
+.signup-container.open {
+  height: 100%;
+  transition: height 0.4s ease;
+}
+
+.signup-cancel {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.signup-input__wrapper {
+}
+
+.signup-type {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* margin-bottom: 0; */
+  line-height: 0.5;
+  position: relative;
+}
+
+.signup-type-image {
+  margin-right: 0.5rem;
+  width: 1.5rem;
+  /* height: 100%; */
+}
+
+.individual.active {
+  position: relative;
+}
+
+.individual::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  height: 2px;
+  width: 0%;
+  overflow: hidden;
+  /* background-color: #4eb473; */
+  transition: width 0.6s ease;
+}
+.individual.active::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  height: 2px;
+  width: 100%;
+  background-color: #4eb473;
+  transition: width 0.6s ease;
+}
+
+.corporate.active {
+  position: relative;
+}
+
+.corporate::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  height: 2px;
+  width: 0%;
+  transition: width 0.6s ease;
+  /* background-color: #4eb473; */
+}
+.corporate.active::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  height: 2px;
+  width: 100%;
+  background-color: #4eb473;
+  transition: width 0.6s ease;
+}
+
+.signup-content {
+  /* padding: 2rem; */
+  margin: 1rem;
+  background-color: #ffffff;
+  border-radius: 1rem;
+}
+
+.signup-type-icon {
+  flex-shrink: 0;
+  width: 100%;
+  margin-bottom: 0;
+  line-height: 0.5;
+  /* color: #454545; */
+}
+
+/* .signup-type-icon.active{
+    color: #4eb473;
+} */
+
+.signup-type-text {
+  /* line-height: 0.5; */
+  font-size: 1rem;
+  font-weight: 600;
+  /* line-height: 1.3625; */
+  color: #c4c4c4;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  margin-top: 0.5rem;
+}
+
+.signup-type-text.active{
+    color: #4eb473;
+}
+
+.signup-text {
+  margin-right: 25%;
+  /* text-align: center; */
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.signup-col-2 {
+  margin-top: 30%;
+  background-color: white;
+  border-radius: 1rem;
+  height: fit-content;
+  transition: height 0.5s ease;
+}
+
+.signup-box {
+  overflow-y: scroll;
+  height: 100vh;
+  scroll-behavior: smooth;
+  margin: 0 10px 0 15px;
+}
+
+.signup-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.signup-box::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.signup-box::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+.signup-box::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.individual-cancel-btn {
+  border: 0;
+  width: 30%;
+  padding: 0.6rem 0;
+  cursor: pointer;
+  overflow: hidden;
+  margin-right: 5%;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.3625;
+  color: black;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* box-shadow: 0 0.2rem 0.4rem rgba(10, 131, 221, 0.2899999917); */
+  background-color: #f7f7f7;
+  border-radius: 0.4rem;
+  flex-shrink: 0;
+}
+
+.individual-signup-btn {
+  border: 0;
+  width: 30%;
+  padding: 0.6rem 0;
+  cursor: pointer;
+  overflow: hidden;
+  /* margin-right:15%; */
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.3625;
+  color: #ffffff;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0.2rem 0.4rem rgba(10, 131, 221, 0.2899999917);
+  background-color: #4eb473;
+  border-radius: 0.4rem;
+  flex-shrink: 0;
+}
+
+.individual-content {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease;
+}
+.individual {
+    cursor: pointer;
+}
+
+.individual-content.active {
+  height: 100%;
+  transition: height 0.5s ease;
+}
+
+.cooperate-content {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease;
+}
+.corporate {
+    cursor: pointer;
+}
+
+.cooperate-content.active {
+  height: 100%;
+  transition: height 0.5s ease;
+}
+
+
+.cooperatenumber{
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 0.1;
+}
+
+.cooperatestep{
+    color: #4eb473;
+    margin-right: 1%;
+}

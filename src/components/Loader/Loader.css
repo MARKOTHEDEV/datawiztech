@@ -1,0 +1,32 @@
+.loader-container{
+    background-color: #4eb573;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading__dot {
+    animation: dot ease-in-out 0.7s infinite;
+    background-color: white;
+    display: inline-block;
+    height: 15px;
+    margin: 10px;
+    width: 15px;
+    border-radius: 50%;
+  }
+  
+  .loading__dot:nth-of-type(2) {
+    animation-delay: 0.2s;
+  }
+  
+  .loading__dot:nth-of-type(3) {
+    animation-delay: 0.3s;
+  }
+  
+  @keyframes dot {
+    0% { background-color: white; transform: scale(0.8); }
+    50% { background-color: white; transform: scale(1.4); }
+    100% { background-color: white; transform: scale(0.8); }
+  }

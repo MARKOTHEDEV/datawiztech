@@ -1,0 +1,95 @@
+.upload-data-container {
+  border: dashed 0.12rem #a6a6a6;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
+  padding: 0.8rem;
+  height: 50vh;
+  /* width: 80%; */
+}
+
+.error-upload-info {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #f55f44;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.click-upload-info {
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #4eb473;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+
+.data-upload-video-container{
+    height:50vh;
+    width: 100%;
+}
+
+
+
+
+
+.download-template-box {
+  position: absolute;
+  right: 0;
+  top: 60%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.150000006);
+  background-color: #ffffff;
+  border-radius: 0.3rem;
+  width: 30%;
+  height: 0rem;
+  overflow: hidden;
+  transition: height 0.5s ease;
+  /* @media screen and (max-width: 980px) {
+    width: 50%;
+  } */
+}
+
+
+.download-template-box.active{
+  height: 10rem;
+  transition: height 0.5s ease;
+}
+
+
+ .download-template-period {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 0 0 0 1rem;
+}
+
+
+.hover-template{
+  width: 100%;
+  padding: 0.7rem 0;
+  text-align: start;
+  transition: 0.5s ease;
+  cursor: pointer;
+}
+
+.hover-template:hover{
+  background-color: #4eb473;
+  width: 100%;
+  transition: 0.5s ease;
+}
+
+.hover-template:hover .download-template-period{
+  color: white;
+}

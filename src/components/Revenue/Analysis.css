@@ -1,0 +1,35 @@
+.searchContainer{
+    padding: 0.45rem 0.418rem 0.45rem 0.85rem;
+  width: fit-content;
+  cursor: pointer;
+  border: solid 0.1rem #e3e3e3;
+  background-color: #ffffff;
+  border-radius: 0.4rem;
+}
+
+.searchInput{
+    width: 70%;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+}
+
+
+.searchInput::placeholder{
+    /* color: #4eb473; */
+    font-size: 0.9rem;
+}
+
+
+.searchBtn{
+    width: fit-content;
+    font-size: 0.9rem;
+     padding: 0.65rem 1.15rem;
+     font-weight: 600;
+     line-height: 1.3625;
+     color: #ffffff;
+     font-family: Open Sans, 'Source Sans Pro';
+     box-shadow: 0 1rem 0.8rem rgba(0, 126, 45, 0.1599999964);
+     background-color: #4eb473;
+     border-radius: 0.4rem;
+}

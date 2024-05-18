@@ -1,0 +1,66 @@
+.bread-items {
+  color: rgba(227, 227, 227, 1);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.bread-items.active {
+  color: #4eb473;
+}
+
+.revenue-heading {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, "Source Sans Pro";
+  white-space: nowrap;
+  @media screen and (max-width: 980px) {
+    font-size: 1.3rem;
+  }
+}
+
+.revenue-btn{
+    position: relative;
+    padding: 0.4rem 0;
+    cursor: pointer;
+    @media screen and (max-width: 980px) {
+        font-size: 0.8rem;
+    }
+    @media screen and (max-width: 780px) {
+        font-size: 0.7rem;
+    }
+}
+
+.revenue-btn::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background-color: transparent;
+    transition: width 0.5s ease;
+}
+
+.revenue-btn.active{
+    color: #4eb473;
+}
+
+.revenue-btn.active::before{
+    width: 100%;
+    background-color: #4eb473;
+}
+
+.revenue-section{
+    height: 0;
+    overflow: hidden;
+    transition: height 0.4s ease;
+}
+
+.revenue-section.active{
+    height: 100%;
+    transition: height 0.4s ease;
+}
+
+

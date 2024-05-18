@@ -1,0 +1,47 @@
+.article-main-container {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 0.6rem;
+  min-height: 80vh;
+}
+
+.article-main-pic{
+  width: 2rem;
+  height: 2rem;
+}
+
+
+.article-main-heading{
+    text-align: center ;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.article-profile-name{
+    text-align: center ;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #a6a6a6;
+  font-family: Open Sans, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.article-main-text{
+    font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 2.6666666667;
+  color: #7b7b7b;
+  font-family: Open Sans, 'Source Sans Pro';
+  flex-shrink: 0;
+}

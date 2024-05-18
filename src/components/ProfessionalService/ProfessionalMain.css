@@ -1,0 +1,243 @@
+.professional-main-container {
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.professional-preview-section {
+  background-color: #f7f7f7;
+  padding: 1.5rem 0 0 1.5rem;
+}
+
+.professional-pic-container {
+  display: flex;
+  justify-content: center;
+}
+
+.professional-pic {
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  @media screen and (max-width: 980px) {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+.professional-profile-name {
+  padding: 0.7rem 0;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, "Source Sans Pro";
+  white-space: nowrap;
+  @media screen and (max-width: 980px) {
+    font-size: 1.5rem;
+  }
+}
+
+.professional-bio {
+  font-size: 0.9rem;
+  text-align: justify;
+  font-weight: 100;
+  line-height: 2.1333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  /* font-family: Inter, "Source Sans Pro"; */
+}
+.professional-customer {
+  font-size: 0.9rem;
+  text-align: justify;
+  font-weight: 600;
+  line-height: 2.1333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  /* font-family: Inter, "Source Sans Pro"; */
+}
+
+.professional-profile-btn {
+  cursor: pointer;
+  overflow: hidden;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #ffffff;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1rem 0.8rem rgba(0, 126, 45, 0.1599999964);
+  background-color: #4eb473;
+  border-radius: 0.4rem;
+  width: fit-content;
+  padding: 0.65rem 1.2rem;
+}
+
+.professional-profile-rate {
+  text-align: right;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professsional-view-rating {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professional-progress-bar {
+  height: 4px;
+  width: 50%;
+  background-color: #e0e0e0;
+  position: relative;
+  /* margin-bottom: 5px; */
+  border-radius: 1rem;
+  @media screen and (max-width: 980px) {
+    width: 70%;
+  }
+}
+
+.professional-progress-fill {
+  height: 100%;
+  width: 0;
+  background-color: #4eb473;
+  position: absolute;
+  transition: width 0.5s ease-in-out;
+  border-radius: 1rem;
+}
+
+.professional-rating-section {
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.professional-rating-star {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #4eb473;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professional-rating-perc {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professional-events {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professional-review-pic {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+}
+
+.professional-review-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professional-review-profile {
+  display: flex;
+  align-items: center;
+  gap: 5%;
+}
+
+.professional-review-comment {
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3333333333;
+  color: #454545;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professional-review-datetime {
+  display: flex;
+  align-items: center;
+  gap: 5%;
+}
+
+.professional-review-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+.professional-review-time {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.professional-review-comments {
+  max-width: 80%;
+  text-align: justify;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 2.1333333333;
+  color: #454545;
+  font-family: Open Sans, "Source Sans Pro";
+  @media screen and (max-width: 980px) {
+    max-width: 100%;
+  }
+}
+
+
+.professional-services{
+    display: flex;
+    /* justify-content: space-between; */
+    gap: 5%;
+    /* column-gap: 10px; */
+    flex-wrap: wrap;
+}
+
+.professional-service-items{
+    margin-top: 10px;
+    font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e3e3e3;
+  border-radius: 0.35rem;
+  padding: 0.6rem 1rem;
+  width: fit-content;
+}

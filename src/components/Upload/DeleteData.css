@@ -1,0 +1,105 @@
+.delete-data-container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 110;
+}
+
+
+.frame-425-NTT {
+    box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.25);
+  }
+.delete-data-box {
+    box-sizing: border-box;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+  }
+.delete-data-rtR {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.2125;
+    color: #454545;
+    font-family: Inter, 'Source Sans Pro';
+  }
+.delete-data-text-span {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+    display: flex;
+    align-items: baseline;
+  }
+.delete-data-sure {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+  }
+.delete-data-number {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #4eb473;
+    font-family: Open Sans, 'Source Sans Pro';
+  }
+.o-be-deleted {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+  }
+.delete-data-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+.delete-data-btn-yes {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    overflow: hidden;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3625;
+    color: #ffffff;
+    font-family: Open Sans, 'Source Sans Pro';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.3rem 1rem rgba(245, 95, 68, 0.25);
+    background-color: #f55f44;
+    border-radius: 0.3rem;
+    width: 45%;
+  }
+ .delete-data-btn-no {
+    padding: 0.5rem 0;
+    cursor: pointer;
+    overflow: hidden;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.3625;
+    color: #ffffff;
+    font-family: Open Sans, 'Source Sans Pro';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.2rem 0.4rem rgba(10, 131, 221, 0.2899999917);
+    background-color: #4eb473;
+    border-radius: 0.3rem;
+    width: 45%;
+  }
+  

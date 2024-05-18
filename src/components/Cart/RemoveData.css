@@ -1,0 +1,89 @@
+.remove-data-box {
+    box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.25);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: center;
+    z-index: 100;
+    height: 0px;
+    overflow: hidden;
+  }
+
+  .remove-data-box.active{
+    height: fit-content;
+  }
+
+
+  .remove-data-container {
+    padding: 1.6rem 3rem;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 1rem;
+  }
+ .remove-data-title{
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.2125;
+    color: #454545;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+ .remove-data-sub-text {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+.remove-data-btns {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+  }
+ .remove-data-btn-A {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3625;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7f7f7;
+    padding: 0.5rem 2.5rem;
+    border-radius: 0.35rem;
+    flex-shrink: 0;
+  }
+   .remove-data-btn-B {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.3625;
+    color: #ffffff;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.2rem 0.4rem rgba(10, 131, 221, 0.2899999917);
+    background-color: #4eb473;
+    padding: 0.5rem 2.5rem;
+    border-radius: 0.35rem;
+    flex-shrink: 0;
+  }
+  

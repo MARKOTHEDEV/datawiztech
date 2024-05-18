@@ -1,0 +1,164 @@
+.filter-box{
+    overflow: hidden;
+}
+
+.preview-filter-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: nowrap;
+    overflow: auto;
+    padding: 0 0 5px 0;
+}
+
+.preview-filter-container::-webkit-scrollbar {
+    width: 10px;
+    height: 2px;
+  }
+  
+  
+  .preview-filter-container::-webkit-scrollbar-thumb {
+    background-color: #a6a6a6;
+    border-radius: 5px;
+  }
+  
+  .preview-filter-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+  }
+
+
+.filter-items {
+  padding: 0.1rem 0.5rem;
+  /* height: 100%; */
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0e0;
+  border-radius: 1rem;
+  gap: 10px;
+}
+
+
+.filter-title{
+font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.1725;
+  color: #7b7b7b;
+  /* font-family: Roboto, 'Source Sans Pro' !important; */
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.filter-cancel-box{
+    /* width: 0.6rem; */
+    /* height: 0.6rem; */
+}
+
+.remove-filter{
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-top: -50%;
+}
+
+.data-preview-section{
+    border-top: 2px solid #e2e2e2;
+}
+
+.preview-aside{
+    /* box-shadow: 0 0rem 0.6rem rgba(0, 0, 0, 0.25); */
+  background-color: #ffffff;
+  /* width: 100%; */
+  /* border-radius: 1rem; */
+  border-right: 2px solid #e2e2e2;
+}
+
+.preview-section{
+    background-color: #f7f7f7;
+}
+
+.scrollbar-x::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scrollbar-x::-webkit-scrollbar-thumb {
+  background-color: #a6a6a6;
+  border-radius: 5px;
+}
+
+.scrollbar-x::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+
+.scrollbar-design::-webkit-scrollbar {
+  width: 7px;
+  height: 5px;
+}
+
+
+.scrollbar-design::-webkit-scrollbar-thumb {
+  background-color: #a6a6a6;
+  border-radius: 5px;
+}
+
+.scrollbar-design::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+
+.social-btn{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 0.1rem 0.7rem rgba(0, 0, 0, 0.2399999946);
+  background-color: #f7f7f7;
+  border-radius: 0.3rem;
+  width: fit-content;
+  flex-shrink: 0;
+  padding: 0.75rem 1rem;
+}
+
+.social-btn-text{
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #7b7b7b;
+  font-family: Open Sans, 'Source Sans Pro';
+  flex-shrink: 0;
+}
+
+.social-icon{
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.social-icon.facebook{
+  width: 0.55rem;
+}
+
+.share-text{
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #454545;
+  font-family: Open Sans, 'Source Sans Pro';
+}
+
+.social-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.lower-section{
+  border-top: 2px solid #f7f7f7;
+}

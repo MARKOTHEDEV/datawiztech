@@ -1,0 +1,136 @@
+.search-prompt {
+  width: 65%;
+  height: 0px;
+  overflow: hidden;
+  padding: 0rem;
+  position: absolute;
+  left: 5%;
+  top: 85%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.150000006);
+  background-color: #ffffff;
+  border-radius: 0.3rem;
+  transition: height 0.4s ease;
+  z-index: 100;
+}
+
+.search-prompt.active {
+  height: fit-content;
+  padding: 0.7rem;
+  transition: height 0.4s ease;
+}
+
+.datasearch-box {
+  position: relative;
+  width: 100%;
+}
+
+.data-search-history-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.data-search-history-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #a6a6a6;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.recentsearchline{
+  position: relative;
+  width: 50%;
+  height: 2px;
+  background-color: #e3e3e3;
+}
+
+
+.search-history-text {
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* flex-shrink: 0; */
+  flex-wrap: nowrap;
+}
+
+.history-texts {
+  /* margin-right: 24.5rem; */
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #000000;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.history-icons {
+  width: 0.9rem;
+  height: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.data-search {
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
+  width: 100%;
+}
+
+.data-search-section {
+  font-size: 1rem;
+  padding: 0.7rem 2rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #ffffff;
+  font-family: Open Sans, "Source Sans Pro";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1rem 0.8rem rgba(0, 126, 45, 0.1599999964);
+  background-color: #4eb473;
+  border-radius: 0.4rem;
+}
+
+.data-search-div {
+  width: 75%;
+  display: flex;
+  align-items: center;
+}
+
+.find-data-p {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.sort-container {
+  padding: 0rem 0.7rem;
+  cursor: pointer;
+  background-color: #f7f7f7;
+  border-radius: 0.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.sort-image{
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+
+.search-box-container{
+    display: flex;
+    gap: 1.5rem;
+}

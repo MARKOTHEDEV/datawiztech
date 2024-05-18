@@ -1,0 +1,225 @@
+.partnership-bread {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #4eb473;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.partnership-heading {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: 0.05rem;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.partnership-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.partnership-toggle-author {
+  font-size: 0.9rem;
+  color: #454545;
+  font-weight: 600;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 5px 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.partnership-toggle-author::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.partnership-toggle-author.active::before{
+  width: 100%;
+  background-color: #4eb473;
+  transition: width 0.5s ease;
+}
+
+.partnership-toggle-co-author {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #454545;
+  font-weight: 600;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 5px 0;
+  position: relative;
+}
+
+
+.partnership-toggle-co-author::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+width: 0%;
+  transition: width 0.5s ease;
+}
+
+.partnership-toggle-co-author.active::before{
+  width: 100%;
+  background-color: #4eb473;
+  transition: width 0.5s ease;
+}
+
+.partnership-addnewpartner {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 0.8rem;
+  box-shadow: 0 1rem 0.8rem rgba(0, 126, 45, 0.1599999964);
+  background-color: #4eb473;
+  border-radius: 0.3rem;
+  flex-shrink: 0;
+  width: fit-content;
+}
+.partnership-addnewpartner-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #ffffff;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.partnership-addnew-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.item-type {
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3333333333;
+  color: #454545;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.partnership-box-card {
+  background-color: #ffffff;
+  padding: 1rem 1rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  overflow: hidden;
+  @media screen and (max-width: 980px) {
+    /* width: 50rem; */
+    padding: 0.6rem;
+  }
+}
+
+
+.partnership-toggle-quarterly {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #454545;
+  font-weight: 600;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 5px 0;
+  position: relative;
+}
+
+
+.partnership-toggle-quarterly::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+width: 0%;
+  transition: width 0.5s ease;
+}
+
+.partnership-toggle-quarterly.active::before{
+  width: 100%;
+  background-color: #4eb473;
+  transition: width 0.5s ease;
+}
+.partnership-toggle-daily {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #454545;
+  font-weight: 600;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 5px 0;
+  position: relative;
+}
+
+
+.partnership-toggle-daily::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+width: 0%;
+  transition: width 0.5s ease;
+}
+
+.partnership-toggle-daily.active::before{
+  width: 100%;
+  background-color: #4eb473;
+  transition: width 0.5s ease;
+}
+.partnership-toggle-monthly {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #454545;
+  font-weight: 600;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 5px 0;
+  position: relative;
+}
+
+
+.partnership-toggle-monthly::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+width: 0%;
+  transition: width 0.5s ease;
+}
+
+.partnership-toggle-monthly.active::before{
+  width: 100%;
+  background-color: #4eb473;
+  transition: width 0.5s ease;
+}

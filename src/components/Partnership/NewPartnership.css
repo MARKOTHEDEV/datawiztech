@@ -1,0 +1,44 @@
+.partner-notif {
+  padding: 0.2rem 0.4rem;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f7f7f7;
+  border-radius: 0.3rem;
+}
+
+.notif-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.notif-text {
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #7b7b7b;
+}
+
+
+.newpartnership-btn{
+    cursor: pointer;
+    text-align: center;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: 0.3rem;
+    line-height: 1.3333333333;
+    font-family: Open Sans, 'Source Sans Pro';
+    display: flex;
+    justify-content: center;
+    background-color: #4eb473;
+    overflow: hidden;
+    font-size: 0.85rem;
+    color: #ffffff;
+    align-items: center;
+    padding: 0.7rem 0;
+    box-shadow: 0 0.2rem 0.4rem rgba(23, 178, 78, 0.2300000042);
+}

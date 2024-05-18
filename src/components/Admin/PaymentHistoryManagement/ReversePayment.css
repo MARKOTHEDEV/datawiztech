@@ -1,0 +1,116 @@
+.reverse-payment-container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    /* background-color: rgba(0, 0, 0, 0.162); */
+    z-index: 100;
+    top: 0;
+    left: 0;
+}
+
+.reverse-prompt-aYq {
+    width: 35%;
+    height: fit-content;
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.25);
+    @media screen and (max-width: 980px) {
+        width: 70%;
+    }
+  }
+ .group-16-w8V {
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 1rem;
+  }
+ .reverse-transaction-TMj {
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.2125;
+    color: #454545;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+    flex-shrink: 0;
+    @media screen and (max-width: 980px) {
+        font-size: 1.4rem;
+    }
+  }
+.are-you-sure-you-want-to-reverse-this-transaction--Yty {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+    display: flex;
+    align-items: baseline;
+    padding: 0.3rem 0;
+    @media screen and (max-width: 980px) {
+        font-size: 0.8rem;
+    }
+  }
+
+ .auto-group-ml5o-YAD {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+ .secondary-button-5vq {
+    height: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3625;
+    color: #ffffff;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.3rem 1rem rgba(245, 95, 68, 0.25);
+    background-color: #f55f44;
+    border-radius: 0.3rem;
+    flex-shrink: 0;
+    padding: 0.5rem 0;
+    width: 45%;
+    @media screen and (max-width: 980px) {
+        font-size: 0.8rem;
+    }
+  }
+ .primary-button-Xnq {
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.3625;
+    color: #ffffff;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.2rem 0.4rem rgba(10, 131, 221, 0.2899999917);
+    background-color: #4eb473;
+    border-radius: 0.4rem;
+    flex-shrink: 0;
+    padding: 0.5rem 0;
+    width: 45%;
+    @media screen and (max-width: 980px) {
+        font-size: 0.8rem;
+    }
+  }
+  
