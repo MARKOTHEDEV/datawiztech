@@ -89,7 +89,7 @@ const CorperateSignup = ({
         // setToken(response.data.token);
         // localStorage.setItem("datawiztoken", response.data.token);
         // toast.success(response.data.message);
-        toggleCorperatePhone(formData.email);
+        // toggleCorperatePhone(formData.email);
         setFormData({
           first_name: "",
           last_name: "",

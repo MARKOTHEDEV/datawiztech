@@ -205,11 +205,11 @@ const Signup = ({
                     <p className="login-text">Via Email Address</p>
                   </div>
                   <p className="text-center py-3">
-                    OTP will be sent to {userEmail ?? ""}
+                    Email will be sent to {userEmail ?? ""}
                   </p>
-                  <div className="login-btn-primary" onClick={handleOTP}>
-                    {otpLoading ? <ActionLoader /> : "Send OTP"}
-                  </div>
+                  {/* <div className="login-btn-primary" onClick={handleOTP}>
+                    {otpLoading ? <ActionLoader /> : "Send Email"}
+                  </div> */}
                 </div>
               </div>
             )}
@@ -255,11 +255,13 @@ const Signup = ({
                     <p className="login-text">Via Email Address</p>
                   </div>
                   <p className="text-center py-3">
-                    OTP will be sent to {userEmail ??""}
+                  Email will be sent to {userEmail ??""}
                   </p>
-                  <div className="login-btn-primary" onClick={handleCorperateOTP}>
-                    {otpLoading ? <ActionLoader /> : "Send OTP"}
-                  </div>
+                  {/* <div className="login-btn-primary" 
+                  onClick={handleCorperateOTP}
+                  >
+                    {otpLoading ? <ActionLoader /> : "Send Email"}
+                  </div> */}
                 </div>
               </div>
             )}
