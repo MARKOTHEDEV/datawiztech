@@ -3,6 +3,7 @@ import { UserAuth } from "../../useContext/useContext";
 import ActionLoader from "../Loader/ActionLoader";
 import toast from "react-hot-toast" 
 import {useNavigate} from "react-router-dom"
+import countriesAndCodes from "../../hooks/countriesAndCodes";
 
 const IndividualSignup = ({
   individualContent,
@@ -48,6 +49,11 @@ const IndividualSignup = ({
   
       setLoading(false);
       return;
+    }
+    if(formData.password !== formData.confirm_password){
+      toast.error('Password and Confirm Password does not match')
+      setLoading(false);
+      return
     }
     try {
       const response = await createIndividualAuth(
@@ -182,7 +188,7 @@ const IndividualSignup = ({
               </label>
             </div>
             <div className="input__wrapper phoneinputcontainer mb-3">
-              <input
+              {/* <input
                 type="text"
                 className="input__field pass-input"
                 placeholder="Country"
@@ -193,7 +199,24 @@ const IndividualSignup = ({
                 onChange={handleInputChange}
                 id="individualcountry"
                 autoComplete="off"
-              />
+              /> */}
+               <select
+                className="input__field email-input"
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                name="country"
+                value={formData.country}
+                onChange={handleInputChange}
+                id="individualcountry"
+                autoComplete="off"
+              >
+                <option value="">Select Country</option>
+                {
+                  countriesAndCodes.map((d)=>(
+                    <option value={d.name}>{d.name}</option>
+                  ))
+                }
+              </select>
               <label
                 htmlFor="individualcountry"
                 className="input__label pass-label"
@@ -264,6 +287,29 @@ const IndividualSignup = ({
                 className="input__label pass-label"
               >
                 Password
+              </label>
+              <i className="fa-solid fa-eye input__icon"></i>
+            </div>
+
+            <div className="input__wrapper passinputcontainer mb-3">
+              <input
+                type="password"
+                className="input__field pass-input"
+                placeholder="Confirm Password"
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                name="confirm_password"
+                value={formData.confirm_password}
+                onChange={handleInputChange}
+                id="individualconfirm_password"
+                autoComplete="off"
+                autocomplete="new-password"
+              />
+              <label
+                htmlFor="individualpassword"
+                className="input__label pass-label"
+              >
+                Confirm Password
               </label>
               <i className="fa-solid fa-eye input__icon"></i>
             </div>

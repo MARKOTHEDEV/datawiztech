@@ -3,6 +3,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import countriesAndCodes from "../hooks/countriesAndCodes";
 
 const UserContext = createContext();
 export const AuthContextProvider = ({ children }) => {
@@ -126,7 +127,7 @@ export const AuthContextProvider = ({ children }) => {
         role: 'individual_user',
         password: password,
         // address: address,
-        country_code:address
+        country_code:countriesAndCodes.filter(d=>d.name===country)[0].code
       },
       {
         headers: {

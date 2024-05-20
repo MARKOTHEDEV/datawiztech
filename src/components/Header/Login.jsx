@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import OtpInput from "react-otp-input";
-import { BASE_URL } from '../../api/api';
+import { BASE_URL, handleErrorPopUp } from '../../api/api';
 // import { useMutation } from "react-query";
 import { resetPasswordApi, sendForgotPasswordVerificationEmail } from "../../api/user.api";
 import { useMutation } from "@tanstack/react-query";
@@ -74,10 +74,10 @@ const Login = ({
     toggleViaEmail();
 
     },
-    onError:()=>{
+    onError:(error)=>{
       setOtpLoading(false)
+      handleErrorPopUp(error)
 
-      toast.error('Some error occured please try again.')
     }
   })
   const {mutate:sendRestPasswordMail,} = useMutation({
@@ -91,13 +91,7 @@ const Login = ({
     },
     onError:(error)=>{
       setResetLoading(false)
-console.log({error})
-if(error?.response?.data?.detail){
-  toast.error(error?.response?.data?.detail)
-}else{
-  toast.error('Some error occured please try again.')
-
-}
+      handleErrorPopUp(error)
     }
   })
 
@@ -238,11 +232,11 @@ if(error?.response?.data?.detail){
       }
     } catch (error) {
       console.error("Error during login:", error);
-      if (error && error.response && error.response.data) {
-        const err = error.response.data;
-        toast.error(err.message);
-      } else {
-        toast.error("Error Occured !");
+      if(error?.response?.data?.detail){
+        toast.error(error?.response?.data?.detail)
+      }else{
+        toast.error('Some error occured please try again.')
+      
       }
       setLoginLoading(false);
       return;

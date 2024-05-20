@@ -4,6 +4,7 @@ import { UserAuth } from "../../useContext/useContext";
 import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import countriesAndCodes from "../../hooks/countriesAndCodes";
 
 const CorperateSignup = ({
   cooperateContent,
@@ -48,6 +49,13 @@ const CorperateSignup = ({
     }));
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
   const handleCorperateSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -64,6 +72,14 @@ const CorperateSignup = ({
       setLoading(false);
       return;
     }
+
+    if(formData.password !== formData.confirm_password){
+      toast.error('Password and Confirm Password does not match')
+      setLoading(false);
+      return
+    }
+
+
     try {
       const response = await axios.post(
         "https://datawiztech-backend.onrender.com/api/v1/auth/sign_up/corporate_user",
@@ -248,6 +264,30 @@ const CorperateSignup = ({
               onClick={togglePassword}
             ></i>
           </div>
+
+          <div className="input__wrapper passinputcontainer mb-3">
+            <input
+              type={showPassword ? "text" : "password"}
+              className="input__field pass-input"
+              placeholder="Confirm Password"
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+              id="cooperatepassword"
+              autoComplete="off"
+              name="confirm_password"
+              value={formData.confirm_password}
+              onChange={handlecorperateInputChange}
+            />
+            <label for="cooperatepassword" className="input__label pass-label">
+             Confirm Password
+            </label>
+            <i
+              className={`fa-solid input__icon ${
+                showPassword ? "fa-eye" : "fa-eye-slash"
+              }`}
+              onClick={togglePassword}
+            ></i>
+          </div>
           <div className="individual-button d-flex justify-content-end mt-3">
             <button
               type="submit"
@@ -269,7 +309,7 @@ const CorperateSignup = ({
       {cooperateContentB && (
         <div className="cooperateB pt-3">
           <div className="input__wrapper lastnameinputcontainer  mb-3">
-            <input
+            {/* <input
               type="text"
               autoComplete="off"
               className="input__field pass-input"
@@ -280,7 +320,24 @@ const CorperateSignup = ({
               name="country"
               value={formData.country}
               onChange={handlecorperateInputChange}
-            />
+            /> */}
+                           <select
+                className="input__field email-input"
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                name="country"
+                value={formData.country}
+                onChange={handleInputChange}
+                id="individualcountry"
+                autoComplete="off"
+              >
+                <option value="">Select Country</option>
+                {
+                  countriesAndCodes.map((d)=>(
+                    <option value={d.name}>{d.name}</option>
+                  ))
+                }
+              </select>
             <label for="country" className="input__label pass-label">
               Country
             </label>

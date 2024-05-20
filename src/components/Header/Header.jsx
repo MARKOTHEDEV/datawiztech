@@ -13,6 +13,7 @@ import Login from "./Login";
 import Head from "./Head";
 import { UserAuth } from "../../useContext/useContext";
 import { useParams, useSearchParams } from "react-router-dom";
+import toast from "react-hot-toast";
 // import { Link } from "react-router-dom";
 
 const Header = ({ active }) => {
@@ -276,6 +277,27 @@ if(isResetPassword){
 setIscreatePassOpen(true)
 }
   },[])
+
+  useEffect(()=>{
+const isLogin  = searchParams.get('login')
+if(isLogin){
+  setLoginDrop(true)
+  setIsLoginForm(true)
+
+}
+
+
+  },[])
+
+  useEffect(()=>{
+    const isInvalidToken = searchParams.get('invalid_token')
+    if(isInvalidToken){
+      toast.error('Token expired try again')
+      setLoginDrop(true)
+      setIsLoginForm(false)
+      setIsViaEmailFormOpen(true)
+    }
+  },[])
   return (
     <div>
       <Signup
@@ -306,6 +328,7 @@ setIscreatePassOpen(true)
         handleInputBlur={handleInputBlur}
         inputRefs={inputRefs}
         moveToNext={moveToNext}
+        setSignupPhone={setSignupPhone}
       />
       <Login
       signupToggle={signupToggle}

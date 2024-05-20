@@ -42,6 +42,7 @@ const Signup = ({
   moveToNext,
   signupCorperateOtp,
   signupCorperatePhone,
+  setSignupPhone
 }) => {
   const navigate = useNavigate();
   const { currentUser, sendOtp, verifyOtp } = UserAuth();
@@ -201,6 +202,21 @@ const Signup = ({
             {signupPhone && (
               <div className="signup-col-2 via-phone">
                 <div className="login-content">
+                <div className="login-text-container">
+                    <p 
+                    onClick={()=>{
+                      // setSignupPhone()
+                      toggleSignupForm()
+                    }}
+                    >
+                      {" "}
+                      <img
+                        className="login-cancel"
+                        src={loginCancel}
+                        alt="..."
+                      />
+                    </p>
+                  </div>
                   <div className="verifywithnumber">
                     <p className="login-text">Via Email Address</p>
                   </div>
