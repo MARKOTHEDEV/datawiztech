@@ -14,6 +14,7 @@ import Head from "./Head";
 import { UserAuth } from "../../useContext/useContext";
 import { useParams, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { removeAllQueryParam } from "../../api/api";
 // import { Link } from "react-router-dom";
 
 const Header = ({ active }) => {
@@ -284,6 +285,8 @@ if(isLogin){
   setLoginDrop(true)
   setIsLoginForm(true)
 
+  removeAllQueryParam()
+
 }
 
 
@@ -296,6 +299,8 @@ if(isLogin){
       setLoginDrop(true)
       setIsLoginForm(false)
       setIsViaEmailFormOpen(true)
+    removeAllQueryParam()
+
     }
   },[])
   return (

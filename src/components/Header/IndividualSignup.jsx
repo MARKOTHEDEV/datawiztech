@@ -4,6 +4,8 @@ import ActionLoader from "../Loader/ActionLoader";
 import toast from "react-hot-toast" 
 import {useNavigate} from "react-router-dom"
 import countriesAndCodes from "../../hooks/countriesAndCodes";
+import { handleErrorPopUp } from "../../api/api";
+import countriesAndPhoneNumberCode from "../../hooks/countriesAndPhoneNumberCode";
 
 const IndividualSignup = ({
   individualContent,
@@ -23,11 +25,14 @@ const IndividualSignup = ({
     email: "",
     phone_number: "",
     password: "", 
-    country: "", 
+    // country: "", 
     role: "Individual",
-    address:""
+    address:"",
+    country_code:""
   });
 
+  const [passwordSee,setPasswordSee] = useState(false);
+  const [passwordSee2,setPasswordSee2] = useState(false);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -55,18 +60,23 @@ const IndividualSignup = ({
       setLoading(false);
       return
     }
+    // console.log({formData, country:countriesAndPhoneNumberCode.filter((d,)=>d.short_code===formData.country_code)[0]})
+    // return 
     try {
       const response = await createIndividualAuth(
-        formData.first_name,
-        formData.last_name,
-        formData.gender,
-        formData.username,
-        formData.email,
-        formData.phone_number,
-        formData.password,
-        formData.role, 
-        formData.country, 
-        formData.address, 
+      {
+        first_name:formData.first_name,
+        last_name:formData.last_name,
+        phone_no:formData.phone_number,
+        gender: formData.gender,
+        username:formData.username,
+        email:formData.email,
+        password:formData.password,
+        role: 'individual_user',
+        address: formData.address,
+        country_code:formData.country_code,
+        country:countriesAndPhoneNumberCode.filter((d,)=>d.short_code===formData.country_code)[0].country, 
+      }
       );
       // console.log(response)
       if (response.status === 201) {
@@ -89,13 +99,9 @@ const IndividualSignup = ({
         toast.error("Error occured")
       }
     } catch (error) {
-      console.log("Error registering user:", error);
       setLoading(false);
-      if(error.response.data){
-      toast.error(error.response.data.message)
-      }else{
-        toast.error("Error registering user")
-      }
+
+      handleErrorPopUp(error)
     }
   };
 
@@ -168,6 +174,33 @@ const IndividualSignup = ({
               </label>
             </div>
             <div className="input__wrapper phoneinputcontainer mb-3">
+              
+               <select
+                className="input__field email-input"
+                onFocus={handleInputFocus}
+                onBlur={handleInputBlur}
+                name="country_code"
+                value={formData.country}
+                onChange={handleInputChange}
+                id="individualcountry"
+                autoComplete="off"
+              >
+                <option value="">Select Country Code</option>
+                {
+                  countriesAndPhoneNumberCode.map((d)=>(
+                    <option value={d.short_code}>{d.code} ({d.short_code})</option>
+                  ))
+                }
+              </select>
+              <label
+                htmlFor="individualcountry"
+                className="input__label pass-label"
+              >
+               Country Code
+              </label>
+            </div>
+
+            <div className="input__wrapper phoneinputcontainer mb-3">
               <input
                 type="number"
                 className="input__field pass-input"
@@ -187,43 +220,7 @@ const IndividualSignup = ({
                 Phone Number
               </label>
             </div>
-            <div className="input__wrapper phoneinputcontainer mb-3">
-              {/* <input
-                type="text"
-                className="input__field pass-input"
-                placeholder="Country"
-                name="country"
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                value={formData.country}
-                onChange={handleInputChange}
-                id="individualcountry"
-                autoComplete="off"
-              /> */}
-               <select
-                className="input__field email-input"
-                onFocus={handleInputFocus}
-                onBlur={handleInputBlur}
-                name="country"
-                value={formData.country}
-                onChange={handleInputChange}
-                id="individualcountry"
-                autoComplete="off"
-              >
-                <option value="">Select Country</option>
-                {
-                  countriesAndCodes.map((d)=>(
-                    <option value={d.name}>{d.name}</option>
-                  ))
-                }
-              </select>
-              <label
-                htmlFor="individualcountry"
-                className="input__label pass-label"
-              >
-               Country
-              </label>
-            </div>
+
             <div className="input__wrapper emailinputcontainer mb-3">
               <select
                 className="input__field email-input"
@@ -270,7 +267,8 @@ const IndividualSignup = ({
             </div>
             <div className="input__wrapper passinputcontainer mb-3">
               <input
-                type="password"
+                type={passwordSee2?'text':"password"}
+
                 className="input__field pass-input"
                 placeholder="Your Password"
                 onFocus={handleInputFocus}
@@ -288,12 +286,16 @@ const IndividualSignup = ({
               >
                 Password
               </label>
-              <i className="fa-solid fa-eye input__icon"></i>
+              <i className={`fa-solid ${passwordSee2?'fa-eye':'fa-eye-slash'}  input__icon`}
+              onClick={()=>{
+                setPasswordSee2(!passwordSee2)
+              }}
+              ></i>
             </div>
 
             <div className="input__wrapper passinputcontainer mb-3">
               <input
-                type="password"
+                type={passwordSee?'text':"password"}
                 className="input__field pass-input"
                 placeholder="Confirm Password"
                 onFocus={handleInputFocus}
@@ -311,7 +313,12 @@ const IndividualSignup = ({
               >
                 Confirm Password
               </label>
-              <i className="fa-solid fa-eye input__icon"></i>
+              
+              <i className={`fa-solid ${passwordSee?'fa-eye':'fa-eye-slash'}  input__icon`}
+              onClick={()=>{
+                setPasswordSee(!passwordSee)
+              }}
+              ></i>
             </div>
             <div className="input__wrapper passinputcontainer mb-3">
               <textarea
@@ -332,7 +339,7 @@ const IndividualSignup = ({
               >
                 Address
               </label>
-              <i className="fa-solid fa-eye input__icon"></i>
+              {/* <i className="fa-solid fa-eye input__icon"></i> */}
             </div>
             <div className="individual-button d-flex justify-content-end mt-3">
               <button

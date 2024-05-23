@@ -100,35 +100,28 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  const createIndividualAuth = async (
-    first_name,
-    last_name,
-    gender,
-    username,
-    email,
-    phone_number,
-    password,
-    role,
-    country,
-    address
-  ) => {
+  const createIndividualAuth = async (data ) => {
     // ''
     const response = await axios.post(
       // "https://datawiztechapi.onrender.com/api/v1/register",
       "https://datawiztech-backend.onrender.com/api/v1/auth/sign_up/individual_user",
       {
-        first_name: first_name,
-        last_name: last_name,
-        phone_no: phone_number,
-        gender: gender,
-        country: country,
-        email: email,
-        username: username,
-        role: 'individual_user',
-        password: password,
-        // address: address,
-        country_code:countriesAndCodes.filter(d=>d.name===country)[0].code
-      },
+        // first_name: first_name,-
+        // last_name: last_name,-
+        // phone_no: phone_number,-
+        // gender: gender,-
+        // country: country,-
+        // email: email,-
+        // username: username,-
+        // role: 'individual_user',-
+        // password: password,-
+        // country_code,-
+        // address,-
+     ...data
+        
+        // country_code:countriesAndCodes.filter(d=>d.name===country)[0].code
+      }
+      ,
       {
         headers: {
           "Content-Type": "application/json",

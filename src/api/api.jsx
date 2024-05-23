@@ -19,3 +19,8 @@ export const handleErrorPopUp = (error)=>{
       
       }
 }
+
+export const removeAllQueryParam = ()=>{
+  //this code removes all query param
+  window.history.pushState({}, document.title, window.location.pathname);
+}

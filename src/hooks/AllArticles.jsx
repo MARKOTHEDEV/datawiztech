@@ -9,6 +9,7 @@ const FetchAllArticles = () => {
     onError: (error) => {
       console.log("Error fetching articles:", error);
     },
+    
   });
 };
 

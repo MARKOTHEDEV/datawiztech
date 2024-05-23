@@ -5,6 +5,12 @@ import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import countriesAndCodes from "../../hooks/countriesAndCodes";
+import { handleErrorPopUp } from "../../api/api";
+import countriesAndPhoneNumberCode from "../../hooks/countriesAndPhoneNumberCode";
+function isValidEmail(email) {
+    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return pattern.test(email);
+}
 
 const CorperateSignup = ({
   cooperateContent,
@@ -37,8 +43,9 @@ const CorperateSignup = ({
     organizationName: "",
     organizationType: "",
     address: "",
-    country: "",
-    gender:""
+    // country: "",
+    gender:"",
+    country_code:''
   });
 
   const handlecorperateInputChange = (e) => {
@@ -58,7 +65,6 @@ const CorperateSignup = ({
   };
   const handleCorperateSignup = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const emptyFields = Object.entries(formData).filter(
       ([key, value]) => !value.trim()
     );
@@ -72,13 +78,20 @@ const CorperateSignup = ({
       setLoading(false);
       return;
     }
+    
 
     if(formData.password !== formData.confirm_password){
       toast.error('Password and Confirm Password does not match')
       setLoading(false);
       return
     }
-
+    if(isValidEmail(formData.email) === false){
+      toast.error('Email is invalid')
+      return 
+    }
+    // console.log({formData})
+setLoading(true);
+// return 
 
     try {
       const response = await axios.post(
@@ -92,9 +105,11 @@ const CorperateSignup = ({
           user_type: 'corporate_user',
           organization_name: formData.organizationName,
           organization_type: formData.organizationType,
-          country_code: formData.address,
-          country: formData.country,
-          gender:formData.gender
+          country_code: formData.country_code,
+          // country: formData.country,
+          gender:formData.gender,
+        country:countriesAndPhoneNumberCode.filter((d,)=>d.short_code===formData.country_code)[0].country, 
+
         }
       );
       // console.log(response)
@@ -124,13 +139,8 @@ const CorperateSignup = ({
       }
     } catch (error) {
       setLoading(false);
-      console.log("Error registering user:", error.message);
-      if (error && error.response.data && error.response.data.message) {
-        toast.error(error.response.data.message);
-        return;
-      }
 
-      toast.error("Error occured !");
+      handleErrorPopUp(error)
     }
   };
   return (
@@ -174,6 +184,32 @@ const CorperateSignup = ({
               Last Name
             </label>
           </div>
+          <div className="input__wrapper phoneinputcontainer mb-3">
+              
+              <select
+               className="input__field email-input"
+               onFocus={handleInputFocus}
+               onBlur={handleInputBlur}
+               name="country_code"
+               value={formData.country}
+               onChange={handleInputChange}
+               id="individualcountry"
+               autoComplete="off"
+             >
+               <option value="">Select Country Code</option>
+               {
+                 countriesAndPhoneNumberCode.map((d)=>(
+                   <option value={d.short_code}>{d.code} ({d.short_code})</option>
+                 ))
+               }
+             </select>
+             <label
+               htmlFor="individualcountry"
+               className="input__label pass-label"
+             >
+              Country Code
+             </label>
+           </div>
           <div className="input__wrapper phoneinputcontainer mb-3">
             <input
               type="number"
@@ -308,19 +344,8 @@ const CorperateSignup = ({
       )}
       {cooperateContentB && (
         <div className="cooperateB pt-3">
-          <div className="input__wrapper lastnameinputcontainer  mb-3">
-            {/* <input
-              type="text"
-              autoComplete="off"
-              className="input__field pass-input"
-              placeholder="Country"
-              id="country"
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
-              name="country"
-              value={formData.country}
-              onChange={handlecorperateInputChange}
-            /> */}
+          {/* <div className="input__wrapper lastnameinputcontainer  mb-3">
+            
                            <select
                 className="input__field email-input"
                 onFocus={handleInputFocus}
@@ -341,7 +366,7 @@ const CorperateSignup = ({
             <label for="country" className="input__label pass-label">
               Country
             </label>
-          </div>
+          </div> */}
           <div className="input__wrapper lastnameinputcontainer  mb-3">
             <input
               type="text"

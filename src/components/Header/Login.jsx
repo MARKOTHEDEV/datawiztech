@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import OtpInput from "react-otp-input";
-import { BASE_URL, handleErrorPopUp } from '../../api/api';
+import { BASE_URL, handleErrorPopUp, removeAllQueryParam } from '../../api/api';
 // import { useMutation } from "react-query";
 import { resetPasswordApi, sendForgotPasswordVerificationEmail } from "../../api/user.api";
 import { useMutation } from "@tanstack/react-query";
@@ -200,7 +200,7 @@ const Login = ({
         setLoginDrop(false)
         toast.success('Login successful')
         toggleLoginForm(false);
-
+        Navigate('/profile')
 
         // const verified = response.data.verified;
         // if (verified === true) {
@@ -231,11 +231,10 @@ const Login = ({
         return;
       }
     } catch (error) {
-      console.error("Error during login:", error);
       if(error?.response?.data?.detail){
         toast.error(error?.response?.data?.detail)
       }else{
-        toast.error('Some error occured please try again.')
+        toast.error("Your account is not verified. Please check your email inbox to verify your account.")
       
       }
       setLoginLoading(false);
@@ -274,6 +273,8 @@ const Login = ({
         token,
         password:resetData.newPassword
       })
+    removeAllQueryParam()
+
       // const response = await axios.post(
       //   `https://datawiztechapi.onrender.com/api/v1/reset-password/${otp}`,
       //   { password: resetData.newPassword }
