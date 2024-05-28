@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import OtpInput from "react-otp-input";
-import { BASE_URL, handleErrorPopUp, removeAllQueryParam } from '../../api/api';
+import { BASE_URL, decodeUser, handleErrorPopUp, removeAllQueryParam } from '../../api/api';
 // import { useMutation } from "react-query";
 import { resetPasswordApi, sendForgotPasswordVerificationEmail } from "../../api/user.api";
 import { useMutation } from "@tanstack/react-query";
@@ -178,18 +178,20 @@ const Login = ({
         formdata
       );
       if (response && response.status === 200 && response.data) {
-        console.log({response})
+        // console.log({response:response.data.access_token})
         setIsAuthenticated(true)
+        const userTokenResult = decodeUser(response.data.access_token)
+        console.log({userTokenResult})
         const user = {
-          "first_name": "Nwokolo",
-          "last_name": "Matthew",
-          "phone_no": "08162047348",
-          "gender": "Male",
-          "country": "Nigeria",
-          "email": "markothedevmail@gmail.com",
-          "country_code": "081",
-          "username": "markothedevmail@gmail.com",
-          "user_type": "individual_user",
+          "first_name": userTokenResult.first_name,
+          "last_name": userTokenResult.last_name,
+          "phone_no": "",
+          "gender": "",
+          "country": "",
+          "email": userTokenResult.email,
+          "country_code":"",
+          "username": userTokenResult.email,
+          "user_type": userTokenResult.user_type.split('.')[1]
         }
         saveTokenAndUserDetails(
           JSON.stringify(response),
@@ -201,36 +203,15 @@ const Login = ({
         toast.success('Login successful')
         toggleLoginForm(false);
         Navigate('/profile')
+        return 
 
-        // const verified = response.data.verified;
-        // if (verified === true) {
-        //   toast.success("Logged in successfully");
-        //   setLoginLoading(false);
-        //   const data = response.data;
-        //   saveTokenAndUserDetails(data?.token, data?.user, data?.role);
-        //   if (!data.occupation || !data.bio) {
-        //     Navigate("/profile/update");
-        //   }
-
-        //   if (!data.reference) {
-        //     Navigate("/profile/verify-account");
-        //   }
-        //   Navigate("/profile");
-        //   toggleLoginForm(true);
-        //   setLoginLoading(false);
-        //   return;
-        // } else {
-        //   // signupToggle(loginData.email);
-        //   toast.error("Email not verified, check email to verify")
-        //   setLoginLoading(false);
-        //   return;
-        // }
       } else {
         toast.error("Server Error !");
         setLoginLoading(false);
         return;
       }
     } catch (error) {
+      console.log({error})
       if(error?.response?.data?.detail){
         toast.error(error?.response?.data?.detail)
       }else{

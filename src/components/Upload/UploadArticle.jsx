@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage, db } from "../../firebase/firebase";
 import Header from "../Header/Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./UploadArticle.css";
 import { FaXmark } from "react-icons/fa6";
 import upload from "../../assets/images/frame-156-aFK.png";
@@ -14,11 +14,15 @@ import { v4 as uuidv4 } from "uuid";
 import { UserAuth } from "../../useContext/useContext";
 import FetchFriends from "../../hooks/Friends";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { createArticleApi } from "../../api/article.api";
+import { decodeUser, handleErrorPopUp } from "../../api/api";
 
 const UploadArticle = () => {
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
-  const { token, currentUser } = UserAuth();
+  const { token, currentUser ,} = UserAuth();
   const partners = [
     {
       id: "ObjectId(65d7b6ec943034478371a96b)",
@@ -56,14 +60,14 @@ const UploadArticle = () => {
   const [showFile, setShowFile] = useState(false);
   const [keywords, setKeywords] = useState([]);
   const [newKeyword, setNewKeyword] = useState("");
-
+const [creating,setCreating] = useState(false)
   const [you, setYou] = useState(100);
-  const { data, isLoading, error } = FetchFriends();
+  // const { data, isLoading, error } = FetchFriends();
 
-  if (isLoading) {
-    return <DataLoader />;
-  }
-
+  // if (isLoading) {
+  //   return <DataLoader />;
+  // }
+const error =null
   if (error) {
   }
 
@@ -98,11 +102,14 @@ const UploadArticle = () => {
 
   const handleCoAuthorChange = (index, field, value) => {
     const updatedCoAuthors = [...coAuthors];
+    console.log({value,field})
+
     if (field === "percentage" && value > 100) {
       toast.error("Percentage cannot be more than 100.");
       return;
     }
     updatedCoAuthors[index][field] = value;
+
     setCoAuthors(updatedCoAuthors);
   };
 
@@ -132,6 +139,7 @@ const UploadArticle = () => {
     }
 
     const remainingPercentage = 100 - totalPercentage;
+    console.log({remainingPercentage,totalPercentage})
     if (remainingPercentage <= 0) {
       toast.error("Total percentage has exceeded 100.");
       return;
@@ -142,7 +150,8 @@ const UploadArticle = () => {
       coAuthors.length === 0 ? 100 : Math.floor(remainingPercentage);
     if (
       coAuthors.every(
-        (coAuthor) => coAuthor.partnerId && coAuthor.role && coAuthor.percentage
+        // && coAuthor.role
+        (coAuthor) => coAuthor.email && coAuthor.percentage
       )
     ) {
       setCoAuthors([
@@ -176,6 +185,27 @@ const UploadArticle = () => {
     setKeywords(keywords.filter((k) => k !== keyword));
   };
 
+  const route = useNavigate()
+  const client = useQueryClient()
+
+  const 
+  {
+    // isLoading:creating,
+    mutate} = useMutation({
+    mutationFn:createArticleApi,
+    'onSuccess':(data)=>{
+      setCreating(false)
+      setArticleLoading(false)
+      toast.success("Article created")
+      client.invalidateQueries('getArticleApi')
+      route('/upload')
+    },
+    onError:(error)=>{
+      setArticleLoading(false)
+      handleErrorPopUp(error)
+    }
+  })
+
   const postArticle = async () => {
     setArticleLoading(true);
     const emptyFields = [];
@@ -204,8 +234,9 @@ const UploadArticle = () => {
       if (
         coAuthors.some(
           (coAuthor) =>
-            coAuthor.partnerId === "" ||
-            coAuthor.role === "" ||
+            // coAuthor.partnerId === "" ||
+            coAuthor.email=== "" ||
+            // coAuthor.role === "" ||
             coAuthor.percentage === ""
         )
       ) {
@@ -232,35 +263,62 @@ const UploadArticle = () => {
     try {
       const articleFile = fileInputRef.current.files[0];
 
-      const articleExtension = articleFile.name.split(".").pop();
-      const articleFileName = `${articleExtension}.${uuidv4()}-article`;
-      const articleStorageRef = ref(storage, `articles/${articleFileName}`);
-      await uploadBytes(articleStorageRef, articleFile);
+      // const articleExtension = articleFile.name.split(".").pop();
+      // const articleFileName = `${articleExtension}.${uuidv4()}-article`;
+      // const articleStorageRef = ref(storage, `articles/${articleFileName}`);
+      // await uploadBytes(articleStorageRef, articleFile);
 
-      const articleDownloadUrl = await getDownloadURL(articleStorageRef);
+      // const articleDownloadUrl = await getDownloadURL(articleStorageRef);
 
       const articleData = {
-        title: title,
-        summary: summary,
-        price: price,
-        keywords: keywords,
+        title: title, //seen
+        summary: summary,//seen
+        price: price, //seen
+        keywords: keywords, //seen
         authorType: "Individual",
-        partnership: [
-          {
-            partnerId: currentUser._id,
-            role: "Author",
-            percentage: you,
-          },
-          ...partnership.filter(
-            (partner) =>
-              partner.partnerId !== "" &&
-              partner.role !== "" &&
-              partner.percentage !== "" &&
-              partner.partnerId
-          ),
+        // partnership: [
+        //   {
+        //     partnerId: currentUser._id,
+        //     role: "Author",
+        //     percentage: you,
+        //   },
+        //   ...partnership.filter(
+        //     (partner) =>
+        //       partner.partnerId !== "" &&
+        //       partner.role !== "" &&
+        //       partner.percentage !== "" &&
+        //       partner.partnerId
+        //   ),
+        // ],
+        coauthors_emails:[...partnership.map(e=>e.email),
+          // currentUser.email
+        ],//get the emails
+        coauthors_percentage:[...partnership.map(d=>d.percentage),
+          // you
         ],
-        file: articleDownloadUrl,
+        // file: articleDownloadUrl,
       };
+
+      const tokenD =decodeUser(JSON.parse(token).data.access_token)
+      
+
+      console.log({
+        articleFile,articleData,tokenD
+      })
+      setArticleLoading(true)
+      const form = new FormData();
+      form.append('author_id',tokenD.user_id)
+      form.append('summary',articleData.summary)
+      form.append('title',articleData.title)
+      form.append('price',articleData.price)
+      form.append('keywords',articleData.keywords)
+      form.append('coauthors_emails',articleData.coauthors_emails)
+      form.append('coauthors_percentage',articleData.coauthors_percentage)
+      form.append('article_file',articleFile)
+      // console.log({'valueEish':form.entries()})
+      setCreating(true)
+      mutate({form})
+      return 
       const response = await axios.post(
         "https://datawiztechapi.onrender.com/api/v1/upload-article",
         articleData,
@@ -279,6 +337,7 @@ const UploadArticle = () => {
         toast.error(response.data.message);
       }
     } catch (error) {
+      setArticleLoading(false)
       console.error("Error uploading article:", error);
       if (error && error.response && error.response.data) {
         const err = error.response.data;
@@ -290,7 +349,9 @@ const UploadArticle = () => {
       setArticleLoading(false);
     }
   };
-
+  if (creating) {
+    return <DataLoader />;
+  }
   return (
     <div>
       <Header active={active} />
@@ -426,11 +487,12 @@ const UploadArticle = () => {
                       />
                     </div>
                     <select className="input__field email-input">
-                      <option value={currentUser._id}>
-                        {currentUser.first_name} {currentUser.last_name}
+                      <option value={currentUser.email}>
+                        {currentUser.email}
+                        {/* {currentUser.first_name} {currentUser.last_name} */}
                       </option>
                     </select>
-                    <label className="upload__label">Co-author 00</label>
+                    <label className="upload__label">Co-author Email</label>
                   </div>
                 </div>
                 <div className="col-lg-3 mt-lg-0 mt-4">
@@ -440,8 +502,8 @@ const UploadArticle = () => {
                       <option selected value="Author">
                         Author
                       </option>
-                      <option value="Co-author">Co-author</option>
-                      <option value="Contributor">Contributor</option>
+                      {/* <option value="Co-author">Co-author</option>
+                      <option value="Contributor">Contributor</option> */}
                     </select>
                     <label className="input__label email-label">Role</label>
                   </div>
@@ -455,7 +517,7 @@ const UploadArticle = () => {
                       placeholder="Percentage"
                       value={you}
                       onChange={(e) =>
-                        handleYouPerc("percentage", e.target.value)
+                        handleYouPerc("email", Number(e.target.value))
                       }
                     />
                     <label
@@ -474,7 +536,7 @@ const UploadArticle = () => {
                       <div className="">
                         <img src={authorpic} alt="" className="author-pic" />
                       </div>
-                      <select
+                      {/* <select
                         className="input__field email-input"
                         value={coAuthor.name}
                         onChange={(e) =>
@@ -489,7 +551,23 @@ const UploadArticle = () => {
                         {partners.map((item, index) => (
                           <option value={item.id}>{item.name}</option>
                         ))}
-                      </select>
+                      </select> */}
+                      <input
+                        type="email"
+                        id={`percentage-${index}`}
+                        className="input__field pass-input"
+                        placeholder="Email"
+                        value={coAuthor.email}
+                        onChange={(e) =>
+                          handleCoAuthorChange(
+                            index,
+                            "email",
+                            e.target.value
+                          )
+                        }
+                        max={100}
+                        maxLength={100}
+                      />
                       <label className="upload__label">
                         Co-author {index + 1}
                       </label>
@@ -504,9 +582,9 @@ const UploadArticle = () => {
                           handleCoAuthorChange(index, "role", e.target.value)
                         }
                       >
-                        <option value="">Choose a role</option>
-                        <option value="Author">Author</option>
-                        <option value="Co-Author">Co Author</option>
+                        {/* <option value="">Choose a role</option> */}
+                        {/* <option value="Author">Author</option> */}
+                        <option value="Co-Author" selected>Co Author Email</option>
                       </select>
                       <label className="input__label email-label">Role</label>
                     </div>
@@ -523,7 +601,7 @@ const UploadArticle = () => {
                           handleCoAuthorChange(
                             index,
                             "percentage",
-                            e.target.value
+                         Number(e.target.value)
                           )
                         }
                         max={100}

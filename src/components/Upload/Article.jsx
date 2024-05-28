@@ -11,14 +11,24 @@ import year from "../../assets/images/icon-color-Udf.png";
 import "./Article.css";
 import FetchArticles from "../../hooks/Articles";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
+import { useQuery } from '@tanstack/react-query';
+import { getArticleApi } from "../../api/article.api";
 
-const Article = ({ search }) => {
+const Article = ({ search=''}) => {
   const reload = () => {
     window.location.reload();
   };
   const [currentPage, setCurrentPage] = useState(1);
   const [dataPerPage] = useState(15);
-  const { data, isLoading, error } = FetchArticles();
+  // const [isLoading,setIsLoading] = useState(false)
+  // const error =null
+  // const { data, isLoading, error } = FetchArticles();
+  const {data,isLoading,error} = useQuery({
+    queryFn:getArticleApi,
+    queryKey:'getArticleApi',
+    // 'on'
+
+  })
   if (isLoading) {
     return <DataLoader />;
   }
@@ -39,9 +49,7 @@ const Article = ({ search }) => {
 
   if (
     !data ||
-    !data.data.articles ||
-    !data.data ||
-    data.data.articles.length === 0
+    data.length === 0
   ) {
     return (
       <div>
@@ -52,13 +60,15 @@ const Article = ({ search }) => {
     );
   }
 
-  const articles = data.data.articles;
+  const articles = data;
   const filteredArticle = search
     ? articles.filter(
         (item) => item.title.toLowerCase().includes(search.toLowerCase())
         // item.periodicity.toLowerCase().includes(search.toLowerCase())
       )
     : articles;
+
+    // console.log({filteredArticle})
 
   const indexOfLastData = currentPage * dataPerPage;
   const indexOfFirstData = indexOfLastData - dataPerPage;
@@ -71,12 +81,13 @@ const Article = ({ search }) => {
 
   return (
     <div className="pb-5">
+
       <div className="row mt-2 mb-4">
         {currentArticles.length !== 0 ? (
           articles.map((item, index) => (
             <div key={item._id} className="col-lg-4 my-2">
               <div className="upload-result-card">
-                <Link to={`/search/article/result/${item._id}`}>
+                <Link to={`/search/article/result/${item.id}`}>
                   <div className="upload-card-title pb-3">{item.title}</div>
                   <div className="search-card-profile">
                     <div className="search-card-flex">
@@ -94,8 +105,8 @@ const Article = ({ search }) => {
                       </div>
                     </div>
                     <div className="data-verified">
-                      {item.authorId?.verification === "verified"
-                        ? "verified"
+                      {item?.verification_status?
+                             "verified"
                         : "unverified"}
                     </div>
                   </div>
@@ -106,7 +117,7 @@ const Article = ({ search }) => {
                         src={location}
                         alt="..."
                       />
-                      <div className="card-location-country">Nigeria</div>
+                      <div className="card-location-country">{item.country}</div>
                     </div>
                     <div className="card-location-country">
                       {item.price === 0 || !item.price
