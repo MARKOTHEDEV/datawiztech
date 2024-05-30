@@ -18,7 +18,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createArticleApi } from "../../api/article.api";
 import { decodeUser, handleErrorPopUp } from "../../api/api";
-
+function validateEmail(email) {
+  const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
+  return re.test(email);
+}
 const UploadArticle = () => {
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
@@ -127,6 +130,7 @@ const error =null
   };
 
   const AddCoAuthor = () => {
+    
     const totalPercentage =
       coAuthors.reduce(
         (sum, coAuthor) => sum + parseInt(coAuthor.percentage || 0),
@@ -139,7 +143,6 @@ const error =null
     }
 
     const remainingPercentage = 100 - totalPercentage;
-    console.log({remainingPercentage,totalPercentage})
     if (remainingPercentage <= 0) {
       toast.error("Total percentage has exceeded 100.");
       return;
@@ -151,7 +154,7 @@ const error =null
     if (
       coAuthors.every(
         // && coAuthor.role
-        (coAuthor) => coAuthor.email && coAuthor.percentage
+        (coAuthor) => coAuthor.email && coAuthor.percentage &&  validateEmail(coAuthor.email)
       )
     ) {
       setCoAuthors([
@@ -207,6 +210,44 @@ const error =null
   })
 
   const postArticle = async () => {
+    const totalPercentage =
+    coAuthors.reduce(
+      (sum, coAuthor) => sum + parseInt(coAuthor.percentage || 0),
+      0
+    ) + you;
+
+  if (totalPercentage === 100) {
+    toast.error("Total percentage is already 100.");
+    return;
+  }
+
+  const remainingPercentage = 100 - totalPercentage;
+  if (remainingPercentage <= 0) {
+    toast.error("Total percentage has exceeded 100.");
+    return;
+  }
+
+  if (
+    coAuthors.every(
+      // && coAuthor.role
+      (coAuthor) => coAuthor.email && coAuthor.percentage &&  validateEmail(coAuthor.email)
+    )){
+      
+    }
+    else{
+      toast.error(
+        "Please complete the current co-author details before adding a new one."
+      );
+      return 
+    }
+    console.log({'duplicate':coAuthors.filter(d=>d.email==currentUser.email)})
+    if(coAuthors.filter(d=>d.email==currentUser.email).length!==0){
+      toast.error('Duplicated Author Email')
+      return 
+    }
+
+  // console.log({remainingPercentage})
+
     setArticleLoading(true);
     const emptyFields = [];
     const summary = document.getElementById("description").value;
@@ -315,7 +356,6 @@ const error =null
       form.append('coauthors_emails',articleData.coauthors_emails)
       form.append('coauthors_percentage',articleData.coauthors_percentage)
       form.append('article_file',articleFile)
-      // console.log({'valueEish':form.entries()})
       setCreating(true)
       mutate({form})
       return 
@@ -337,6 +377,7 @@ const error =null
         toast.error(response.data.message);
       }
     } catch (error) {
+      setCreating(false)
       setArticleLoading(false)
       console.error("Error uploading article:", error);
       if (error && error.response && error.response.data) {
@@ -486,18 +527,22 @@ const error =null
                         className="author-pic"
                       />
                     </div>
-                    <select className="input__field email-input">
+                    <select className="input__field email-input" 
+                    style={{'appearance':'none','MozAppearance':'none','WebkitAppearance':'none'}}
+                    >
                       <option value={currentUser.email}>
                         {currentUser.email}
                         {/* {currentUser.first_name} {currentUser.last_name} */}
                       </option>
                     </select>
-                    <label className="upload__label">Co-author Email</label>
+                    <label className="upload__label">Author Email</label>
                   </div>
                 </div>
                 <div className="col-lg-3 mt-lg-0 mt-4">
                   <div className="input__wrapper emailinputcontainer mb-4">
-                    <select className="input__field email-input" value="Author">
+                    <select className="input__field email-input" value="Author"
+                    style={{'appearance':'none','MozAppearance':'none','WebkitAppearance':'none'}}
+                    >
                       <option value="">Choose a role</option>
                       <option selected value="Author">
                         Author
@@ -511,11 +556,11 @@ const error =null
                 <div className="col-lg-3">
                   <div className="input__wrapper">
                     <input
-                      type="number"
+                      type="text"
                       id={`percentage-${currentUser._id}`}
                       className="input__field pass-input"
                       placeholder="Percentage"
-                      value={you}
+                      value={you==0?'':you}
                       onChange={(e) =>
                         handleYouPerc("email", Number(e.target.value))
                       }
@@ -569,7 +614,7 @@ const error =null
                         maxLength={100}
                       />
                       <label className="upload__label">
-                        Co-author {index + 1}
+                        Co-author Email
                       </label>
                     </div>
                   </div>
@@ -578,25 +623,26 @@ const error =null
                       <select
                         className="input__field email-input"
                         value={coAuthor.role}
+                    style={{'appearance':'none','MozAppearance':'none','WebkitAppearance':'none'}}
                         onChange={(e) =>
                           handleCoAuthorChange(index, "role", e.target.value)
                         }
                       >
                         {/* <option value="">Choose a role</option> */}
                         {/* <option value="Author">Author</option> */}
-                        <option value="Co-Author" selected>Co Author Email</option>
+                        <option value="Co-Author" selected>Co Author</option>
                       </select>
                       <label className="input__label email-label">Role</label>
                     </div>
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3" style={{'display':'flex','alignItems':'start','gap':'5px',}}>
                     <div className="input__wrapper">
                       <input
                         type="number"
                         id={`percentage-${index}`}
                         className="input__field pass-input"
                         placeholder="Percentage"
-                        value={coAuthor.percentage}
+                        value={Number(coAuthor.percentage)===0?'':coAuthor.percentage}
                         onChange={(e) =>
                           handleCoAuthorChange(
                             index,
@@ -614,7 +660,26 @@ const error =null
                         Percentage
                       </label>
                     </div>
+                    <p
+                    style={{'transform':'translateY(10px)','color':'crimson','cursor':'pointer'}}
+                  // className="col-lg-3"
+                    onClick={()=>{
+                      let coauthor =coAuthors
+                      console.log({coauthor})
+                      if (index > -1) {
+                        coauthor.splice(index, 1);
+                      }
+                    // console.log({coauthor})
+                    if(coauthor.length==0){
+                      setCoAuthors([]);
+                    }else{
+                      setCoAuthors(coauthor);
+                    }
+
+                    }}
+                    >Delete</p>
                   </div>
+
                 </div>
               ))}
               <div className="row">

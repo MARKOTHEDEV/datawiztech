@@ -150,9 +150,16 @@ const Login = ({
     try {
       if (!loginData.email) {
         emptyField.push("email");
+        setLoginLoading(false);
+
+        return
       }
       if (!loginData.password) {
         emptyField.push("password");
+        setLoginLoading(false);
+
+        return
+
       }
 
       if (emptyField.length > 0) {
@@ -165,7 +172,9 @@ const Login = ({
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(loginData.email)) {
         toast.error("Invalid email address !");
-        return;
+        setLoginLoading(false);
+
+        return
       }
       const formdata = new FormData()
       formdata.append('username',loginData.email)
@@ -384,10 +393,11 @@ const Login = ({
                 <div className="login-content">
                   <div className="login-text-container">
                     <p className="login-text">Login</p>
-                    <p onClick={toggleLoginForm}>
+                    <p   onClick={toggleLoginForm}>
                       {" "}
                       <img
                         className="login-cancel"
+                        style={{'cursor':'pointer'}}
                         src={loginCancel}
                         alt="..."
                       />

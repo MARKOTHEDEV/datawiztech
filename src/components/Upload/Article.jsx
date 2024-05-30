@@ -19,7 +19,6 @@ const Article = ({ search=''}) => {
     window.location.reload();
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataPerPage] = useState(15);
   // const [isLoading,setIsLoading] = useState(false)
   // const error =null
   // const { data, isLoading, error } = FetchArticles();
@@ -60,32 +59,16 @@ const Article = ({ search=''}) => {
     );
   }
 
-  const articles = data;
-  const filteredArticle = search
-    ? articles.filter(
-        (item) => item.title.toLowerCase().includes(search.toLowerCase())
-        // item.periodicity.toLowerCase().includes(search.toLowerCase())
-      )
-    : articles;
+  const articles = data?.slice()?.reverse();;
 
-    // console.log({filteredArticle})
-
-  const indexOfLastData = currentPage * dataPerPage;
-  const indexOfFirstData = indexOfLastData - dataPerPage;
-  const currentArticles = filteredArticle.slice(
-    indexOfFirstData,
-    indexOfLastData
-  );
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="pb-5">
 
       <div className="row mt-2 mb-4">
-        {currentArticles.length !== 0 ? (
-          articles.map((item, index) => (
-            <div key={item._id} className="col-lg-4 my-2">
+        {articles?.length !== 0 ? (
+          articles?.map((item, index) => (
+            <div key={item.id} className="col-lg-4 my-2">
               <div className="upload-result-card">
                 <Link to={`/search/article/result/${item.id}`}>
                   <div className="upload-card-title pb-3">{item.title}</div>
@@ -164,49 +147,6 @@ const Article = ({ search=''}) => {
           </div>
         </div>
         )}
-      </div>
-      <div className="d-flex  align-items-center justify-content-end">
-        <div class="pagination-tablet column-gap-4">
-          <div class="row-per-page">Rows per page:</div>
-          <div class="auto-group-pand-Eru">
-            <div class="auto-group-8hsw-kaM">
-              <select className="form-control">
-                <option>3</option>
-                <option>5</option>
-                <option>7</option>
-                <option>10</option>
-              </select>
-            </div>
-          </div>
-          <div className="d-flex column-gap-4">
-            <div class="pagenumbers">
-              {indexOfFirstData + 1}-
-              {Math.min(indexOfLastData, articles.length)} of {articles.length}
-            </div>
-            {indexOfFirstData + 1 !== 1 ? (
-              <img
-                class="icon-color-QoK"
-                src={nextIcon}
-                alt="previous"
-                onClick={() => paginate(currentPage + 1)}
-                disabled={indexOfLastData >= articles.length}
-              />
-            ) : (
-              ""
-            )}
-            {Math.min(indexOfLastData, articles.length) !== articles.length ? (
-              <img
-                class="icon-color-jqb"
-                src={prevIcon}
-                alt="next"
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-              />
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );
