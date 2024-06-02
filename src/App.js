@@ -202,7 +202,7 @@ function App() {
           }
         />
 
-        <Route exact path="/search/data/result/:id" element={<DataPreview />} />
+        <Route exact path="/search/data/result" element={<DataPreview />} />
         <Route
           exact
           path="/search/professional/result/:id"
@@ -215,8 +215,11 @@ function App() {
         />
         <Route
           exact
-          path="/search/article/result/:id"
+          path="/search/article/result"
           element={<ArticlePreview />}
+          // element={<div>
+          //   hello world
+          // </div>}
         />
         <Route
           exact

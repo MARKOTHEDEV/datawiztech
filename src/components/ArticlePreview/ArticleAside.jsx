@@ -5,9 +5,9 @@ import share from "../../assets/images/icons8-forward-arrow-100-2-F53.png";
 // import { FaStar } from "react-icons/fa";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { GoStar, GoStarFill } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 
-const ArticleAside = ({ articles }) => {
+const ArticleAside = ({ articles ,setArticle}) => {
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
   const truncateText = (text, maxLength) => {
@@ -37,23 +37,32 @@ const ArticleAside = ({ articles }) => {
     }
     return formattedDate.replace(`${day}`, `${day}${daySuffix}`);
   };
+  let [searchParams, setSearchParams] = useSearchParams();
 
   return (
     <div
       className="px-3 overflow-y-auto scrollbar-design pt-3"
       style={{ maxHeight: "120vh" }}
     >
-      {articles.map((data, index) => (
-        <div className="pb-1">
-          <div className={`search-result-card ${index === 0 ? "active" : ""}`}>
+      {articles?.map((data, index) => (
+        <div className="pb-1 " style={{'cursor':'pointer'}}
+        onClick={()=>{
+          if(setArticle){
+            setSearchParams({'id':data.id})
+            setArticle(data)
+
+          }
+        }}
+        >
+          <div className={`search-result-card ${data.id === searchParams.get('id') ? "active" : ""}`}>
             <Link
-              to={`/search/article/result/${data._id}`}
+              // to={`/search/article/result/${data.id}`}
               className="search-card-title pb-3"
             >
               {data.title}
             </Link>
             <div class="search-card-profile">
-              <div
+              {/* <div
                 class="dropdown-profile-menu collapse multi-collapse overflow-hidden"
                 role="menu"
                 id={"dataCollapseProfile" + index}
@@ -86,13 +95,15 @@ const ArticleAside = ({ articles }) => {
                     </Link>
                   ))}
                 </div>
-              </div>
+              </div> */}
               <div class="search-card-flex">
                 <div class="search-card-pic-container">
                   <div class="search-card-pic">
                     <img
                       src={
-                        !data.authorId.image ? profilepic : data.authorId.image
+                        // data?.
+                        profilepic
+                        // !data.authorId.image ? profilepic : data.authorId.image
                       }
                       data-bs-toggle="collapse"
                       href={"#dataCollapseProfile" + index}
@@ -103,13 +114,13 @@ const ArticleAside = ({ articles }) => {
                       className="img-fluid search-card-pic"
                     />
                   </div>
-                  <div class="search-card-pic-num">
+                  {/* <div class="search-card-pic-num">
                     {data.partnership.length}
-                  </div>
+                  </div> */}
                 </div>
-                <div class="search-card-name">
-                  {data?.authorId?.first_name} {data?.authorId?.last_name}
-                </div>
+                {/* <div class="search-card-name">
+                  {data?.first_name} {data?.authorId?.last_name}
+                </div> */}
               </div>
               <div class="search-card-amount">
                 N{!data.price || data.price === 0 ? "Free" : data.price}
@@ -122,7 +133,7 @@ const ArticleAside = ({ articles }) => {
               {truncateText(data.summary, 145)}
             </Link>
 
-            <div class="search-card-icon-part">
+            {/* <div class="search-card-icon-part">
               <div class="search-card-icon-container">
                 <div class="search-card-count">{data.likes}</div>
                 <img class="search-card-count-icon" src={like} alt=".." />
@@ -152,7 +163,7 @@ const ArticleAside = ({ articles }) => {
                 <div className="search-card-rate">{data.rating} out of 5</div>
               </div>
               <div className="search-card-date">{formatDate(data.date)}</div>
-            </div>
+            </div> */}
           </div>
         </div>
       ))}

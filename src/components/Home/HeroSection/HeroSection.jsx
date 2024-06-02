@@ -14,6 +14,8 @@ const HeroSection = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    Navigate(`/search?searchTerm=${search}`);
+    return 
     if (!search || search.trim() === "") {
       toast.error("Search field is empty");
       return;
@@ -36,7 +38,7 @@ const HeroSection = () => {
       if (response.status === 200) {
         toast.success(response.data.message);
         setSearch("");
-        Navigate(`/search?searchTerm=${search}`);
+       
       } else {
         toast.error("Search failed");
       }

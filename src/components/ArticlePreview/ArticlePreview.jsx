@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../DataSearch/DataSearch.css";
 import "../DataSearch/DataFilter.css";
 import "../DataSearch/YearRange.css";
@@ -7,7 +7,7 @@ import "./ArticleMain.css";
 import cart_icon from "../../assets/images/addcart.png";
 // import "./DataAside.css";
 import Header from "../Header/Header";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import ".././Header/Header.css";
 import remove_filter_item from "../../assets/images/frame-160-nE5.png";
 import whatsapp from "../../assets/images/icons8-whatsapp-2-xwj.png";
@@ -32,6 +32,8 @@ import toast from "react-hot-toast";
 import { UserAuth } from "../../useContext/useContext";
 import ActionLoader from "../Loader/ActionLoader";
 import FetchAllArticles from "../../hooks/AllArticles";
+import { useQuery } from '@tanstack/react-query';
+import { getArticleApi } from "../../api/article.api";
 // import NotFound from "./NotFound";
 
 const ArticlePreview = () => {
@@ -44,48 +46,57 @@ const ArticlePreview = () => {
   const { id } = useParams();
   const [active, setActive] = useState("upload");
   const [cartLoading, setCartLoading] = useState(false);
-  const { data, isLoading, error } = FetchAllArticles();
-  if (isLoading) {
-    return <DataLoader />;
-  }
-  if (error) {
-    console.log(error)
-    return (
-      <div className="empty-pending-friends">
-        <div className="error-text-section">
-          You have not posted any article
-        </div>
-        <div className="btn btn-outline-success" onClick={reload}>
-          Reload
-        </div>
-      </div>
-    );
-  }
-  if (!data || !data.data || !data.data.articles) {
-    return (
-      <div className="empty-pending-friends">
-        <div className="error-text-section">
-          You have not posted any article
-        </div>
-        <div className="btn btn-outline-success" onClick={reload}>
-          Reload
-        </div>
-      </div>
-    );
-  }
+  // const { data, isLoading, error } = FetchAllArticles();
+  const [article,setArticle] = useState()
+  let [searchParams, setSearchParams] = useSearchParams();
 
-  const fetchArticles = data.data.articles;
-  const article = fetchArticles.find((item) => item._id === id);
-  //   console.log(article)
-  const articleIndex = fetchArticles.findIndex((item) => item._id === id);
-  const slicedArticles = fetchArticles.slice(articleIndex, articleIndex + 10);
-  const ratings = [
-    { rate: "5 star", rating: "80%" },
-    { rate: "4 star", rating: "65%" },
-    { rate: "3 star", rating: "50%" },
-    { rate: "2 star", rating: "40%" },
-    { rate: "1 star", rating: "25%" },
-  ];
+
+  const {data,isLoading,error,isSuccess} = useQuery({
+    queryFn:getArticleApi,
+    queryKey:'getArticleApi',
+    refetchInterval:false,
+    refetchOnWindowFocus:false
+    // 'on'
+
+  })
+
+  // if (error) {
+  //   console.log(error)
+  //   return (
+  //     <div className="empty-pending-friends">
+  //       <div className="error-text-section">
+  //         You have not posted any article
+  //       </div>
+  //       <div className="btn btn-outline-success" onClick={reload}>
+  //         Reload
+  //       </div>
+  //     </div>
+  //   );
+  // }
+  // if (!data || !data.data || !data.data.articles) {
+  //   return (
+  //     <div className="empty-pending-friends">
+  //       <div className="error-text-section">
+  //         You have not posted any article
+  //       </div>
+  //       <div className="btn btn-outline-success" onClick={reload}>
+  //         Reload
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  // const fetchArticles = data.data.articles;
+  // const article = fetchArticles.find((item) => item._id === id);
+  // const articleIndex = fetchArticles.findIndex((item) => item._id === id);
+  // const slicedArticles = fetchArticles.slice(articleIndex, articleIndex + 10);
+  // const ratings = [
+  //   { rate: "5 star", rating: "80%" },
+  //   { rate: "4 star", rating: "65%" },
+  //   { rate: "3 star", rating: "50%" },
+  //   { rate: "2 star", rating: "40%" },
+  //   { rate: "1 star", rating: "25%" },
+  // ];
 
   const addtocart = async () => {
     try {
@@ -121,6 +132,19 @@ const ArticlePreview = () => {
     }
   };
 
+
+  useEffect(()=>{
+    if(isSuccess){
+      // console.log({'Article':data?.filter(d=>d.id==searchParams.get('id')),id:searchParams.get('id')})
+      setArticle(data?.filter(d=>d.id==searchParams.get('id'))[0])
+    }
+  },[isSuccess])
+
+
+
+  if (isLoading) {
+    return <DataLoader />;
+  }
   return (
     <div>
       <Header active={active} />
@@ -177,7 +201,7 @@ const ArticlePreview = () => {
                   <p class="showall-text">Show all results</p>
                 </div>
               </div>
-              <ArticleAside articles={slicedArticles} />
+              <ArticleAside articles={data}  setArticle={setArticle}/>
             </div>
           </div>
           <div className="col-lg-8 preview-section pt-4">
@@ -204,7 +228,11 @@ const ArticlePreview = () => {
                 )}
               </div>
             </div>
-            <ArticleMain article={article} />
+            {
+              article?
+              <ArticleMain article={article}  />
+            :""
+            }
           </div>
         </div>
       </div>
@@ -237,7 +265,7 @@ const ArticlePreview = () => {
               </div>
             </div>
           </div>
-          <div className="row">
+          {/* <div className="row">
             <div className="col-lg-5">
               <div className="professsional-view-rating">View Rating</div>
               <div className="search-card-star pt-2">
@@ -281,7 +309,6 @@ const ArticlePreview = () => {
                     <div className="professional-review-comment">
                       I really love it.
                     </div>
-                    {/* <div></div> */}
                   </div>
                   <div className="professional-review-datetime">
                     <div>
@@ -317,7 +344,7 @@ const ArticlePreview = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* <DataFound/> */}

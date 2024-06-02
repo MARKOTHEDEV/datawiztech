@@ -46,26 +46,26 @@ const extractYearRange = (datas) => {
 const Data = ({ responseData }) => {
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
-  if (!responseData) {
-    return (
-      <div>
-        <div className="empty-pending-friends">
-          <div className="card-profile-name">No article</div>
-        </div>
-      </div>
-    );
-  }
+  // if (!responseData) {
+  //   return (
+  //     <div>
+  //       <div className="empty-pending-friends">
+  //         <div className="card-profile-name">No article</div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // const articles = data.data.articles;
-  if (responseData.length === 0 || !responseData) {
-    return (
-      <div>
-        <div className="empty-pending-friends">
-          <div className="card-profile-name">No new article</div>
-        </div>
-      </div>
-    );
-  }
+  // if (responseData.length === 0 || !responseData) {
+  //   return (
+  //     <div>
+  //       <div className="empty-pending-friends">
+  //         <div className="card-profile-name">No new article</div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
   const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) {
       return text;
@@ -79,12 +79,14 @@ const Data = ({ responseData }) => {
           <div className="search-result-card active">
             <div>
               <Link
-                to={`/search/data/result/${data._id}`}
+                // to={`/search/data/result/${data._id}`}
                 className="search-card-title pb-3"
               >
-                {data.title}
+                {
+                truncateText(data.title,100)
+                }
               </Link>
-              <div class="search-card-profile">
+              {/* <div class="search-card-profile">
                 <div
                   class="dropdown-profile-menu collapse multi-collapse overflow-hidden"
                   role="menu"
@@ -151,18 +153,17 @@ const Data = ({ responseData }) => {
                 <div class="search-card-amount">
                   N {data.price.toLocaleString()}
                 </div>
-              </div>
+              </div> */}
               <Link
-                to={`/search/data/result/${data._id}`}
+                // to={`/search/data/result/${data._id}`}
                 className="search-card-info py-2"
               >
-                {truncateText(data.summary, 145)}
+                <br />
+                {truncateText(data.summary,80 )}
               </Link>
-              <div className="search-card-location-content pb-3">
+              {/* <div className="search-card-location-content pb-3">
                 <div>{data.periodicity}</div>
-                {/* <div className="search-card-location"> */}
                 <div>{extractYearRange(data.datas).join(" - ") || "All"}</div>
-                {/* </div> */}
               </div>
               <div class="search-card-icon-part">
                 <div class="search-card-icon-container">
@@ -194,7 +195,7 @@ const Data = ({ responseData }) => {
                   <div className="search-card-rate">{data.rating} out of 5</div>
                 </div>
                 <div className="search-card-date">{formatDate(data.date)}</div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

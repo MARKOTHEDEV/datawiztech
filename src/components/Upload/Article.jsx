@@ -70,7 +70,7 @@ const Article = ({ search=''}) => {
           articles?.map((item, index) => (
             <div key={item.id} className="col-lg-4 my-2">
               <div className="upload-result-card">
-                <Link to={`/search/article/result/${item.id}`}>
+                <Link to={`/search/article/result?id=${item.id}`}>
                   <div className="upload-card-title pb-3">{item.title}</div>
                   <div className="search-card-profile">
                     <div className="search-card-flex">

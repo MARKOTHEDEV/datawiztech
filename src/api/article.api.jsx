@@ -21,3 +21,8 @@ export const getArticleApi = async ()=>{
 }
 
 
+export const getSearchResults =async (search)=>{
+    console.log({search})
+    const response = await api.get(`/search?keyword=${search}`);
+    return response.data
+}
