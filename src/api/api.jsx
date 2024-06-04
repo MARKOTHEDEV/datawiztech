@@ -32,6 +32,20 @@ const signUp = async ()=>{
 
 
 }
+export function findDuplicateEmails(emailList) {
+  const emailSet = new Set();
+  const duplicates = [];
+
+  for (const email of emailList) {
+      if (emailSet.has(email)) {
+          duplicates.push(email);
+      } else {
+          emailSet.add(email);
+      }
+  }
+
+  return duplicates;
+}
 
 
 export const handleErrorPopUp = (error)=>{

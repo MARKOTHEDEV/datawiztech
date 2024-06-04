@@ -17,7 +17,7 @@ import DataLoader from "../../hooks/DataLoader/DataLoader";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createArticleApi } from "../../api/article.api";
-import { decodeUser, handleErrorPopUp } from "../../api/api";
+import { decodeUser, findDuplicateEmails, handleErrorPopUp } from "../../api/api";
 function validateEmail(email) {
   const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
   return re.test(email);
@@ -143,10 +143,11 @@ const error =null
     }
 
     const remainingPercentage = 100 - totalPercentage;
-    if (remainingPercentage <= 0) {
+    if (totalPercentage < 0) {
       toast.error("Total percentage has exceeded 100.");
       return;
     }
+    
 
     const defaultPercentage =
       // coAuthors.length > 0 ? remainingPercentage / 2 : 100;
@@ -190,6 +191,7 @@ const error =null
 
   const route = useNavigate()
   const client = useQueryClient()
+  const [emailError,setEmailError] = useState(null)
 
   const 
   {
@@ -205,7 +207,15 @@ const error =null
     },
     onError:(error)=>{
       setArticleLoading(false)
+      setCreating(false)
+
       handleErrorPopUp(error)
+
+        // if(err)
+        console.log({error})
+        if(error.response.data.detail?.includes('does not exist')){
+          setEmailError(error.response.data.detail)
+        }
     }
   })
 
@@ -216,13 +226,21 @@ const error =null
       0
     ) + you;
 
-  if (totalPercentage === 100) {
-    toast.error("Total percentage is already 100.");
-    return;
-  }
+  // if (totalPercentage === 100) {
+  //   toast.error("Total percentage is already 100.");
+  //   return;
+  // }
+
+
 
   const remainingPercentage = 100 - totalPercentage;
-  if (remainingPercentage <= 0) {
+console.log({totalPercentage})
+  if(totalPercentage < 100){
+    toast.error("Total percentage has lower than 100.");
+    
+    return 
+  }
+  if (remainingPercentage < 0) {
     toast.error("Total percentage has exceeded 100.");
     return;
   }
@@ -253,7 +271,11 @@ const error =null
     const summary = document.getElementById("description").value;
     const price = document.getElementById("price").value;
     const title = document.getElementById("title").value;
-
+    if(findDuplicateEmails(coAuthors.map(d=>d.email))){
+      
+      toast.error('duplicate co-author emails')
+      return 
+    }
     if (
       !fileInputRef.current.files[0] ||
       !summary ||
@@ -664,16 +686,18 @@ const error =null
                     style={{'transform':'translateY(10px)','color':'crimson','cursor':'pointer'}}
                   // className="col-lg-3"
                     onClick={()=>{
+                      setCoAuthors([])
                       let coauthor =coAuthors
+                      let deltedCoAuthor ='null'
                       console.log({coauthor})
                       if (index > -1) {
-                        coauthor.splice(index, 1);
+                        deltedCoAuthor= coauthor.splice(index, 1);
                       }
-                    // console.log({coauthor})
                     if(coauthor.length==0){
                       setCoAuthors([]);
+                      return
                     }else{
-                      setCoAuthors(coauthor);
+                      setCoAuthors(coauthor.filter(d=>d.email!==deltedCoAuthor));
                     }
 
                     }}
@@ -682,6 +706,8 @@ const error =null
 
                 </div>
               ))}
+            <p style={{'color':'crimson'}}>{emailError?emailError:''}</p>
+
               <div className="row">
                 <div className="col-lg-6">
                   <div className="add-co-author-btn mb-4" onClick={AddCoAuthor}>

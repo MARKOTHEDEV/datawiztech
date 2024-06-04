@@ -159,43 +159,45 @@ const Data = ({ responseData }) => {
                 className="search-card-info py-2"
               >
                 <br />
-                {truncateText(data.summary,80 )}
+                {truncateText(data?.summary,80 )}
               </Link>
-              {/* <div className="search-card-location-content pb-3">
-                <div>{data.periodicity}</div>
-                <div>{extractYearRange(data.datas).join(" - ") || "All"}</div>
+               <div className="search-card-location-content pb-3">
+                {/* <div>{data.periodicity}</div> */}
+                <div>periodicity</div>
+                {/* <div>{extractYearRange(data.datas).join(" - ") || "All"}</div> */}
+                <div>All</div>
               </div>
               <div class="search-card-icon-part">
                 <div class="search-card-icon-container">
-                  <div class="search-card-count">{data.likes}</div>
+                  <div class="search-card-count">0</div>
                   <img class="search-card-count-icon" src={like} alt=".." />
                 </div>
                 <div class="search-card-icon-container">
-                  <div class="search-card-count">{data.download}</div>
+                  <div class="search-card-count">10</div>
                   <img class="search-card-count-icon" src={download} alt=".." />
                 </div>
                 <div class="search-card-icon-container">
-                  <div class="search-card-count">{data.share}</div>
+                  <div class="search-card-count">10</div>
                   <img class="search-card-count-icon" src={share} alt=".." />
                 </div>
               </div>
-              <div className="d-flex justify-content-between pt-3">
+              {/* <div className="d-flex justify-content-between pt-3">
                 <div className="search-card-star">
                   <div>
-                    {[...Array(Math.floor(data.rating))].map((_, index) => (
+                    {[...Array(3)].map((_, index) => (
                       <GoStarFill key={index} size={20} color="#4eb473" />
                     ))}
-                    {data.rating % 1 !== 0 && (
+                    {2 % 1 !== 0 && (
                       <FaRegStarHalfStroke size={20} color="#4eb473" />
                     )}
-                    {[...Array(5 - Math.ceil(data.rating))].map((_, index) => (
+                    {[...Array(5 - Math.ceil(3))].map((_, index) => (
                       <GoStarFill key={index} size={20} color="#e0e0e0" />
                     ))}
                   </div>
-                  <div className="search-card-rate">{data.rating} out of 5</div>
+                  <div className="search-card-rate">{3} out of 5</div>
                 </div>
-                <div className="search-card-date">{formatDate(data.date)}</div>
-              </div> */}
+                <div className="search-card-date">2020-20-1</div>
+              </div>  */}
             </div>
           </div>
         </div>
