@@ -261,12 +261,10 @@ const error =null
       toast.error('Duplicated Author Email')
       return 
     }
-    if(coAuthors.length !=0){
-      if(findDuplicateEmails(coAuthors.map(d=>d.email))){
+      if(findDuplicateEmails(coAuthors.map(d=>d.email)).length!==0){
         toast.error('duplicate co-author emails')
         return 
       }
-    }
 
   // console.log({remainingPercentage})
 
