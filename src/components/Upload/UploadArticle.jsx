@@ -234,7 +234,6 @@ const error =null
 
 
   const remainingPercentage = 100 - totalPercentage;
-console.log({totalPercentage})
   if(totalPercentage < 100){
     toast.error("Total percentage has lower than 100.");
     
@@ -258,25 +257,24 @@ console.log({totalPercentage})
       );
       return 
     }
-    console.log({'duplicate':coAuthors.filter(d=>d.email==currentUser.email)})
     if(coAuthors.filter(d=>d.email==currentUser.email).length!==0){
       toast.error('Duplicated Author Email')
       return 
     }
-
-  // console.log({remainingPercentage})
-
-    setArticleLoading(true);
-    const emptyFields = [];
-    const summary = document.getElementById("description").value;
-    const price = document.getElementById("price").value;
-    const title = document.getElementById("title").value;
     if(coAuthors.length !=0){
       if(findDuplicateEmails(coAuthors.map(d=>d.email))){
         toast.error('duplicate co-author emails')
         return 
       }
     }
+
+  // console.log({remainingPercentage})
+
+    const emptyFields = [];
+    const summary = document.getElementById("description").value;
+    const price = document.getElementById("price").value;
+    const title = document.getElementById("title").value;
+   
 
     if (
       !fileInputRef.current.files[0] ||
@@ -380,6 +378,7 @@ console.log({totalPercentage})
       form.append('coauthors_emails',articleData.coauthors_emails)
       form.append('coauthors_percentage',articleData.coauthors_percentage)
       form.append('article_file',articleFile)
+    setArticleLoading(true);
       setCreating(true)
       mutate({form})
       return 
