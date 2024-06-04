@@ -271,11 +271,13 @@ console.log({totalPercentage})
     const summary = document.getElementById("description").value;
     const price = document.getElementById("price").value;
     const title = document.getElementById("title").value;
-    if(findDuplicateEmails(coAuthors.map(d=>d.email))){
-      
-      toast.error('duplicate co-author emails')
-      return 
+    if(coAuthors.length !=0){
+      if(findDuplicateEmails(coAuthors.map(d=>d.email))){
+        toast.error('duplicate co-author emails')
+        return 
+      }
     }
+
     if (
       !fileInputRef.current.files[0] ||
       !summary ||
