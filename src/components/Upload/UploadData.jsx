@@ -377,6 +377,7 @@ const UploadData = () => {
   };
 
   const resetFields = () => {
+    return
     setCoAuthors([]);
     setFileUpload("");
     setShowFile(false);

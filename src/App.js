@@ -30,7 +30,7 @@ import SubCorperate from "./components/SubCorperate/SubCorperate";
 import SubCorp from "./components/SubCorperate/SubCorp";
 import Payment from "./components/Payment/Payment";
 import EmailLoader from "./components/Header/Email/EmailLoader";
-
+import './index.css'
 function App() {
   return (
     <div className="App">

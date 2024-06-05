@@ -197,7 +197,7 @@ const UploadData = () => {
         const data = response.data;
         toast.success(data.message);
         setSuccess(true);
-        resetFields();
+        // resetFields();
       } else {
         toast.error(response.data.message);
       }

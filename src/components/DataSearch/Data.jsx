@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import searchCardPic from "../../assets/images/ellipse-27-bg-Sf3.png";
 import like from "../../assets/images/icons8-facebook-like-4qo.png";
 import download from "../../assets/images/icons8-download-from-the-cloud-dqs.png";
@@ -7,7 +7,11 @@ import pic from "../../assets/images/ellipse-27-bg-mHj.png";
 // import { FaStar } from "react-icons/fa";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { GoStarFill } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import CustomModal from "./Modal";
+import { ResultFilterSelectCheckBoxTabs } from "../DataPreview/DataPreview";
+import { useQuery } from "@tanstack/react-query";
+import { getSearchResults } from "../../api/article.api";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -43,7 +47,10 @@ const extractYearRange = (datas) => {
   return [minYear, maxYear];
 };
 
-const Data = ({ responseData }) => {
+const Data = ({ responseData ,onClickData}) => {
+  let [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm =searchParams.get('searchTerm')
+  
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
   // if (!responseData) {
@@ -72,14 +79,39 @@ const Data = ({ responseData }) => {
     }
     return `${text.substr(0, maxLength)}...`;
   };
+
+  const [open,setOpen] = useState(false)
+  const route = useNavigate();
+  const [currentData,setCurrentData] = useState(null)
+  
+  // useEffect(()=>{
+    
+  // },[])
+  let years = [];
+for (let year = 1960; year <= 2024; year++) {
+  years.push(year.toString());
+
+}
+const [previousD,setPreviousD] = useState(null)
   return (
     <div>
       {responseData.map((data, index) => (
-        <div className="px-2 mb-3">
+        <div className="px-2 mb-3"
+        onClick={e=>{
+          // route
+          if(window.location.pathname==='/search/data/result/'){
+            setOpen(true)
+            setCurrentData(data)
+           
+          }else{
+            route(`/search/data/result/?searchTerm=${searchTerm}`)
+          }
+        }}
+        >
           <div className="search-result-card active">
             <div>
               <Link
-                // to={`/search/data/result/${data._id}`}
+                to={`/search/data/result/?searchTerm=${searchTerm}`}
                 className="search-card-title pb-3"
               >
                 {
@@ -154,13 +186,14 @@ const Data = ({ responseData }) => {
                   N {data.price.toLocaleString()}
                 </div>
               </div> */}
-              <Link
-                // to={`/search/data/result/${data._id}`}
+              <div
+                // to={`/search/data/result/?searchTerm=${searchTerm}`}
+              
                 className="search-card-info py-2"
               >
                 <br />
                 {truncateText(data?.summary,80 )}
-              </Link>
+              </div>
                <div className="search-card-location-content pb-3">
                 {/* <div>{data.periodicity}</div> */}
                 <div>periodicity</div>
@@ -202,6 +235,56 @@ const Data = ({ responseData }) => {
           </div>
         </div>
       ))}
+
+      <CustomModal
+      head={'Select Data Filter'}
+      bodyText={'Here, you can chose what data you want by  year'}
+      open={open}
+      handleClose={()=>{
+        setOpen(!open)
+      }}
+      >
+        <div style={{'padding':'1rem .7rem',}}>
+
+          <h2 style={{'fontSize':'1.4rem','fontWeight':'700','textAlign':'center','padding':'1rem 0'}}>Pick Date To Filter By:</h2>
+          <div style={{'width':'100%','height':'200px','overflowY':'scroll','overflowX':'hidden'}}>
+          <ResultFilterSelectCheckBoxTabs 
+            title={'me'}
+
+            clearTrigger={false}
+            values={
+            //   [
+              // {label:'Hi hello',value:'wdw','id':'1'},
+            //   {label:'Name',value:'how are u','id':'2'}
+            // ]
+            years.map((d,index)=>(
+              {label:d,value:d,'id':`${index}`}
+            ))
+          }
+            onchange={(pickedValues)=>{
+              console.log({pickedValues})
+              setPreviousD(pickedValues)
+
+            }}
+            hideValues={true}
+            />
+           
+          </div>
+                <div className="data-filter-btn mt-4 py-3"
+                
+                onClick={e=>{
+                  if(onClickData){
+                    onClickData({
+                      previous:previousD,
+                      selectedD:currentData,
+                    })
+                    setOpen(false)
+                  }
+                }}
+                >Search Result</div>
+
+        </div>
+      </CustomModal>
     </div>
   );
 };

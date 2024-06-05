@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../DataSearch/DataSearch.css";
 import "../DataSearch/DataFilter.css";
 import "../DataSearch/YearRange.css";
@@ -6,7 +6,7 @@ import "../DataSearch/DataFound.css";
 import "./DataPreview.css";
 import "./DataAside.css";
 import Header from "../Header/Header";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import ".././Header/Header.css";
 import remove_filter_item from "../../assets/images/frame-160-nE5.png";
 // import middleimage from "../../assets/images/undrawfilesearchingduff-1-Hyj.png";
@@ -18,39 +18,28 @@ import TablePreview from "./TablePreview";
 import SearchBox from "./SearchBox";
 import DataCommentSection from "./DataCommentSection";
 import SearchFilter from "./SearchFilter";
+import Data from "../DataSearch/Data";
+import { useQuery } from "@tanstack/react-query";
+import { getSearchResults } from "../../api/article.api";
 // import NotFound from "./NotFound";
 
 const DataPreview = () => {
   // const [searchHistory, setHistory] = useState(false);
   const [cartItem, setCartItem] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("")
+  // const [searchTerm, setSearchTerm] = useState("")
 
-  // const showhistory = () => {
-  //   setHistory(true);
-  // };
+  let [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm =searchParams.get('searchTerm')
+  const {data,isLoading,error,isSuccess} = useQuery({
+    queryFn:()=>getSearchResults(searchTerm),
+    queryKey:['getSearchResults',searchTerm],
+    refetchInterval:false,
+    refetchOnWindowFocus:false,
+    enabled:typeof searchTerm=='string'
+    // 'on'
 
-  // const showFilter = () => {
-  //   setFilterBtn(true);
-  // };
-  // const hideFilter = () => {
-  //   setFilterBtn(false);
-  // };
-
-  // const removeHistory = () => {
-  //   setHistory(false);
-  // };
-
-  // const filterArr = [
-  //   { item: "Senegal" },
-  //   { item: "1990-2020" },
-  //   { item: "NGN" },
-  //   { item: "Nigeria" },
-  //   { item: "Export of good and services" },
-  //   { item: "World Bank" },
-  //   { item: "SNG" },
-  //   { item: "Congo" },
-  //   { item: "International Research institute" },
-  // ];
+  })
+  const [currentData,setCurrentData] = useState(null)
 
   return (
     <div>
@@ -77,7 +66,7 @@ const DataPreview = () => {
             </ol>
           </nav>
         </div>
-        <SearchFilter setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+        {/* <SearchFilter setSearchTerm={setSearchTerm} searchTerm={searchTerm} /> */}
         {/* <NotFound /> */}
       </div>
       {/* <div className="container-fluid pt-4">
@@ -108,20 +97,147 @@ const DataPreview = () => {
                   <p class="showall-text">Show all results</p>
                 </div>
               </div>
-              <DataAside />
+              <div
+              className="px-3 overflow-y-auto scrollbar-design"
+              style={{ maxHeight: "120vh" ,
+              // cursor:'pointer'
+            }}
+              >
+              <Data
+              onClickData={(clickedData)=>{
+                // console.log(clickedData)
+                setCurrentData(clickedData)
+              }}
+              responseData={
+                data?.data_bank?data.data_bank:[]
+              } />
+
+              </div>
+              {/* <DataAside /> */}
             </div>
           </div>
           <div className="col-lg-8 preview-section">
-            <TablePreview cartItem={cartItem} setCartItem={setCartItem} setSearchTerm ={setSearchTerm} searchTerm={searchTerm} />
+              
+            { JSON.stringify(currentData)}
+            {/* <TablePreview cartItem={cartItem} setCartItem={setCartItem} setSearchTerm ={setSearchTerm} searchTerm={searchTerm} /> */}
           </div>
         </div>
       </div>
-      <div className="lower-section">
+      {/* <div className="lower-section">
         <DataCommentSection/>
-      </div>
+      </div> */}
       {/* <DataFound/> */}
     </div>
   );
 };
 
 export default DataPreview;
+
+
+
+
+
+
+export const ResultFilterSelectCheckBoxTabs = ({
+  values,
+  onchange,
+  title,
+  hideValues = false,
+  clearTrigger,
+ }
+//  : ResultFilterSelectCheckBoxTabsProps
+ ) => {
+  const [pickedData, setPickedData] = useState
+  // < ResultFilterSelectCheckBoxTabsProps["values"]>
+    ([]);
+ 
+ 
+  const handlePick = (pickedValue
+  //   : {
+  //   label,
+  //   value,
+  //   id
+  // }
+  ) => {
+    const ids = pickedData.filter((d) => `${d.id}`).map((d) => d.id);
+    let data;
+    if (ids.includes(`${pickedValue.id}`)) {
+      console.log("INcludes");
+      // remove this data
+      data = [...pickedData.filter((d) => d.id !== pickedValue.id)];
+      setPickedData(data);
+    } else {
+      console.log("Not INcludes");
+ 
+ 
+      data = [...pickedData, pickedValue];
+      setPickedData(data);
+    }
+    onchange(data);
+  };
+  const ref = useRef(null);
+  const handleClearData = () => {
+    setPickedData([]);
+    if (ref?.current) {
+      // @ts-ignore
+      const allInput = ref.current?.querySelectorAll("input");
+      console.log({ allInput });
+      allInput?.forEach((d) => {
+        d.checked = false;
+      });
+    }
+  };
+  useEffect(() => {
+    handleClearData();
+  }, [clearTrigger]);
+ 
+ 
+  return (
+        <div
+          className="flex flex-col gap-[1.125rem]"
+          style={{'display':'flex','gap':'1rem','flexWrap':'wrap','alignItems':'center','justifyContent':'center'}}
+          ref={ref}
+        >
+          {/* <h1>Some checkbox thing</h1> */}
+          {values.map((value, index) => (
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor={`${value.id}__${title}__checkBox`}
+                className="flex items-center gap-[0.625rem] custom_checkbox_container"
+              >
+                <input
+                  type={"checkbox"}
+                  value={value.value}
+                  // id={`${value.id}`}
+                  id={`${value.id}__${title}__checkBox`}
+                  onChange={() => {
+                    handlePick(value);
+                  }}
+                  name={title}
+                  className="custom_checkbox"
+                />
+                <span
+                  className="custom_checkmark"
+                  // style={{''}}
+                ></span>
+                <div 
+                // className="text-[] font-[500] text-[1rem]"
+                style={{'fontSize':'.9rem','color':'#1D2433','fontWeight':'500'}}
+                >
+                  {value.label}
+                </div>
+              </label>
+              {hideValues ? (
+                ""
+              ) : (
+                <p className="text-[1rem] font-[500]">{value.value}</p>
+              )}
+            </div>
+          ))}
+        </div>
+  );
+ };
+ 
+ 
+ 
+ 

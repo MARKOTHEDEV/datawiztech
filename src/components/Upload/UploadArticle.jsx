@@ -267,7 +267,7 @@ const error =null
       }
 
   // console.log({remainingPercentage})
-
+// return
     const emptyFields = [];
     const summary = document.getElementById("description").value;
     const price = document.getElementById("price").value;
@@ -393,7 +393,7 @@ const error =null
       if (response && response.status === 200) {
         const data = response.data;
         toast.success(data.message);
-        resetFields();
+        // resetFields();
       } else {
         toast.error(response.data.message);
       }

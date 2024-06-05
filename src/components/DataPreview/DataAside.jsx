@@ -10,8 +10,9 @@ import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { GoStarFill } from "react-icons/go";
 import { Link, useParams } from "react-router-dom";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
+import Data from "../DataSearch/Data";
 
-const DataAside = () => {
+const DataAside = ({dataSearch}) => {
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
   const reload = () => {
@@ -48,73 +49,89 @@ const DataAside = () => {
     return formattedDate.replace(`${day}`, `${day}${daySuffix}`);
   };
 
-  const { data, isLoading, error } = AllData();
+  // const { data, isLoading, error } = AllData();
 
-  if (isLoading) {
-    return <DataLoader />;
-  }
+  // if (isLoading) {
+  //   return <DataLoader />;
+  // }
 
-  if (error) {
-    return (
-      <div
-        className="px-3 overflow-y-auto scrollbar-design"
-        style={{ maxHeight: "120vh" }}
-      >
-        <div className="pb-1">
-          <div className={`search-result-card active`}>
-            <div className="empty-pending-friends">
-              <div className="error-text-section">
-                You have not posted any article
-              </div>
-              <div className="btn btn-outline-success" onClick={reload}>
-                Reload
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div
+  //       className="px-3 overflow-y-auto scrollbar-design"
+  //       style={{ maxHeight: "120vh" }}
+  //     >
+  //       <div className="pb-1">
+  //         <div className={`search-result-card active`}>
+  //           <div className="empty-pending-friends">
+  //             <div className="error-text-section">
+  //               You have not posted any article
+  //             </div>
+  //             <div className="btn btn-outline-success" onClick={reload}>
+  //               Reload
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   // console.log(data.data.data)
-  if (!data || !data.data || !data.data.data) {
-    return (
-      <div
-        className="px-3 overflow-y-auto scrollbar-design"
-        style={{ maxHeight: "120vh" }}
-      >
-        <div className="pb-1">
-          <div className={`search-result-card active`}>
-            <div className="empty-pending-friends">
-              <div className="error-text-section">
-                You have not posted any article
-              </div>
-              <div className="btn btn-outline-success" onClick={reload}>
-                Reload
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (!data || !data.data || !data.data.data) {
+  //   return (
+  //     <div
+  //       className="px-3 overflow-y-auto scrollbar-design"
+  //       style={{ maxHeight: "120vh" }}
+  //     >
+  //       <div className="pb-1">
+  //         <div className={`search-result-card active`}>
+  //           <div className="empty-pending-friends">
+  //             <div className="error-text-section">
+  //               You have not posted any article
+  //             </div>
+  //             <div className="btn btn-outline-success" onClick={reload}>
+  //               Reload
+  //             </div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  const allData = data.data.data;
-  const article = allData.find((item) => item._id === id);
-  //   console.log(article)
-  const dataIndex = allData.findIndex((item) => item._id === id);
-  const slicedData = allData.slice(dataIndex, dataIndex + 10);
+  // const allData = data.data.data;
+  // const article = allData.find((item) => item._id === id);
+  // //   console.log(article)
+  // const dataIndex = allData.findIndex((item) => item._id === id);
+  // const slicedData = allData.slice(dataIndex, dataIndex + 10);
   // console.log(slicedData)
 
   return (
     <div
       className="px-3 overflow-y-auto scrollbar-design"
-      style={{ maxHeight: "120vh" }}
+      style={{ maxHeight: "120vh" ,cursor:'pointer'}}
+      
     >
-      {slicedData.map((data, index) => (
+            <Data responseData={[
+                  {
+                    "indicator_code": "EN.ATM.CO2E.LF.KT",
+                    "author_name": "World Development Indicators",
+                    "author_image": null,
+                    "title": "CO2 emissions from liquid fuel consumption (kt) ",
+                    "period": "Yearly",
+                    "price": 10000,
+                    "summary": "Carbon dioxide emissions from liquid fuel consumption refer mainly to emissions from use of petroleum-derived fuels as an energy source.",
+                    "created_at": "2024-06-05T15:03:32.733474",
+                    "no_likes": 0,
+                    "no_downloads": 0
+                }
+            ]} />
+
+      {/* {[...new Array(3)].map((data, index) => (
         <div className="pb-1">
           <div className={`search-result-card ${index === 0 ? "active" : ""}`}>
-            <div className="search-card-title pb-3">{data.title}</div>
+            <div className="search-card-title pb-3">Hi there boss</div>
             <div class="search-card-profile">
               <div
                 class="dropdown-profile-menu collapse multi-collapse overflow-hidden"
@@ -129,21 +146,17 @@ const DataAside = () => {
                 }}
               >
                 <div class="search-profile-menu py-2">
-                  {data.partnership.map((partner, index) => (
-                    <Link to="#" class="search-dropdown-item" key={partner._id}>
+                  {[...new Array(2)].map((partner, index) => (
+                    <Link to="#" class="search-dropdown-item" key={index}>
                       <div class="search-dropdown-pic">
                         <img
-                          src={
-                            !partner?.partnerId?.image
-                              ? profilepic
-                              : partner?.partnerId?.image
-                          }
+                          src={profilepic }
                           alt=".."
                           className="search-dropdown-pic"
                         />
                       </div>
                       <p class="search-dropdown-name">
-                        {partner?.partnerId?.first_name}{" "}
+                       First Name and Last Name
                         {partner?.partnerId?.last_name}
                       </p>
                     </Link>
@@ -165,55 +178,40 @@ const DataAside = () => {
                     />
                   </div>
                   <div class="search-card-pic-num">
-                    {data.partnership.length}
+                  2
                   </div>
                 </div>
                 <div class="search-card-name">
-                  {data?.authorId?.first_name} {data?.authorId?.last_name}
+              Nwokolo Matthew
                 </div>
               </div>
-              {/* <div class="search-card-amount">N 5,000</div> */}
             </div>
             <div className="search-card-info py-2">
-              {truncateText(data.summary, 145)}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur repudiandae accusantium repellat fugit blanditiis eveniet debitis cupiditate labore tempora nihil?
             </div>
             <div className="search-card-location-content pb-3">
               <div>World Bank</div>
-              {/* <div className="search-card-location"> */}
               <div>1900 - 2023</div>
-              {/* </div> */}
             </div>
             <div class="search-card-icon-part">
               <div class="search-card-icon-container">
-                <div class="search-card-count">{data.likes}</div>
+                <div class="search-card-count">3</div>
                 <img class="search-card-count-icon" src={like} alt=".." />
               </div>
               <div class="search-card-icon-container">
-                <div class="search-card-count">{data.download}</div>
+                <div class="search-card-count">2</div>
                 <img class="search-card-count-icon" src={download} alt=".." />
               </div>
               <div class="search-card-icon-container">
-                <div class="search-card-count">{data.share}</div>
+                <div class="search-card-count">4</div>
                 <img class="search-card-count-icon" src={share} alt=".." />
               </div>
             </div>
-            <div className="d-flex justify-content-between pt-3">
-              <div className="search-card-star">
-                <div>
-                  {[...Array(Math.floor(data.rating))].map((star, index) => (
-                    <GoStarFill key={index} size={20} color=" #4eb473" />
-                  ))}
-                  {data.rating % 1 !== 0 && (
-                    <FaRegStarHalfStroke size={20} color="#4eb473" />
-                  )}
-                </div>
-                <div className="search-card-rate">{data.rating} out of 5</div>
-              </div>
-              <div className="search-card-date">{formatDate(data.date)}</div>
-            </div>
+    
           </div>
         </div>
-      ))}
+      ))} */}
+      
     </div>
   );
 };
