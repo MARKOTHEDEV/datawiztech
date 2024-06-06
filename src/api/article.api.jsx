@@ -26,3 +26,9 @@ export const getSearchResults =async (search)=>{
     const response = await api.get(`/search?keyword=${search}`);
     return response.data
 }
+
+export const getDataBankMarkAPi = async(data)=>{
+    const response = await api.post(`/data/databank`,data);
+    return response.data
+
+}

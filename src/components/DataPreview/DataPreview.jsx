@@ -19,8 +19,9 @@ import SearchBox from "./SearchBox";
 import DataCommentSection from "./DataCommentSection";
 import SearchFilter from "./SearchFilter";
 import Data from "../DataSearch/Data";
-import { useQuery } from "@tanstack/react-query";
-import { getSearchResults } from "../../api/article.api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {  getDataBankMarkAPi, getSearchResults } from "../../api/article.api";
+import { handleErrorPopUp } from "../../api/api";
 // import NotFound from "./NotFound";
 
 const DataPreview = () => {
@@ -40,6 +41,22 @@ const DataPreview = () => {
 
   })
   const [currentData,setCurrentData] = useState(null)
+
+  // 
+
+  const 
+  {
+    // isLoading:creating,
+    mutate} = useMutation({
+    mutationFn:getDataBankMarkAPi,
+    'onSuccess':(data)=>{
+   console.log({'dataBankResult':data})
+   
+    },
+    onError:(error)=>{
+      handleErrorPopUp(error)
+    }
+  })
 
   return (
     <div>
@@ -107,6 +124,14 @@ const DataPreview = () => {
               onClickData={(clickedData)=>{
                 // console.log(clickedData)
                 setCurrentData(clickedData)
+
+                // mutate({
+                //   year_list:[],
+                //   start_year:0,
+                //   end_year:0,
+                //   countries:[],
+                //   indicator_code:clickedData.selectedD.indicator_code
+                // })
               }}
               responseData={
                 data?.data_bank?data.data_bank:[]
