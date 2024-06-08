@@ -22,6 +22,7 @@ import Data from "../DataSearch/Data";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {  getDataBankMarkAPi, getSearchResults } from "../../api/article.api";
 import { handleErrorPopUp } from "../../api/api";
+import DataLoader from "../../hooks/DataLoader/DataLoader";
 // import NotFound from "./NotFound";
 
 const DataPreview = () => {
@@ -43,21 +44,34 @@ const DataPreview = () => {
   const [currentData,setCurrentData] = useState(null)
 
   // 
-
+  const [loading,setLoading] = useState(false)
   const 
   {
     // isLoading:creating,
-    mutate} = useMutation({
+    mutate,data:dataTable,} = useMutation({
     mutationFn:getDataBankMarkAPi,
     'onSuccess':(data)=>{
+      setLoading(false)
    console.log({'dataBankResult':data})
    
     },
     onError:(error)=>{
+      setLoading(false)
+
       handleErrorPopUp(error)
     }
   })
 
+  if(isLoading||loading){
+    return <DataLoader/>
+  }
+
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return `${text.substr(0, maxLength)}...`;
+  };
   return (
     <div>
       <Header active={"home"}/>
@@ -124,14 +138,21 @@ const DataPreview = () => {
               onClickData={(clickedData)=>{
                 // console.log(clickedData)
                 setCurrentData(clickedData)
-
-                // mutate({
-                //   year_list:[],
+                // console.log({
+                //   year_list:clickedData.previous.map(d=>parseInt(d.value)),
                 //   start_year:0,
                 //   end_year:0,
                 //   countries:[],
                 //   indicator_code:clickedData.selectedD.indicator_code
                 // })
+                setLoading(true)
+                mutate({
+                  year_list:clickedData.yearSelect.map(d=>parseInt(d.value)),
+                  start_year:0,
+                  end_year:0,
+                  countries:clickedData.countryName.map(d=>d.value),
+                  indicator_code:clickedData.selectedD.indicator_code
+                })
               }}
               responseData={
                 data?.data_bank?data.data_bank:[]
@@ -143,7 +164,55 @@ const DataPreview = () => {
           </div>
           <div className="col-lg-8 preview-section">
               
-            { JSON.stringify(currentData)}
+
+            <div className="row mt-4">
+      <div className="col-lg-12">
+        <div className="table-content revenuetab overflow-x-auto">
+          <div className={`table-my-revenue`}>
+            <div class="table-headings table-row">
+              <div class="table-heading-item table-col-4">Indicator Code</div>
+              <div class="table-heading-item table-col-2">Country Name</div>
+              <div class="table-heading-item table-col-3">Price Per Year</div>
+              <div class="table-heading-item table-col-3">Periodicity</div>
+              <div class="table-heading-item table-col-3">Data Short Description</div>
+              <div class="table-heading-item table-col-3">Data Long Description</div>
+            </div>
+            <div className="table-body-container">
+              {dataTable?.map((d, index) => (
+                <div class="table-body table-row">
+                  <div class="table-body-items table-col-4">
+                   {d.indicator_code}
+                  </div>
+                  <div class="table-body-items table-col-2">
+                   {d.country_name}
+                  </div>
+                  <div class="table-body-items table-col-3">
+                   {d.price_per_year}
+                  </div>
+             
+                
+                  <div class="table-body-items table-col-3 ">
+                   {
+                   truncateText(d.periodicity,20)
+                   }
+                  </div>
+                  <div class="table-body-items table-col-3">
+                   {/* {d.data_short_description} */}
+                 {  truncateText(d.data_short_description,25)}
+
+                  </div>
+                  <div class="table-body-items table-col-3">
+                   {/* {d.data_long_description} */}
+                 {  truncateText(d.data_long_description,25)}
+
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
             {/* <TablePreview cartItem={cartItem} setCartItem={setCartItem} setSearchTerm ={setSearchTerm} searchTerm={searchTerm} /> */}
           </div>
         </div>
@@ -169,6 +238,7 @@ export const ResultFilterSelectCheckBoxTabs = ({
   title,
   hideValues = false,
   clearTrigger,
+  gridTemplateColumns='1fr 1fr'
  }
 //  : ResultFilterSelectCheckBoxTabsProps
  ) => {
@@ -220,7 +290,10 @@ export const ResultFilterSelectCheckBoxTabs = ({
   return (
         <div
           className="flex flex-col gap-[1.125rem]"
-          style={{'display':'flex','gap':'1rem','flexWrap':'wrap','alignItems':'center','justifyContent':'center'}}
+          style={{'display':'grid','gap':'1rem',
+          gridTemplateColumns,
+          // 'flexWrap':'wrap',
+          'alignItems':'center','justifyContent':'center'}}
           ref={ref}
         >
           {/* <h1>Some checkbox thing</h1> */}

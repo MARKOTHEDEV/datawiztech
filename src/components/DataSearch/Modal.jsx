@@ -1,7 +1,7 @@
 
 import removeRange from '../../assets/images/group-7-mD3.png';
 
-const CustomModal =({open,children,head,bodyText=null,handleClose=()=>{}})=>{
+const CustomModal =({open,children,head,bodyText=null,handleClose=()=>{},modalStyle={}})=>{
     return(
         <div className={`sort-container-overlay ${open ? "open" : ""}`}>
 
@@ -9,11 +9,14 @@ const CustomModal =({open,children,head,bodyText=null,handleClose=()=>{}})=>{
       <div className="">
         <div className="row ">
           <div className="col-lg-4"></div>
-          <div className="col-lg-4">
+          <div
+          //  className="col-lg-4"
+          style={modalStyle}
+          >
             <div className="filter-content-scroll position-relative">
               <div className="filter-container">
                 <div class="filter-header">
-                  <div className="d-flex justify-content-end ">
+                  <div className="" style={{'display':'flex',justifyContent:'center'}}>
                     <p class="filter-heading">{head}</p>
                     <p className="filter-cancel-container" onClick={handleClose}>
                       <img
