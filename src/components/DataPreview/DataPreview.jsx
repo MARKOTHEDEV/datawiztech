@@ -29,7 +29,7 @@ const DataPreview = () => {
   // const [searchHistory, setHistory] = useState(false);
   const [cartItem, setCartItem] = useState([]);
   // const [searchTerm, setSearchTerm] = useState("")
-
+  const [dynamicYearsKeys,setDynamicYearsKeys] = useState([])
   let [searchParams, setSearchParams] = useSearchParams();
   const searchTerm =searchParams.get('searchTerm')
   const {data,isLoading,error,isSuccess} = useQuery({
@@ -53,6 +53,15 @@ const DataPreview = () => {
     'onSuccess':(data)=>{
       setLoading(false)
    console.log({'dataBankResult':data})
+  if(data?.length !==0){
+    setDynamicYearsKeys(Object.keys(data[0]).filter(d=>{
+      if(isNaN(parseInt(d))){
+        return false
+      }else{
+        return true
+      }
+    }))
+  }
    
     },
     onError:(error)=>{
@@ -74,6 +83,8 @@ const DataPreview = () => {
   };
   return (
     <div>
+          {JSON.stringify(dynamicYearsKeys)}
+
       <Header active={"home"}/>
       <div className="container">
         <div>
@@ -176,6 +187,11 @@ const DataPreview = () => {
               <div class="table-heading-item table-col-3">Periodicity</div>
               <div class="table-heading-item table-col-3">Data Short Description</div>
               <div class="table-heading-item table-col-3">Data Long Description</div>
+              {
+                dynamicYearsKeys?.map(d=>(
+              <div class="table-heading-item table-col-3">{d}</div>
+                ))
+              }
             </div>
             <div className="table-body-container">
               {dataTable?.map((d, index) => (
@@ -206,6 +222,17 @@ const DataPreview = () => {
                  {  truncateText(d.data_long_description,25)}
 
                   </div>
+                   {
+                    dynamicYearsKeys?.map((key,index)=>(
+                    <div
+                    key={index}
+                    class="table-body-items table-col-3"
+                    > 
+                    {d[key]}
+                  </div>
+                    ))
+                   }
+                  
                 </div>
               ))}
             </div>
