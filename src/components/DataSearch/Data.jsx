@@ -324,8 +324,8 @@ const ModalNav =()=>{
       }
       if(onClickData){
         onClickData({
-          countryName,
-          yearSelect,
+          // countryName,
+          // yearSelect,
           selectedD:currentData,
         })
         setOpen(false)
@@ -343,9 +343,12 @@ const ModalNav =()=>{
         onClick={e=>{
           // route
           if(window.location.pathname==='/search/data/result/'){
-            setOpen(true)
-            setCurrentData(data)
-           
+            // setOpen(true)
+            
+            // setCurrentData(data)
+            onClickData({
+              selectedD:data
+            })
           }else{
             route(`/search/data/result/?searchTerm=${searchTerm}`)
           }

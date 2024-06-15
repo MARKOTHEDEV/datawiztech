@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataFilter from "./DataFilter";
 import sort from "../../assets/images/icons8-slider-100-1-qkV.png";
 import history from "../../assets/images/icon-color-tY1.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import SearchTerms from "./SearchTerms";
@@ -12,39 +12,25 @@ const SearchBar = () => {
   const [searchHistory, setHistory] = useState(false);
   const [filterBtn, setFilterBtn] = useState(false);
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const [searchTerm, setSearchTerm] = useState(
-    searchParams.get("searchTerm") || ""
-  );
+  // const searchParams = new URLSearchParams(location.search);
+ 
   const [url, setUrl] = useState(false);
   const Navigate = useNavigate();
   const [searchLoading, setSearchLoading] = useState(false);
 
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("searchTerm") || ""
+  );
   const handleSesearchTermarch = async (e) => {
     e.preventDefault();
     if (!searchTerm || searchTerm.trim() === "") {
       toast.error("search field is empty");
       return;
     }
-    setSearchLoading(true);
-    try {
-      const response = await axios.post("https://datawiztechapi.onrender.com/api/v1/search", {
-        search: searchTerm,
-      });
-      if (response.status === 200) {
-        toast.success(response.data.message);
-        setSearchTerm(searchTerm);
-        Navigate(`/search?searchTerm=${searchTerm}`);
-        window.location.reload();
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (err) {
-      toast.error("Error occur !");
-      console.log("Error uploading article:", err);
-    } finally {
-      setSearchLoading(false);
-    }
+    setSearchParams({'searchTerm':searchTerm})
+   
   };
 
   const chooseSearch = (terms) => {
@@ -106,11 +92,11 @@ const SearchBar = () => {
           </div>
         </div>
         {/* FetchSearchTerms */}
-        <SearchTerms
+        {/* <SearchTerms
           history={history}
           searchHistory={searchHistory}
           chooseSearch={chooseSearch}
-        />
+        /> */}
       </div>
       {url && (
         <div className="sort-container" onClick={showFilter}>

@@ -23,12 +23,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {  getDataBankMarkAPi, getSearchResults } from "../../api/article.api";
 import { handleErrorPopUp } from "../../api/api";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
+import toast from "react-hot-toast";
 // import NotFound from "./NotFound";
 
 const DataPreview = () => {
   // const [searchHistory, setHistory] = useState(false);
   const [cartItem, setCartItem] = useState([]);
-  // const [searchTerm, setSearchTerm] = useState("")
+  // const [searchTermState, setSearchTerm] = useState("")
   const [dynamicYearsKeys,setDynamicYearsKeys] = useState([])
   let [searchParams, setSearchParams] = useSearchParams();
   const searchTerm =searchParams.get('searchTerm')
@@ -83,7 +84,6 @@ const DataPreview = () => {
   };
   return (
     <div>
-          {JSON.stringify(dynamicYearsKeys)}
 
       <Header active={"home"}/>
       <div className="container">
@@ -108,7 +108,7 @@ const DataPreview = () => {
             </ol>
           </nav>
         </div>
-        {/* <SearchFilter setSearchTerm={setSearchTerm} searchTerm={searchTerm} /> */}
+        <SearchFilter setSearchTerm={setSearchParams} searchTerm={searchTerm} />
         {/* <NotFound /> */}
       </div>
       {/* <div className="container-fluid pt-4">
@@ -148,7 +148,7 @@ const DataPreview = () => {
               <Data
               onClickData={(clickedData)=>{
                 // console.log(clickedData)
-                setCurrentData(clickedData)
+                // setCurrentData(clickedData)
                 // console.log({
                 //   year_list:clickedData.previous.map(d=>parseInt(d.value)),
                 //   start_year:0,
@@ -156,12 +156,15 @@ const DataPreview = () => {
                 //   countries:[],
                 //   indicator_code:clickedData.selectedD.indicator_code
                 // })
+            
+              let  dataFilter = JSON.parse(localStorage.getItem('data-filter'))
+                  console.log({dataFilter,'selected':clickedData.selectedD.indicator_code})
                 setLoading(true)
                 mutate({
-                  year_list:clickedData.yearSelect.map(d=>parseInt(d.value)),
+                  year_list:dataFilter.yearSelect.map(d=>parseInt(d.value)),
                   start_year:0,
                   end_year:0,
-                  countries:clickedData.countryName.map(d=>d.value),
+                  countries:dataFilter.countryName.map(d=>d.value),
                   indicator_code:clickedData.selectedD.indicator_code
                 })
               }}
