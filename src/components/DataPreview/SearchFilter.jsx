@@ -367,7 +367,7 @@ for (let year = 1960; year <= 2024; year++) {
             onClick={()=>{
               setSelectedModalNav('country_name')
             }}
-            >Counry Name</p>
+            >Country Name</p>
             <p className="markomodalnav_link"
             style={{'color':selectedModalNav=='year_select'?'#4EB573':''}}
             onClick={()=>{
