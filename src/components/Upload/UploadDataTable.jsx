@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import "./UploadDataTable.css";
 import Header from "../Header/Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
 import DeleteData from "./DeleteData";
 import SuccessUpload from "./SuccessUpload";
@@ -12,6 +12,9 @@ import data from "./countries";
 import ActionLoader from "../Loader/ActionLoader";
 import { UserAuth } from "../../useContext/useContext";
 import { useFieldArray, useForm } from "react-hook-form";
+import { decodeUser } from "../../api/api";
+import { validateAndSaveDataApi } from "../../api/data.api";
+import { useMutation } from "@tanstack/react-query";
 
 // const TruncatedCell = ({ value, maxWords }) => {
 //   if (!value) return null;
@@ -38,12 +41,13 @@ const UploadDataTable = ({
   dataTable:data
   
 }) => {
-  const { currentUser, token } = UserAuth();
+
 
   // const [content, setContent] = useState([...fileContent]);
   const [deleteData, setDeleteData] = useState(false);
   const [postData, setPostData] = useState(false);
-
+  const [checkBox,setCheckBox] = useState({terms:false,approval:false})
+  const [loading,setIsloading] = useState(false)
 
 
   const {
@@ -53,17 +57,50 @@ const UploadDataTable = ({
     control,
     setError,
     setValue,
+    getValues,
+    clearErrors,
     formState: { errors },
   } = useForm({defaultValues:{tableList:[]}});
   const fieldsData = watch();
   const [heading,setHeaders] = useState([])
   const { fields, append, } = useFieldArray({control,name:'tableList'})
+  const { token, currentUser ,} = UserAuth();
+  const route = useNavigate()
 
 
+  const {mutate} = useMutation({
+    mutationFn:validateAndSaveDataApi,
+    onSuccess:(resp)=>{
+    setIsloading(false)
+    clearErrors('tableList')
+    toast.success('Data Uploaded Successfully')
+    route('/upload')
+      // console.log({resp})
+    },
+    onError:(resp)=>{
+    clearErrors('tableList')
+    setIsloading(false)
 
+      // console.log({RespError:resp})
+
+      if(resp.response.status){
+        const dataPositions = Object.keys(resp.response.data);
+
+        dataPositions.map((position,index)=>{
+          let errorKeys = Object.keys(resp.response.data[position])
+          errorKeys.map(errorKey=>{
+              
+              setError(`tableList.${position}.${errorKey}`,{message:errorKey})
+          })
+      })
+
+      }
+    }
+  })
 
 
   useEffect(()=>{
+    // console.log({user:decodeUser(token)})
     data.data_by_country.map((d,index)=>{
         const eachDataKeys= Object.keys(d)
         console.log(eachDataKeys)
@@ -83,6 +120,22 @@ const UploadDataTable = ({
         })
     })
   },[])
+
+
+  const validateAll =()=>{
+    if(!(checkBox.approval&&checkBox.terms)){
+      toast.success('Please check the terms and approval boxes')
+      return 
+    }
+    const values = getValues();
+    setIsloading(true)
+
+    const user_id = decodeUser(token).user_id
+    mutate({
+      data:values.tableList,
+      user_id
+    })
+  }
   return (
     <div>
 <div>
@@ -138,9 +191,9 @@ const UploadDataTable = ({
             <input
               type="checkbox"
               className="data-approval-checkbox"
-              // checked={checkBox.approval}
+              checked={checkBox.approval}
               onChange={(e) =>{
-                // setCheckBox({ ...checkBox, approval: e.target.checked })
+                setCheckBox({ ...checkBox, approval: e.target.checked })
               }}
             />
           </div>
@@ -155,10 +208,10 @@ const UploadDataTable = ({
                 <input
                   type="checkbox"
                   className="data-approval-checkbox"
-                  // checked={checkBox.terms}
-                  // onChange={(e) =>
-                  //   setCheckBox({ ...checkBox, terms: e.target.checked })
-                  // }
+                  checked={checkBox.terms}
+                  onChange={(e) =>
+                    setCheckBox({ ...checkBox, terms: e.target.checked })
+                  }
                 />
               </div>
               <div className="data-approval-checkbox-text">
@@ -168,23 +221,23 @@ const UploadDataTable = ({
                 </span>
               </div>
             </div>
-            <div class={`upload-table-validate my-5 `} 
+            {/* <div class={`upload-table-validate my-5 `} 
             // onClick={showDelete}
             >
               Delete Data
-            </div>
+            </div> */}
             <div
               class={`upload-table-validate my-5 ${
-                false
+                loading
                   ? "d-flex align-items-center justify-content-center"
                   : "text-center"
               }`}
-              // onClick={validateAll}
+              onClick={validateAll}
               style={{
                 // cursor: validateData ? "not-allowed" : "pointer",
               }}
             >
-              {false ? <ActionLoader /> : "Validate Data"}
+              {loading ? <ActionLoader /> : "Validate Data"}
             </div>
           </div>
         </div>

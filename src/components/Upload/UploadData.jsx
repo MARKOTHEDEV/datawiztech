@@ -14,10 +14,10 @@ import SuccessUpload from "./SuccessUpload";
 import DeleteData from "./DeleteData";
 import CustomControlsVideoPlayer from "./VideoPlayer";
 import toast from "react-hot-toast";
-import yearlyTemplate from "../../assets/templates/yearlyDWT.xlsx";
-import quarterlyTemplate from "../../assets/templates/quarterlyDWT.xlsx";
-import monthlyTemplate from "../../assets/templates/monthlyDWT.xlsx";
-import dailyTemplate from "../../assets/templates/dailyDWT.xlsx";
+import yearlyTemplate from "../../assets/templates/Yearly DWT Template.xlsx";
+import quarterlyTemplate from "../../assets/templates/Quarterly DWT Template.xlsx";
+import monthlyTemplate from "../../assets/templates/Monthly DWT Tempate.xlsx";
+import dailyTemplate from "../../assets/templates/Daily DWT Template.xlsx";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
 import FetchFriends from "../../hooks/Friends";
 import UserFriends from "../../hooks/UserFriends";
@@ -310,16 +310,16 @@ const UploadData = () => {
       let filename;
       if (templatePeriod === "Yearly") {
         url = yearlyTemplate;
-        filename = "DWTYearlyTemplate.xlsx";
+        filename = "Yearly DWT Template.xlsx";
       } else if (templatePeriod === "Quarterly") {
         url = quarterlyTemplate;
-        filename = "DWTQuarterlyTemplate.xlsx";
+        filename = "Quarterly DWT Template.xlsx";
       } else if (templatePeriod === "Monthly") {
         url = monthlyTemplate;
-        filename = "DWTMonthlyTemplate.xlsx";
+        filename = "Monthly DWT Tempate.xlsx";
       } else {
         url = dailyTemplate;
-        filename = "DWTDailyTemplate.xlsx";
+        filename = "Daily DWT Template.xlsx";
       }
 
       const a = document.createElement("a");
