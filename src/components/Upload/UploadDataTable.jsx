@@ -146,7 +146,7 @@ const UploadDataTable = ({
                 <table >
   <tr>
     {
-        heading.map(d=><th style={{'padding':'1rem'}}>{d}</th>)
+        heading.map(d=><th style={{'padding':'1rem'}}>{d.replaceAll('_',' ')}</th>)
     }
   </tr>
   {
@@ -241,7 +241,7 @@ const UploadDataTable = ({
             </div>
           </div>
         </div>
-        <div className="row mt-4 py-4">
+        {/* <div className="row mt-4 py-4">
           <div className="col-lg-3"></div>
           <div className="col-lg-6">
             <div
@@ -259,7 +259,7 @@ const UploadDataTable = ({
             </div>
           </div>
           <div className="col-lg-3"></div>
-        </div>
+        </div> */}
       </div>
       {/* {deleteData && <DeleteData showDelete={showDelete} />}
       {success && <SuccessUpload showDelete={showDelete} />} */}
