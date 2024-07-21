@@ -31,11 +31,13 @@ import SubCorp from "./components/SubCorperate/SubCorp";
 import Payment from "./components/Payment/Payment";
 import EmailLoader from "./components/Header/Email/EmailLoader";
 import './index.css'
+import TestApp from "./TestApp";
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route exact path="/test" element={<TestApp />} />
         <Route exact path="/search" element={<DataSearch />} />
         <Route exact path="/inquiry" element={<Inquiry />} />
         <Route exact path="/forbidden" element={<Forbidden />} />

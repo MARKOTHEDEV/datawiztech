@@ -100,7 +100,7 @@ proceed,
               </div>
             </div>
           </div>
-          <div className="input__wrapper my-3">
+          {/* <div className="input__wrapper my-3">
             <input
               type="text"
               id="title"
@@ -112,7 +112,7 @@ proceed,
             <label htmlFor="title" className="input__label pass-label">
               Title
             </label>
-          </div>
+          </div> */}
           <div className="mt-3">
             <div
               className="upload-data-container"
@@ -145,7 +145,9 @@ proceed,
               onChange={handleFileUpload}
             />
           </div>
-          <div className="input__wrapper emailinputcontainer my-4">
+
+
+          {/* <div className="input__wrapper emailinputcontainer my-4">
             <select
               className="input__field email-input"
               id="periodicity"
@@ -163,8 +165,8 @@ proceed,
             <label for="periodicity" className="input__label email-label">
               Period type
             </label>
-          </div>
-          <div className="input__wrapper mt-3">
+          </div> */}
+          {/* <div className="input__wrapper mt-3">
             <input
               type="number"
               id="price"
@@ -397,7 +399,7 @@ proceed,
           </div>
           <div className="update-article mt-3" onClick={toggleDescription}>
             Add Description
-          </div>
+          </div> */}
         </div>
         <div className="col-lg-1"></div>
         <div className="col-lg-5">

@@ -26,6 +26,8 @@ import ActionLoader from "../Loader/ActionLoader";
 import * as xlsx from "xlsx";
 import UploadDataBody from "./UploadDataBody";
 import UploadDataTable from "./UploadDataTable";
+import { useMutation } from "@tanstack/react-query";
+import { uploadDataApi } from "../../api/data.api";
 
 const UploadData = () => {
   const Navigate = useNavigate();
@@ -61,11 +63,11 @@ const UploadData = () => {
   const [you, setYou] = useState(100);
   const [validate, setValidate] = useState({});
   const [errorOut, setErrOut] = useState([]);
-  const { data, isLoading, error } = UserFriends();
+  const { data, error } = UserFriends();
 
-  if (isLoading) {
-    return <DataLoader />;
-  }
+  // if (isLoading) {
+  //   return <DataLoader />;
+  // }
 
   if (error) {
   }
@@ -238,52 +240,68 @@ const UploadData = () => {
     setDataTable(false);
     seUploadForm(true);
   };
-
+  const {mutate,} = useMutation({
+    mutationFn:uploadDataApi,
+    onSuccess:(data)=>{
+      setUploadLoader(false)
+      // on Upload set data to the json that was returned
+      console.log({UploadedDataSuccess:data})
+      setDataTable(data)
+    },
+    onError:(err)=>{
+      setUploadLoader(false)
+      toast.error('Something went wrong please upload a correct file')
+    }
+  })
   const proceed = async () => {
     setUploadLoader(true);
     const emptyFields = [];
-    if (!title) {
-      emptyFields.push("title");
-    }
-    if (!period) {
-      emptyFields.push("Period");
-    }
+    // if (!title) {
+    //   emptyFields.push("title");
+    // }
+    // if (!period) {
+    //   emptyFields.push("Period");
+    // }
     if (!dataFile) {
       emptyFields.push("file");
     }
 
-    if (!description) {
-      emptyFields.push("description");
-    }
-    if (!price) {
-      emptyFields.push("price");
-    }
+    // if (!description) {
+    //   emptyFields.push("description");
+    // }
+    // if (!price) {
+    //   emptyFields.push("price");
+    // }
 
-    if (keywords.length === 0) {
-      emptyFields.push("keywords");
-    }
-    if (
-      coAuthors.some(
-        (coAuthor) =>
-          !coAuthor.partnerId || !coAuthor.role || !coAuthor.percentage
-      )
-    ) {
-      emptyFields.push("partnership");
-    }
+    // if (keywords.length === 0) {
+    //   emptyFields.push("keywords");
+    // }
+    // if (
+    //   coAuthors.some(
+    //     (coAuthor) =>
+    //       !coAuthor.partnerId || !coAuthor.role || !coAuthor.percentage
+    //   )
+    // ) {
+    //   emptyFields.push("partnership");
+    // }
 
     if (emptyFields.length > 0) {
       toast.error(`This field(s) ${emptyFields.join(", ")} can not be empty`);
       setUploadLoader(false);
       return;
     }
+    console.log({dataFile})
+    const form = new FormData();
+    form.append('excel_file',dataFile)
+    setUploadLoader(true)
+    mutate({form})
+    // const validateData = await processExcel(fileContent);
+    // setValidate(validateData);
 
-    const validateData = await processExcel(fileContent);
-    setValidate(validateData);
-
-    setTimeout(() => {
-      setUploadLoader(false);
-      toggleDatatable();
-    }, 2000);
+    // setTimeout(() => {
+    //   setUploadLoader(false);
+    //   toggleDatatable();
+    // }, 2000);
   };
 
   const handleDownload = async (templatePeriod) => {
@@ -431,11 +449,19 @@ const UploadData = () => {
     }
   };
 
-  const friends = data.data.account.friends;
+  // const friends = data.data.account.friends;
+  const friends=[]
 
   return (
     <div>
       <Header active={active} />
+      
+      {
+      dataTable?
+<UploadDataTable
+dataTable={dataTable}
+        /> :
+        <div>
       {uploadForm && (
         <UploadDataBody
           handleCoAuthorChange={handleCoAuthorChange}
@@ -476,33 +502,20 @@ const UploadData = () => {
           friends={friends}
         />
       )}
-      {descriptionBox && (
+        </div>
+    }
+     
+
+      {/* {descriptionBox && (
         <Description
           setDescriptionBox={setDescriptionBox}
           setDescription={setDescription}
           description={description}
           toggleDescription={toggleDescription}
         />
-      )}
-      {dataTable && (
-        <UploadDataTable
-          success={success}
-          validate={validate}
-          fileContent={fileContent}
-          period={period}
-          // handleUpload={handleUpload}
-          setSuccess={setSuccess}
-          toggleDataForm={toggleDataForm}
-          title={title}
-          dataFile={dataFile}
-          description={description}
-          price={price}
-          keywords={price}
-          coAuthors={coAuthors}
-          resetFields={resetFields}
-          you={you}
-        />
-      )}
+      )} */}
+
+       {/* */}
     </div>
   );
 };
