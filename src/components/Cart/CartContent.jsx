@@ -61,7 +61,9 @@ const CartContent = ({
   // const carts = data.data.carts;
 
   // console.log(carts)
-  const carts =[];
+  const carts =[
+    
+  ];
   return (
     <div>
       {carts.map((item, index) => (

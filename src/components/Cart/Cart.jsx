@@ -99,7 +99,7 @@ const Cart = () => {
         </div>
         <div className="cart-container container-fluid">
           <div className="cart-content">
-            <CartContent
+            {/* <CartContent
               toggleDropDown={toggleDropDown}
               MdOutlineArrowRight={MdOutlineArrowRight}
               dropdowns={dropdowns}
@@ -107,7 +107,7 @@ const Cart = () => {
               showRemoveData={showRemoveData}
               currency={currency}
               showRemove={showRemove}
-            />
+            /> */}
           </div>
         </div>
       </div>
@@ -133,3 +133,13 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
+
+const ArticleCart = ()=>{
+  return (
+    <div>
+      
+    </div>
+  )
+}
