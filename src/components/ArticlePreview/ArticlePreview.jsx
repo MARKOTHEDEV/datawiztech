@@ -7,7 +7,7 @@ import "./ArticleMain.css";
 import cart_icon from "../../assets/images/addcart.png";
 // import "./DataAside.css";
 import Header from "../Header/Header";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import ".././Header/Header.css";
 import remove_filter_item from "../../assets/images/frame-160-nE5.png";
 import whatsapp from "../../assets/images/icons8-whatsapp-2-xwj.png";
@@ -32,14 +32,17 @@ import toast from "react-hot-toast";
 import { UserAuth } from "../../useContext/useContext";
 import ActionLoader from "../Loader/ActionLoader";
 import FetchAllArticles from "../../hooks/AllArticles";
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getArticleApi } from "../../api/article.api";
+import { decodeUser } from "../../api/api";
+import { addAriticleToCart } from "../../api/cart.api";
 // import NotFound from "./NotFound";
 
 const ArticlePreview = () => {
   const reload = () => {
     window.location.reload();
   };
+  const route = useNavigate()
   const { token } = UserAuth();
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
@@ -50,7 +53,7 @@ const ArticlePreview = () => {
   const [article,setArticle] = useState()
   let [searchParams, setSearchParams] = useSearchParams();
 
-
+  const client  = useQueryClient()
   const {data,isLoading,error,isSuccess} = useQuery({
     queryFn:getArticleApi,
     queryKey:'getArticleApi',
@@ -98,6 +101,22 @@ const ArticlePreview = () => {
   //   { rate: "1 star", rating: "25%" },
   // ];
 
+  const { mutate } = useMutation({
+    mutationFn:addAriticleToCart,
+    onSuccess:(resp)=>{
+      setCartLoading(false)
+      // console.log({cartResp:resp})
+      toast.success('Article added to cart succesfully')
+      client.invalidateQueries('getArticleCart')
+      route('/cart')
+    },
+    onError:(err)=>{
+      // console.log({cartErr:err})
+      setCartLoading(false)
+      toast.error(err?.response?.data?.detail)
+    }
+  })
+
   const addtocart = async () => {
     try {
       setCartLoading(true);
@@ -131,6 +150,20 @@ const ArticlePreview = () => {
       setCartLoading(false);
     }
   };
+
+
+  // const {} = 
+  const handleAddToCart =()=>{
+    const user_id = decodeUser(token).user_id
+    setCartLoading(true)
+    mutate({
+      user_id,
+      article_id:searchParams.get('id')
+    })
+
+  
+
+  }
 
 
   useEffect(()=>{
@@ -212,7 +245,8 @@ const ArticlePreview = () => {
                     ? "d-flex justify-content-center align-items-center"
                     : ""
                 }`}
-                onClick={addtocart}
+                onClick={handleAddToCart}
+                // onClick={addtocart}
               >
                 {cartLoading ? (
                   <ActionLoader />
