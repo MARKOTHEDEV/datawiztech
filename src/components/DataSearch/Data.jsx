@@ -7,7 +7,7 @@ import pic from "../../assets/images/ellipse-27-bg-mHj.png";
 // import { FaStar } from "react-icons/fa";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { GoStarFill } from "react-icons/go";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import CustomModal from "./Modal";
 import { ResultFilterSelectCheckBoxTabs } from "../DataPreview/DataPreview";
 import { useQuery } from "@tanstack/react-query";
@@ -282,6 +282,12 @@ const Data = ({ responseData ,onClickData}) => {
   };
 
   const [open,setOpen] = useState(false)
+  const path = useLocation()
+  useEffect(()=>{
+    if(path.pathname.includes('result')){
+      setOpen(true)
+    }
+  },[])
   const route = useNavigate();
   const [currentData,setCurrentData] = useState(null)
   // useEffect(()=>{

@@ -33,7 +33,7 @@ const NavigationIcons = ({ toggleSignupForm, toggleLoginForm }) => {
             </Link>
             <Link to="/cart">
               <div className="cart-btn nav-icon-container">
-                {/* <UpdateCart cartIcon={cartIcon} /> */}
+                <UpdateCart cartIcon={cartIcon} />
               </div>
             </Link>
             <UpdateUser currentUser={currentUser} profilepic={profilepic} />

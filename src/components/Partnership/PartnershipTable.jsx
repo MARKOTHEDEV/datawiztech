@@ -19,46 +19,47 @@ const PartnershipTable = () => {
     setActiveIndex(index === activeIndex ? -1 : index);
   };
 
-  const { data, isLoading, error } = FetchPartnerships();
+  // const { data, isLoading, error } = FetchPartnerships();
 
-  if (isLoading) {
-    return (
-      <div className="partnership-drop-content mt-3">
-        <DataLoader />
-      </div>
-    );
-  }
-  if (error || !data || !data.data) {
-    return (
-      <div className="partnership-drop-content mt-3">
-        <div className="empty-pending-friends">
-          <div className="error-text-section">
-            You have no partnership as the author
-          </div>
-          <div className="btn btn-outline-success" onClick={reload}>
-            Reload
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="partnership-drop-content mt-3">
+  //       <DataLoader />
+  //     </div>
+  //   );
+  // }
+  // if (error || !data || !data.data) {
+  //   return (
+  //     <div className="partnership-drop-content mt-3">
+  //       <div className="empty-pending-friends">
+  //         <div className="error-text-section">
+  //           You have no partnership as the author
+  //         </div>
+  //         <div className="btn btn-outline-success" onClick={reload}>
+  //           Reload
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  if (!data.data.partnerships || data.data.partnerships.length === 0) {
-    return (
-      <div className="partnership-drop-content mt-3">
-        <div className="empty-pending-friends">
-          <div className="error-text-section">
-            You have no partnership as the author
-          </div>
-          <div className="btn btn-outline-success" onClick={reload}>
-            Reload
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (!data.data.partnerships || data.data.partnerships.length === 0) {
+  //   return (
+  //     <div className="partnership-drop-content mt-3">
+  //       <div className="empty-pending-friends">
+  //         <div className="error-text-section">
+  //           You have no partnership as the author
+  //         </div>
+  //         <div className="btn btn-outline-success" onClick={reload}>
+  //           Reload
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
-  const partnerships = data.data.partnerships;
+  // const partnerships = data.data.partnerships;
+  const partnerships = [];
   const author = partnerships.filter((item) => {
     return item.partnership.some(
       (partner) =>
