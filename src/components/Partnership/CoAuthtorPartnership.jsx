@@ -14,7 +14,7 @@ const CoAuthtorPartnership = () => {
   const reload = () => {
     window.location.reload();
   };
-  const { currentUser ,token} = UserAuth();
+  const { token } = UserAuth();
   // const [arrayLength, setrrayLength] = useState(0);
   // const [dropdowns, setDropdowns] = useState(Array(8).fill(false));
 
@@ -26,10 +26,9 @@ const CoAuthtorPartnership = () => {
     queryKey:'getUserArticleApi',
     refetchInterval:false,
     refetchOnWindowFocus:false
-    // 'on'
-
   })
-  
+
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1)
     // Update dropdown state based on clicked index and current state
@@ -85,14 +84,14 @@ const CoAuthtorPartnership = () => {
               className="partnership-title-box"
               onClick={() => toggleDropDown(index)}
             >
-              <div className="arrow-icon-container">
+              {/* <div className="arrow-icon-container">
                 <MdOutlineArrowRight
                   size={30}
                   className={`cart-dropdown-icon ${
                     activeIndex === index ? "active" : ""
                   }`}
                 />
-              </div>
+              </div> */}
               <div>
                 <img
                   className="partnership-item-image"
@@ -104,7 +103,7 @@ const CoAuthtorPartnership = () => {
             </div>
             <div className="partnership-item-type">{item?.price}</div>
           </div>
-          <div
+          {/* <div
             className={`partnership-children-dropdown ${
               activeIndex === index ? "active" : ""
             }`}
@@ -114,7 +113,7 @@ const CoAuthtorPartnership = () => {
             <PartnershipTableDropdown item={item} currentUser={currentUser} />
             :''
             }
-          </div>
+          </div> */}
         </div>
       ))}
     </div>
