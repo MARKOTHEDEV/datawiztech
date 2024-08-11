@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import toast from "react-hot-toast";
@@ -6,208 +6,148 @@ import { UserAuth } from "../../useContext/useContext";
 import cancel from "../../assets/images/frame-386-N57.png";
 import { MdOutlineDelete } from "react-icons/md";
 import ActionLoader from "../Loader/ActionLoader";
+import { coAuthorsOfArticleApi, updateArticleCoAuhorApi } from "../../api/article.api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useFieldArray, useForm } from "react-hook-form";
+import { decodeUser } from "../../api/api";
 
 const PartnershipTableDropdown = ({ item, currentUser }) => {
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
+    const { token } = UserAuth();
+    // const user_id = decodeUser(token).user_id
+  const partnership = [];
 
-  const { friends } = currentUser;
+  // coAuthorsOfArticleApi
 
-  const activeFriends = friends.filter((friend) => friend.status === "active");
-  const myFriends = activeFriends.map((friend) => friend.friend);
-  const [coAuthors, setCoAuthors] = useState([]);
-  const [loadingStates, setLoadingStates] = useState({});
+  const {data:coAuthors,isLoading,error,refetch,isRefetching} = useQuery({
+    queryFn:()=>coAuthorsOfArticleApi({article_id:item.id}),
+    queryKey:['coAuthorsOfArticleApi',item.id],
+    refetchInterval:false,
+    refetchOnWindowFocus:false,
+  })
 
-  // const mapthrough = item.partnership.map((item)=>{
-  //   return {partnerId: item.partnerId._id, ...item}
-  // })
-  const [partnership, setPartnership] = useState([...item.partnership]);
-  const [updatedPartnership, setUpdatedPartnership] = useState({
-    productId: "",
-    partnership: [...item.partnership, ...coAuthors],
-  });
-  // console.log(partnership)
 
-  const { token } = UserAuth();
 
-  const handleCoAuthorChange = (index, field, value) => {
-    const updatedCoAuthors = [...coAuthors];
-    if (field === "percentage" && value > 100) {
-      toast.error("Percentage cannot be more than 100.");
-      return;
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    setError,
+    setValue,
+    getValues,
+    clearErrors,
+    formState: { errors },
+  } = useForm({defaultValues:{coAuthors:[
+    // {'email':'me@gmail.com',}
+  ]}});
+  const { fields, append, remove } = useFieldArray({control,name:'coAuthors'})
+
+  // updateArticleCoAuhorApi
+  const client = useQueryClient();
+  const [saving,setSaving] = useState(false);
+   const {mutate} = useMutation({
+    mutationFn:updateArticleCoAuhorApi,
+    'onSuccess':(data)=>{
+      setSaving(false)
+      toast.success("Saved Successfully")
+      // setValue('coAuthors',[])
+      // route('/upload')
+    },
+    onError:(error)=>{
+      setSaving(false)
+      //
+
+        // if(err)
+        // console.log({error})
+        // if(error.response.data.detail?.includes('does not exist')){
+        //   toast.error(error.response.data.detail)
+        // }
     }
-    updatedCoAuthors[index][field] = value;
-    setCoAuthors(updatedCoAuthors);
-    setUpdatedPartnership({
-      productId: item._id,
-      partnership: [...partnership, ...coAuthors],
-    });
-  };
+  })
+  
+  useEffect(()=>{
+    if(coAuthors){
+    // console.log({coAuthors})
+      // save the owner of the article
+      append({
+        email:coAuthors.email,
+        role:'Author',
+        percentage:coAuthors.percentage??0
+      })
+      const d = coAuthors?.coauthors?.map((coAuthor,index)=>{
+        append({
+          email:coAuthor.email,
+          role:'Co-author',
+          percentage:coAuthor.percentage
+        })
+        // setValue(`coAuthors.${index}.email`,coAuthor.email)
+        // setValue(`coAuthors.${index}.role`,'Co-author')
+        // setValue(`coAuthors.${index}.percentage`,coAuthor.percentage)
+      })
+      //
 
-  const removeCoAuthor = (index) => {
-    const updatedCoAuthors = [...coAuthors];
-    updatedCoAuthors.splice(index, 1);
-    setCoAuthors(updatedCoAuthors);
-    setUpdatedPartnership({
-      productId: item._id,
-      partnership: [...partnership, ...updatedCoAuthors],
-    });
-  };
-
-  const AddCoAuthor = () => {
-    if (
-      !coAuthors.every(
-        (coAuthor) =>
-          coAuthor.partnerId && coAuthor.role && coAuthor.percentage !== ""
-      )
-    ) {
-      toast.error(
-        "Please complete the current co-author details before adding a new one."
-      );
-      return;
     }
-    const totalPercentage = updatedPartnership.partnership.reduce(
-      (sum, coAuthor) => sum + parseInt(coAuthor.percentage || 0),
-      0
-    );
+  },[coAuthors])
 
-    if (totalPercentage === 100) {
-      toast.error("Total percentage is already 100.");
-      return;
-    }
 
-    const remainingPercentage = 100 - totalPercentage;
-    if (remainingPercentage <= 0) {
-      toast.error("Total percentage has exceeded 100.");
-      return;
-    }
+  const savePartnership =()=>{
+    
+  const data = getValues();
+  const total =   data.coAuthors.map(d=>parseInt(d.percentage)).reduce((partialSum, a) => partialSum + a, 0);
+  // console.log({total})
+  if(total !== 100){
+    toast.error('Percentage Sum Must Be 100%')
+    return 
+  }
 
-    const defaultPercentage =
-      remainingPercentage <= 0 ? 0 : remainingPercentage;
-    setCoAuthors([
-      ...coAuthors,
-      {
-        partnerId: "",
-        role: "",
-        percentage: defaultPercentage,
-      },
-    ]);
-  };
+  const user_id = decodeUser(token).user_id
+  const form = new FormData();
+  form.append('authors_percentage',parseInt(data.coAuthors[0].percentage))
+  form.append('coauthors_emails',data.coAuthors.filter(d=>d.role==='Co-author').map(d=>d.email))
+  form.append('coauthors_percentage',data.coAuthors.filter(d=>d.role==='Co-author').map(d=>d.percentage))
+  const submitD = {
+    article_id:item.id,
+    form:form
+  }
+  setSaving(true)
+  mutate(submitD)
+  // toast.success('Saved')
+  }
+  // console.log({fields})
 
-  const reload = () => {
-    window.location.reload();
-  };
-
-  const handlePartnerChange = (index, field, value) => {
-    const partnershipUpdate = [...partnership];
-    partnershipUpdate[index][field] = value;
-    setPartnership(partnershipUpdate);
-    setUpdatedPartnership({
-      productId: item._id,
-      partnership: [...partnership, ...coAuthors],
-    });
-  };
-
-  const savePartnership = async (productId, product) => {
-    setLoadingStates((prevStates) => ({
-      ...prevStates,
-      [productId]: true,
-    }));
-    if (updatedPartnership.productId !== productId) {
-      toast.error("Save button does not match the current item.");
-      setLoadingStates((prevStates) => ({
-        ...prevStates,
-        [productId]: false,
-      }));
-      return;
-    }
-
-    const isEmptyField = coAuthors.some((coAuthor) => {
-      return (
-        !coAuthor.partnerId ||
-        !coAuthor.role ||
-        !coAuthor.percentage ||
-        coAuthor.percentage === ""
-      );
-    });
-
-    if (isEmptyField) {
-      toast.error("Please complete all fields for each co-author.");
-      setLoadingStates((prevStates) => ({
-        ...prevStates,
-        [productId]: false,
-      }));
-      return;
-    }
-
-    const totalPercentage = updatedPartnership.partnership.reduce(
-      (sum, coAuthor) => sum + parseInt(coAuthor.percentage || 0),
-      0
-    );
-
-    if (totalPercentage !== 100) {
-      toast.error("Total percentage must be 100.");
-      setLoadingStates((prevStates) => ({
-        ...prevStates,
-        [productId]: false,
-      }));
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        `https://datawiztechapi.onrender.com/api/v1/update-partners/${productId}`,
-        { partnership: updatedPartnership.partnership, item: product },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        toast.success("Partnership saved successfully.");
-        window.location.reload();
-      } else {
-        toast.error("Failed to save partnership.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      if (error.response.data) {
-        if (!error.response.data.message) {
-          toast.error(error.code);
-        } else {
-          toast.error(error.response.data.message);
-        }
-      } else {
-        toast.error("Server Error!");
-      }
-    } finally {
-      setLoadingStates((prevStates) => ({
-        ...prevStates,
-        [productId]: false,
-      }));
-    }
-  };
-
-  if (!item.partnership || item.partnership.length === 0) {
+  if (isLoading||isRefetching) {
     return (
       <div className="partnership-drop-content mt-3">
         <div className="empty-pending-friends">
           <div className="error-text-section">
-            You have no partnership as the author
+           Loading...
           </div>
-          <div className="btn btn-outline-success" onClick={reload}>
+          {/* <div className="btn btn-outline-success" onClick={reload}>
             Reload
-          </div>
+          </div> */}
         </div>
       </div>
     );
   }
-
+  if (saving) {
+    return (
+      <div className="partnership-drop-content mt-3">
+        <div className="empty-pending-friends">
+          <div className="error-text-section">
+          Saving...
+          </div>
+          {/* <div className="btn btn-outline-success" onClick={reload}>
+            Reload
+          </div> */}
+        </div>
+      </div>
+    );
+  }
   return (
     <div>
-      <div className="row mb-2">
+      {/* <div className="row mb-2">
         <div className="col-lg-8 d-flex align-items-center my-1">
           {item.product === "Data" && (
             <div className="periodicity-sub-heading">Periodicity:</div>
@@ -246,19 +186,20 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
           )}
         </div>
         <div className="col-lg-2"></div>
-      </div>
+      </div> */}
       <div className="overflow-auto partnership-overflow-box">
         <div className="partnership-dropdown-content pt-3">
-          {partnership.map((partner, index) => (
+          {/* {partnership.map((partner, index) => (
             <div className="partnership-content-flex mt-1" key={index}>
               <div className="column-large-6">
                 <div className="input__wrapper d-flex align-items-center mx-1">
                   <div className="">
                     <img
                       src={
-                        !partner.partnerId.image
-                          ? profilepic
-                          : partner.partnerId.image
+                        profilepic
+                        // !partner.partnerId.image
+                        //   ? profilepic
+                        //   : partner.partnerId.image
                       }
                       alt=""
                       className="author-pic"
@@ -377,10 +318,10 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
                 )}
               </div>
             </div>
-          ))}
-          {coAuthors.map((coAuthor, index) => (
+          ))} */}
+          {fields.map((field, index) => (
             <div className="partnership-content-flex mt-1" key={index}>
-              <div className="column-large-6">
+              {/* <div className="column-large-6">
                 <div className="input__wrapper emailinputcontainer d-flex align-items-center">
                   <div className="">
                     <img src={profilepic} alt="" className="author-pic" />
@@ -402,8 +343,8 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
                   </select>
                   <label className="upload__label">Co-author {index + 1}</label>
                 </div>
-              </div>
-              <div className="column-large-3">
+              </div> */}
+              {/* <div className="column-large-3">
                 <div className="input__wrapper emailinputcontainer mb-4">
                   <select
                     className="input__field email-input"
@@ -419,18 +360,68 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
                   </select>
                   <label className="input__label email-label">Role</label>
                 </div>
+              </div> */}
+
+            <div className="column-large-6">
+            <div className="input__wrapper">
+              <input
+                // type="number"
+                // id={`percentage-${index}`}
+                className="input__field pass-input"
+                placeholder="Partner Email"
+                // value={coAuthor.percentage}
+                
+                // onChange={(e) =>{
+                  // handleCoAuthorChange(index, "percentage", e.target.value)
+                // }
+                {...register(`coAuthors.${index}.email`)}
+
+              />
+              <label
+                htmlFor={`percentage-${index}`}
+                className="input__label email-label"
+              >
+                Partner Email
+              </label>
+            </div>
+            </div>
+            <div className="column-large-3">
+                <div className="input__wrapper">
+                  <input
+                    // type="number"
+                    // id={`percentage-${index}`}
+                    className="input__field pass-input"
+                    placeholder="Percentage"
+                    // value={coAuthor.percentage}
+                    // onChange={(e) =>
+                    //   handleCoAuthorChange(index, "percentage", e.target.value)
+                    // }
+                    // value={'Co-author'}
+                    {...register(`coAuthors.${index}.role`)}
+
+                  />
+                  <label
+                    htmlFor={`percentage-${index}`}
+                    className="input__label email-label"
+                  >
+                    Role
+                  </label>
+                </div>
               </div>
               <div className="column-large-3">
                 <div className="input__wrapper">
                   <input
                     type="number"
-                    id={`percentage-${index}`}
+                    // id={`percentage-${index}`}
                     className="input__field pass-input"
                     placeholder="Percentage"
-                    value={coAuthor.percentage}
-                    onChange={(e) =>
-                      handleCoAuthorChange(index, "percentage", e.target.value)
-                    }
+                    max={100}
+                     {...register(`coAuthors.${index}.percentage`)}
+
+                    // value={coAuthor.percentage}
+                    // onChange={(e) =>
+                    //   handleCoAuthorChange(index, "percentage", e.target.value)
+                    // }
                   />
                   <label
                     htmlFor={`percentage-${index}`}
@@ -444,7 +435,8 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
                 <div className="col-lg-1">
                   <MdOutlineDelete
                     className="mt-3 delete-co-author-icon"
-                    onClick={() => removeCoAuthor(index)}
+                    onClick={() => remove(index)}
+
                   />
                 </div>
               </div>
@@ -455,7 +447,7 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
       <div
         className="add-another-author"
         style={{ cursor: "pointer" }}
-        onClick={AddCoAuthor}
+        onClick={()=>append({})}
       >
         Add another author
       </div>
@@ -463,13 +455,15 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
         <div
           className="partnership-save-btn"
           onClick={() => {
-            savePartnership(item._id, item);
+            savePartnership()
+            // savePartnership(item._id, item);
           }}
           style={{
-            cursor: loadingStates[`${item._id}`] ? "not-allowed" : "pointer",
+            // cursor: loadingStates[`${item._id}`] ? "not-allowed" : "pointer",
           }}
         >
-          {loadingStates[`${item._id}`] ? <ActionLoader /> : "Save"}
+          {/* {loadingStates[`${item._id}`] ? <ActionLoader /> : "Save"} */}
+          Save
         </div>
       </div>
     </div>

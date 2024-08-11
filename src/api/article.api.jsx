@@ -32,3 +32,29 @@ export const getDataBankMarkAPi = async(data)=>{
     return response.data
 
 }
+
+
+export const coAuthorsOfArticleApi = async ({article_id})=>{
+    const resp = await api.get(`/articles/${article_id}/coauthors`);
+    return resp.data
+}
+
+export const getUserArticleApi = async ({user_id})=>{
+    const resp = await api.get(`/articles/authors/${user_id}`);
+    return resp.data   
+}
+
+
+export const updateArticleCoAuhorApi = async (data)=>{
+    const resp = await api.patch(`/articles/${data.article_id}/coauthors`,data.form);
+    return resp.data   
+
+}
+
+export const getArticleThatIamCOAuthorOF = async ({user_id})=>{
+    // /articles/coauthors/{coauthor_id}
+    const resp = await api.get(`/articles/coauthors/${user_id}/`,);
+    return resp.data   
+
+}
+

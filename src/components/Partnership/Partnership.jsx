@@ -48,7 +48,7 @@ const Partnership = () => {
             </div>
           </div>
           <div className="col-lg-5">
-            <div className="d-flex justify-content-end align-content-center ">
+            {/* <div className="d-flex justify-content-end align-content-center ">
               <div class="partnership-addnewpartner">
                 <Link to="/partnership/add-partnership">
                 <div class="partnership-addnewpartner-text">
@@ -61,7 +61,7 @@ const Partnership = () => {
                   alt=".."
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="col-lg-2"></div>
         </div>
