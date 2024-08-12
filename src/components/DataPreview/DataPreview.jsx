@@ -3,6 +3,8 @@ import "../DataSearch/DataSearch.css";
 import "../DataSearch/DataFilter.css";
 import "../DataSearch/YearRange.css";
 import "../DataSearch/DataFound.css";
+import cart_icon from "../../assets/images/addcart.png";
+
 import "./DataPreview.css";
 import "./DataAside.css";
 import Header from "../Header/Header";
@@ -19,20 +21,29 @@ import SearchBox from "./SearchBox";
 import DataCommentSection from "./DataCommentSection";
 import SearchFilter from "./SearchFilter";
 import Data from "../DataSearch/Data";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {  getDataBankMarkAPi, getSearchResults } from "../../api/article.api";
-import { handleErrorPopUp } from "../../api/api";
+import { decodeUser, handleErrorPopUp } from "../../api/api";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
 import toast from "react-hot-toast";
+import {useMediaQuery} from 'react-responsive'
+import { addDataToCartRightOne } from "../../api/data.api";
+import { UserAuth } from "../../useContext/useContext";
 // import NotFound from "./NotFound";
 
 const DataPreview = () => {
   // const [searchHistory, setHistory] = useState(false);
   const [cartItem, setCartItem] = useState([]);
+  const {token} = UserAuth()
+  const [currentSelectedData,setCurrentSelectedData] = useState(null)
   // const [searchTermState, setSearchTerm] = useState("")
   const [dynamicYearsKeys,setDynamicYearsKeys] = useState([])
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1224px)'
+  })
   let [searchParams, setSearchParams] = useSearchParams();
   const searchTerm =searchParams.get('searchTerm')
+  
   const {data,isLoading,error,isSuccess} = useQuery({
     queryFn:()=>getSearchResults(searchTerm),
     queryKey:['getSearchResults',searchTerm],
@@ -42,8 +53,34 @@ const DataPreview = () => {
     // 'on'
 
   })
-  const [currentData,setCurrentData] = useState(null)
+  const client = useQueryClient();
+  const [isAddingCart,setIsAddingCart] = useState(false);
+  const {mutate:addDataToCart,} =useMutation({
+    mutationFn:addDataToCartRightOne,
+    'onSuccess':(data)=>{
+      setIsAddingCart(false)
+      toast.success('Item added to cart')
+      client.invalidateQueries('getDataAddedToCart')
+      // on success
+    },
+    onError:(error)=>{
+      setIsAddingCart(false)
 
+
+      handleErrorPopUp(error)
+    }
+  })
+
+
+  const handleAddTocart = ()=>{
+    setIsAddingCart(true)
+    const user_id = decodeUser(token).user_id
+
+    addDataToCart({
+      data:currentSelectedData,
+      user_id
+    })
+  }
   // 
   const [loading,setLoading] = useState(false)
   const 
@@ -72,7 +109,7 @@ const DataPreview = () => {
     }
   })
 
-  if(isLoading||loading){
+  if(isLoading||loading||isAddingCart){
     return <DataLoader/>
   }
 
@@ -141,7 +178,9 @@ const DataPreview = () => {
               </div>
               <div
               className="px-3 overflow-y-auto scrollbar-design"
-              style={{ maxHeight: "120vh" ,
+              style={{ 
+                maxHeight:
+                isDesktopOrLaptop?"120vh":'40vh',
               // cursor:'pointer'
             }}
               >
@@ -160,13 +199,16 @@ const DataPreview = () => {
               let  dataFilter = JSON.parse(localStorage.getItem('data-filter'))
                   console.log({dataFilter,'selected':clickedData.selectedD.indicator_code})
                 setLoading(true)
-                mutate({
+                const dataM ={
                   year_list:dataFilter.yearSelect.map(d=>parseInt(d.value)),
                   start_year:0,
                   end_year:0,
                   countries:dataFilter.countryName.map(d=>d.value),
                   indicator_code:clickedData.selectedD.indicator_code
-                })
+                }
+                // console.log({})
+                setCurrentSelectedData(dataM)
+                mutate(dataM)
               }}
               responseData={
                 data?.data_bank?data.data_bank:[]
@@ -177,7 +219,26 @@ const DataPreview = () => {
             </div>
           </div>
           <div className="col-lg-8 preview-section">
-              
+
+            <br />
+<div
+ style={{display:'flex','alignItems':'right',justifyContent:"right"}}
+>
+  {
+    currentSelectedData?
+    <div className="preview-add-to-cart" 
+    onClick={handleAddTocart}
+    style={{border:'1px solid red'}}>
+    <div className="preview-add-to-cart-text">Add to cart</div>
+    <img
+    className="preview-add-to-cart-icon"
+    src={cart_icon}
+    alt="..."
+    />
+    </div>:''
+  }
+
+</div>  
 
             <div className="row mt-4">
       <div className="col-lg-12">

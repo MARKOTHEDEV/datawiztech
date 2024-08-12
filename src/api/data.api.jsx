@@ -24,3 +24,18 @@ export const addToCartDataApi = async ()=>{
     return response.data
 }
 
+
+
+export const addDataToCartRightOne = async({user_id,data})=>{
+    const response = await api.post(`/carts/data?user_id=${user_id}`,data);
+    return response.data
+}
+
+export const getDataAddedToCart = async ({user_id})=>{
+    const response = await api.get(`/carts/data?user_id=${user_id}`,);
+    return response.data
+}
+export const removeDataFromCart = async ({user_id,cart_data_id})=>{
+    const response = await api.delete(`/carts/data?user_id=${user_id}&cart_data_id=${cart_data_id}`,);
+    return response.data
+}

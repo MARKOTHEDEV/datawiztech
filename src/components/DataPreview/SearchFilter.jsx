@@ -8,6 +8,7 @@ import { UserAuth } from "../../useContext/useContext";
 import ActionLoader from "../Loader/ActionLoader";
 import CustomModal from "../DataSearch/Modal";
 import { ResultFilterSelectCheckBoxTabs } from "./DataPreview";
+import { useSearchParams } from "react-router-dom";
 
 const countries = [
   {"name": "Afghanistan", "short_name": "AFG"},
@@ -291,13 +292,20 @@ for (let year = 1960; year <= 2024; year++) {
       </div>
     )
   }
+  let [searchParams, setSearchParams] = useSearchParams();
+
 
   useEffect(()=>{
-    let  dataFilter = localStorage.getItem('data-filter')
-    if(!dataFilter){
-      toast.success('filter must be set for accurate result')
+    // let  dataFilter = localStorage.getItem('data-filter')
+    // if(!dataFilter){
+    //   toast.success('filter must be set for accurate result')
+    //   setOpen(true)
+    // }
+    if(!searchParams.get('filter')){
       setOpen(true)
+        setSearchParams({'filter':'true','searchTerm':searchParams.get('searchTerm')})
     }
+
 
   },[])
   return (
@@ -351,6 +359,8 @@ for (let year = 1960; year <= 2024; year++) {
 
 
 
+     {
+      open?
       <CustomModal
       head={'Filter By'}
       bodyText={''}
@@ -460,7 +470,8 @@ for (let year = 1960; year <= 2024; year++) {
         </div>
                  
     
-      </CustomModal>
+      </CustomModal>:''
+     }
     </div>
   );
 };

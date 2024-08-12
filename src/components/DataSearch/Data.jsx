@@ -329,9 +329,15 @@ const ModalNav =()=>{
         return 
       }
       if(onClickData){
+        localStorage.setItem('data-filter',JSON.stringify({
+          countryName,
+          yearSelect,
+          selectedD:'currentData',
+        }))
+
         onClickData({
-          // countryName,
-          // yearSelect,
+          countryName,
+          yearSelect,
           selectedD:currentData,
         })
         setOpen(false)
@@ -350,11 +356,12 @@ const ModalNav =()=>{
           // route
           if(window.location.pathname==='/search/data/result/'){
             // setOpen(true)
-            
+            if(onClickData){
+              onClickData({
+                selectedD:data
+              })
+            }
             // setCurrentData(data)
-            onClickData({
-              selectedD:data
-            })
           }else{
             route(`/search/data/result/?searchTerm=${searchTerm}`)
           }
@@ -488,116 +495,104 @@ const ModalNav =()=>{
         </div>
       ))}
 
-      <CustomModal
-      head={'Filter By'}
-      bodyText={''}
-      open={open}
-      handleClose={()=>{
-        setOpen(!open)
-      }}
-      modalStyle={{width:'600px'}}
-      >
-        <div style={{display:'flex',}}>
-          <div className="">
-            <p className="markomodalnav_link"
-            style={{'color':selectedModalNav=='country_name'?'#4EB573':''}}
-            onClick={()=>{
-              setSelectedModalNav('country_name')
-            }}
-            >Counry Name</p>
-            <p className="markomodalnav_link"
-            style={{'color':selectedModalNav=='year_select'?'#4EB573':''}}
-            onClick={()=>{
-              setSelectedModalNav('year_select')
-            }}
-           >Year Select</p>
-          </div>
-          <div style={{
-            backgroundColor:'#4EB573','width':'4px',
-            borderRadius:'4px',
-            transform:'translateX(4px)',
-            margin:'0 10px'
-          }}></div>
 
-          {/* {
-          ? */}
-            <div style={{'padding':'1rem .7rem',display:  selectedModalNav ==='year_select'?'block':'none'}}>
+{/* <CustomModal
+    head={'Filter By'}
+    bodyText={'..'}
+    open={open}
+    handleClose={()=>{
+      setOpen(!open)
+    }}
+    modalStyle={{width:'600px'}}
+    >
+      <div style={{display:'flex',}}>
+        <div className="">
+          <p className="markomodalnav_link"
+          style={{'color':selectedModalNav=='country_name'?'#4EB573':''}}
+          onClick={()=>{
+            setSelectedModalNav('country_name')
+          }}
+          >Counry Name</p>
+          <p className="markomodalnav_link"
+          style={{'color':selectedModalNav=='year_select'?'#4EB573':''}}
+          onClick={()=>{
+            setSelectedModalNav('year_select')
+          }}
+         >Year Select</p>
+        </div>
+        <div style={{
+          backgroundColor:'#4EB573','width':'4px',
+          borderRadius:'4px',
+          transform:'translateX(4px)',
+          margin:'0 10px'
+        }}></div>
 
-            <div style={{'width':'100%','height':'200px','overflowY':'scroll','overflowX':'hidden'}}>
-            <div>
-            <ResultFilterSelectCheckBoxTabs 
-              title={'years'}
-              gridTemplateColumns={'1fr 1fr 1fr'}
-          
-              clearTrigger={false}
-              values={
-              //   [
-                // {label:'Hi hello',value:'wdw','id':'1'},
-              //   {label:'Name',value:'how are u','id':'2'}
-              // ]
-              years.map((d,index)=>(
-                {label:d,value:d,'id':`${index}`}
-              ))
-            }
-              onchange={(pickedValues)=>{
-                // console.log({pickedValues})
-                setYearSelect(pickedValues)
-          
-              }}
-              hideValues={true}
-              />
+    
+          <div style={{'padding':'1rem .7rem',display:  selectedModalNav ==='year_select'?'block':'none'}}>
+
+          <div style={{'width':'100%','height':'200px','overflowY':'scroll','overflowX':'hidden'}}>
+          <div>
+          <ResultFilterSelectCheckBoxTabs 
+            title={'years'}
+            gridTemplateColumns={'1fr 1fr 1fr'}
+        
+            clearTrigger={false}
+            values={
             
-            </div>
-            </div>
-         <ModalNav />           
+            years.map((d,index)=>(
+              {label:d,value:d,'id':`${index}`}
+            ))
+          }
+            onchange={(pickedValues)=>{
+              setYearSelect(pickedValues)
+        
+            }}
+            hideValues={true}
+            />
           
-                    </div>
-                    {/* :''
-          } */}
-          {/* {
-            ? */}
-            <div
-            style={{'padding':'1rem .7rem',display:selectedModalNav==='country_name'?'block':'none'}}
-            >
+          </div>
+          </div>
+       <ModalNav />           
+        
+                  </div>
+                
+          <div
+          style={{'padding':'1rem .7rem',display:selectedModalNav==='country_name'?'block':'none'}}
+          >
 
 <div style={{'width':'100%','height':'200px','overflowY':'scroll','overflowX':'hidden'}}>
-            <div>
-            <ResultFilterSelectCheckBoxTabs 
-              title={'countries'}
-              clearTrigger={false}
-              values={
-              //   [
-                // {label:'Hi hello',value:'wdw','id':'1'},
-              //   {label:'Name',value:'how are u','id':'2'}
-              // ]
-              countries.map((d,index)=>(
-                {label:d.name,value:d.short_name,'id':`${index}`}
-              ))
-            }
-              onchange={(pickedValues)=>{
-                console.log({pickedValues})
-                setCountryName(pickedValues)
+          <div>
+          <ResultFilterSelectCheckBoxTabs 
+            title={'countries'}
+            clearTrigger={false}
+            values={
           
-              }}
-              hideValues={true}
-              />
-            
-            </div>
-            </div>
-
-            
-         <ModalNav />           
-
-            </div>
-            {/* :''
-          } */}
+            countries.map((d,index)=>(
+              {label:d.name,value:d.short_name,'id':`${index}`}
+            ))
+          }
+            onchange={(pickedValues)=>{
+              console.log({pickedValues})
+              setCountryName(pickedValues)
+        
+            }}
+            hideValues={true}
+            />
+          
+          </div>
+          </div>
 
           
+       <ModalNav />           
 
-        </div>
-                 
-    
-      </CustomModal>
+          </div>
+      
+        
+
+      </div>
+               
+  
+    </CustomModal> */}
     </div>
   );
 };

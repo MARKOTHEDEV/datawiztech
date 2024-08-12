@@ -5,6 +5,7 @@ import ComponentLoader from "../../hooks/ComponentLoader/ComponentLoader";
 import { useQuery } from "@tanstack/react-query";
 import { decodeUser } from "../../api/api";
 import { getArticleCartApi } from "../../api/cart.api";
+import { getDataAddedToCart } from "../../api/data.api";
 
 const UpdateCart = ({ cartIcon }) => {
   // const { currentUser, cartLength, setCartLength } = UserAuth();
@@ -55,13 +56,21 @@ const UpdateCart = ({ cartIcon }) => {
     return  getArticleCartApi({user_id})
     },
   })
-    if (isLoading) {
+  const {isLoading:loadingDataCart,data:dataAddedTOcart} = useQuery({
+    queryKey:'getDataAddedToCart',
+    queryFn:()=>{
+    const user_id = decodeUser(token).user_id
+
+    return  getDataAddedToCart({user_id})
+    },
+  })
+    if (isLoading||loadingDataCart) {
     return <ComponentLoader />;
   }
   return (
     <div>
       <img className="nav-icons cart-icon" src={cartIcon} alt=".." />
-      <div className="cart-number">{data?.length}</div>
+      <div className="cart-number">{(data?.length||0)+(dataAddedTOcart?.length||0)}</div>
     </div>
   );
 };

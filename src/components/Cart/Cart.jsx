@@ -18,6 +18,7 @@ import ActionLoader from "../Loader/ActionLoader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteCartApi, getArticleCartApi } from "../../api/cart.api";
 import { decodeUser } from "../../api/api";
+import { getDataAddedToCart, removeDataFromCart } from "../../api/data.api";
 
 const Cart = () => {
   const { token } = UserAuth();
@@ -82,6 +83,20 @@ const Cart = () => {
     },
   })
 
+  const {isLoading:loadingDataCart,data:dataAddedTOcart} = useQuery({
+    queryKey:'getDataAddedToCart',
+    queryFn:()=>{
+    const user_id = decodeUser(token).user_id
+
+    return  getDataAddedToCart({user_id})
+    },
+  })
+
+
+  if(isLoading||loadingDataCart){
+    return <ActionLoader />
+  }
+  // console.log({dataAddedTOcart})
   return (
     <div>
       <Header active="home" />
@@ -120,6 +135,18 @@ const Cart = () => {
               showRemove={showRemove}
             /> */}
             {
+              dataAddedTOcart?.map((d,index)=>(
+                <ArticleCart key={index}
+                product_type='Data'
+                price={d.price}
+                title={d.title}
+                id={d.id}
+                cartData={d}
+                
+                />
+              ))
+            }
+            {
               data?.map((d,index)=>(
                 <ArticleCart key={index}
                 product_type='article'
@@ -127,11 +154,13 @@ const Cart = () => {
                 />
               ))
             }
+            
+            
           </div>
         </div>
       </div>
 
-      <div className="pt-3 d-flex justify-content-center align-items-center">
+      {/* <div className="pt-3 d-flex justify-content-center align-items-center">
         <div
           className={`btn btn-outline-success ${
             checkoutLoading
@@ -140,16 +169,16 @@ const Cart = () => {
               : ""
           }`
         }
-          onClick={handleSearch}
           style={{ cursor: checkoutLoading ? "not-allowed" : "pointer" }}
         >
           {
             isLoading
-          // checkoutLoading 
           ? <ActionLoader /> : "Checkout"}
         </div>
-      </div>
-
+      </div> */}
+      <button
+      style={{display:'block','padding':'24px 1rem',borderRadius:'6px',backgroundColor:'#4EB573',color:'white',width:'605px',outline:'none',border:'none',margin:'1rem auto'}}
+      >Purchace</button>
       {/* <PaymentDeclined/> */}
       {/* <PaymentSuccessful/> */}
     </div>
@@ -160,7 +189,7 @@ export default Cart;
 
 
 // :{product_type?:'Data'|'article'}
-const ArticleCart = ({product_type ='Data',price,title,id})=>{
+const ArticleCart = ({product_type ='Data',price,title,id,cartData=null})=>{
   const [isLoading,setIsLoading] = useState(false);
   const { token } = UserAuth();
   const client = useQueryClient()
@@ -182,6 +211,23 @@ const ArticleCart = ({product_type ='Data',price,title,id})=>{
       toast.error(err?.response?.data?.detail)
     }
   })
+  const  {mutate:deleteData} = useMutation({
+    mutationFn:removeDataFromCart,
+    onSuccess:(resp)=>{
+      setIsLoading(false)
+      client.invalidateQueries('getDataAddedToCart')
+      // console.log({resp})
+      toast.success("Data removed from cart successfully");
+      //
+    },
+    onError:(err)=>{
+      // console.log({cartErr:err})
+      setIsLoading(false)
+      toast.error(err?.response?.data?.detail)
+    }
+  })
+
+  
   return (
     <div className="cart-box mb-3">
     <div className="d-flex align-items-center">
@@ -224,13 +270,22 @@ const ArticleCart = ({product_type ='Data',price,title,id})=>{
                 article_id:id
               })
               // console.log('Hellow rpodl',user_id)
+            }else{
+              deleteData({
+                user_id,
+                cart_data_id:id
+              })
             }
           }}
         >
           {
             isLoading?
-            'Removing':'Remove'
-          } data
+            'Removing ':'Remove '
+          } 
+          {
+            product_type==='article'?
+            'article':'data'
+          }
         </div>
         <div className="currency-container">
           <img className="currency-icon" src={currency} alt=".." />
@@ -252,7 +307,7 @@ const ArticleCart = ({product_type ='Data',price,title,id})=>{
             <span className="cart-indicator-count-2"> </span>
             <span className="cart-indicator-count-3">
               {/* {item.data.length} */}
-              1
+              0
               </span>
           </div>
           <div className="cart-indicator">
@@ -260,14 +315,16 @@ const ArticleCart = ({product_type ='Data',price,title,id})=>{
             <span className="cart-indicator-count-2"> </span>
             <span className="cart-indicator-count-3">
               {" "}
-              Nigeria, Senegal, Congo
+              {/* Nigeria, Senegal, Congo */}
+            {cartData?.countries.toString()}
             </span>
           </div>
           <div className="cart-indicator">
             <span className="cart-indicator-count-1">Year range:</span>
             <span className="cart-indicator-count-2"> </span>
             <span className="cart-indicator-count-3">
-              1994 - 1995 , 1997, 2001, 2002 , 2005
+            {cartData?.year_list.toString()}
+              {/* 1994 - 1995 , 1997, 2001, 2002 , 2005 */}
             </span>
           </div>
         </div>
