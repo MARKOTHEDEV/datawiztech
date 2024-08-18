@@ -76,7 +76,7 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
                 Patnership Management
               </Link>
             </p>
-            <p>
+            {/* <p>
               <Link
                 to="/cart"
                 className={`nav-items d-lg-flex d-none ${
@@ -85,7 +85,7 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
               >
                 Cart
               </Link>
-            </p>
+            </p> */}
             <p>
               <Link
                 to="/inquiry"

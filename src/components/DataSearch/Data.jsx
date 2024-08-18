@@ -352,9 +352,11 @@ const ModalNav =()=>{
     <div>
       {responseData.map((data, index) => (
         <div className="px-2 mb-3"
+        
         onClick={e=>{
           // route
           if(window.location.pathname==='/search/data/result/'){
+            toast.success('Clicked')
             // setOpen(true)
             if(onClickData){
               onClickData({
@@ -363,20 +365,29 @@ const ModalNav =()=>{
             }
             // setCurrentData(data)
           }else{
+            toast.success('Rounte Clicked')
+
             route(`/search/data/result/?searchTerm=${searchTerm}`)
           }
         }}
         >
-          <div className="search-result-card active">
+          {/* currentIndicatorCode */}
+          {}
+          <div className="search-result-card active"
+          style={{
+            border:localStorage.getItem('currentIndicatorCode')===data.indicator_code? '1px solid #4eb473':'',
+            cursor:'pointer'
+          }}
+          >
             <div>
-              <Link
-                to={`/search/data/result/?searchTerm=${searchTerm}`}
+              <p
+                // to={`/search/data/result/?searchTerm=${searchTerm}`}
                 className="search-card-title pb-3"
               >
                 {
                 truncateText(data.title,100)
                 }
-              </Link>
+              </p>
               {/* <div class="search-card-profile">
                 <div
                   class="dropdown-profile-menu collapse multi-collapse overflow-hidden"

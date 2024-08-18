@@ -20,7 +20,7 @@ export const getArticleCartApi = async({user_id})=>{
 }
 
 export const deleteCartApi = async ({article_id,user_id})=>{
-    const response = await api.delete(`/carts/?article_id=${article_id}&user_id=${user_id}`);
+    const response = await api.delete(`/carts/article/?article_id=${article_id}&user_id=${user_id}`);
     return response.data
 }
 

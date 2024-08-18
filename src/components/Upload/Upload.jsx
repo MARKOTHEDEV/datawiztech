@@ -99,6 +99,7 @@ const Upload = () => {
                       type="text"
                       className="data-search"
                       value= {search}
+                      style={{color:'black'}}
                       onChange={(e)=>{handleChange(e.target.value)}}
                       placeholder={`Search for ${searchHint}`}
                     />

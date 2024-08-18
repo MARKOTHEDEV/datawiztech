@@ -209,7 +209,9 @@ const countries = [
 
 const SearchFilter = ({setSearchTerm, searchTerm}) => {
   const [countryName,setCountryName]= useState(null);
-  const [yearSelect,setYearSelect] = useState(null)
+  const [yearSelect,setYearSelect] = useState([
+    {id:'11',label:'1971',value:'1971'}
+  ])
   const [selectedModalNav,setSelectedModalNav] = useState('year_select')
   const [open,setOpen] = useState(false)
   let years = [];
@@ -400,9 +402,12 @@ for (let year = 1960; year <= 2024; year++) {
             <div>
             <ResultFilterSelectCheckBoxTabs
               title={'years'}
+
+              selectedD={yearSelect}
               gridTemplateColumns={'1fr 1fr 1fr'}
           
               clearTrigger={false}
+              selectedData={yearSelect}
               values={
               //   [
                 // {label:'Hi hello',value:'wdw','id':'1'},
@@ -413,7 +418,7 @@ for (let year = 1960; year <= 2024; year++) {
               ))
             }
               onchange={(pickedValues)=>{
-                // console.log({pickedValues})
+                console.log({pickedValues})
                 setYearSelect(pickedValues)
           
               }}

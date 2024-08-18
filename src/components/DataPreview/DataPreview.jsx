@@ -208,6 +208,7 @@ const DataPreview = () => {
                 }
                 // console.log({})
                 setCurrentSelectedData(dataM)
+                localStorage.setItem('currentIndicatorCode',clickedData.selectedD.indicator_code)
                 mutate(dataM)
               }}
               responseData={
@@ -228,7 +229,8 @@ const DataPreview = () => {
     currentSelectedData?
     <div className="preview-add-to-cart" 
     onClick={handleAddTocart}
-    style={{border:'1px solid red'}}>
+    // style={{border:'1px solid red'}}
+    >
     <div className="preview-add-to-cart-text">Add to cart</div>
     <img
     className="preview-add-to-cart-icon"
@@ -329,41 +331,45 @@ export const ResultFilterSelectCheckBoxTabs = ({
   title,
   hideValues = false,
   clearTrigger,
-  gridTemplateColumns='1fr 1fr'
+  gridTemplateColumns='1fr 1fr',
+  selectedData =[]
  }
 //  : ResultFilterSelectCheckBoxTabsProps
  ) => {
-  const [pickedData, setPickedData] = useState
-  // < ResultFilterSelectCheckBoxTabsProps["values"]>
-    ([]);
+  const [pickedData, setPickedData] = useState ([]);
  
  
-  const handlePick = (pickedValue
-  //   : {
-  //   label,
-  //   value,
-  //   id
-  // }
-  ) => {
+  const handlePick = (pickedValue) => {
     const ids = pickedData.filter((d) => `${d.id}`).map((d) => d.id);
     let data;
     if (ids.includes(`${pickedValue.id}`)) {
       console.log("INcludes");
       // remove this data
       data = [...pickedData.filter((d) => d.id !== pickedValue.id)];
-      setPickedData(data);
+      // setPickedData(data);
     } else {
       console.log("Not INcludes");
  
  
       data = [...pickedData, pickedValue];
-      setPickedData(data);
+      // setPickedData(data);
     }
+    setPickedData(data)
+    console.log({FromFuncdata:data})
     onchange(data);
+    localStorage.setItem(`${title}__selectedD`,JSON.stringify(data))
   };
+  const getLocal = ()=>{
+    if(localStorage.getItem(`${title}__selectedD`)){
+      const localData =JSON.parse(localStorage.getItem(`${title}__selectedD`))
+
+      setPickedData(localData)
+      onchange(localData)
+    }
+  }
   const ref = useRef(null);
   const handleClearData = () => {
-    setPickedData([]);
+    // setPickedData([]);
     if (ref?.current) {
       // @ts-ignore
       const allInput = ref.current?.querySelectorAll("input");
@@ -376,7 +382,10 @@ export const ResultFilterSelectCheckBoxTabs = ({
   useEffect(() => {
     handleClearData();
   }, [clearTrigger]);
- 
+  useEffect(()=>{
+    getLocal()
+  },[])
+  console.log({pickedDatas:pickedData,})
  
   return (
         <div
@@ -396,11 +405,15 @@ export const ResultFilterSelectCheckBoxTabs = ({
               >
                 <input
                   type={"checkbox"}
-                  value={value.value}
+                    // localStorage.getItem(`${title}__selectedD`)?
+
+                  checked={pickedData.filter(d=>d.value===value.value).length!==0}
+                  // value={value.value}
                   // id={`${value.id}`}
                   id={`${value.id}__${title}__checkBox`}
                   onChange={() => {
                     handlePick(value);
+                    getLocal()
                   }}
                   name={title}
                   className="custom_checkbox"

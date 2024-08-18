@@ -43,7 +43,7 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
     // {'email':'me@gmail.com',}
   ]}});
   const { fields, append, remove } = useFieldArray({control,name:'coAuthors'})
-
+  const w = watch()
   // updateArticleCoAuhorApi
   const client = useQueryClient();
   const [saving,setSaving] = useState(false);
@@ -397,7 +397,10 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
                     //   handleCoAuthorChange(index, "percentage", e.target.value)
                     // }
                     // value={'Co-author'}
-                    {...register(`coAuthors.${index}.role`)}
+                    value={w['coAuthors'][index]['role']}
+                    // {...register(`coAuthors.${index}.role`,{
+                      
+                    // })}
 
                   />
                   <label
