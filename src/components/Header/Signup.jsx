@@ -218,10 +218,10 @@ const Signup = ({
                     </p>
                   </div>
                   <div className="verifywithnumber">
-                    <p className="login-text">Via Email Address</p>
+                    <p className="login-text">Verify Email</p>
                   </div>
                   <p className="text-center py-3">
-                    Email will be sent to {userEmail ?? ""}
+                  Email Verification link sent to {userEmail ?? ""}
                   </p>
                   {/* <div className="login-btn-primary" onClick={handleOTP}>
                     {otpLoading ? <ActionLoader /> : "Send Email"}
@@ -268,10 +268,10 @@ const Signup = ({
               <div className="signup-col-2 via-phone">
                 <div className="login-content">
                   <div className="verifywithnumber">
-                    <p className="login-text">Via Email Address</p>
+                    <p className="login-text">Verify Email</p>
                   </div>
                   <p className="text-center py-3">
-                  Email will be sent to {userEmail ??""}
+                  Email Verification link sent to {userEmail ??""}
                   </p>
                   {/* <div className="login-btn-primary" 
                   onClick={handleCorperateOTP}

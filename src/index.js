@@ -18,7 +18,9 @@ ReactDOM.render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <AuthContextProvider>
-            <Toaster position="top-right" toastOptions={{ duration: 2000 }} />
+            <Toaster 
+            // position="top-center"
+             toastOptions={{ duration: 2000 }} />
             <App />
           </AuthContextProvider>
         </BrowserRouter>

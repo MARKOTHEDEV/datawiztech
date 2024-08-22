@@ -188,7 +188,7 @@ const IndividualSignup = ({
                 <option value="">Select Country Code</option>
                 {
                   countriesAndPhoneNumberCode.map((d)=>(
-                    <option value={d.short_code}>{d.code} ({d.short_code})</option>
+                    <option value={d.short_code}>{d.code} ({d.country})</option>
                   ))
                 }
               </select>

@@ -157,6 +157,13 @@ const Cart = () => {
             
             
           </div>
+          <p style={{'textAlign':'right',padding:'1rem',fontSize:'1.3rem'}}>Total: <strong>{dataAddedTOcart?.map(d=>d.price).reduce((accumulator, currentValue) => {
+  return accumulator + currentValue;
+}, 0)+
+data?.map(d=>d.price).reduce((accumulator, currentValue) => {
+  return accumulator + currentValue;
+}, 0)
+}</strong></p>
         </div>
       </div>
 
@@ -178,7 +185,7 @@ const Cart = () => {
       </div> */}
       <button
       style={{display:'block','padding':'24px 1rem',borderRadius:'6px',backgroundColor:'#4EB573',color:'white',width:'605px',outline:'none',border:'none',margin:'1rem auto'}}
-      >Purchace</button>
+      >Checkout</button>
       {/* <PaymentDeclined/> */}
       {/* <PaymentSuccessful/> */}
     </div>
