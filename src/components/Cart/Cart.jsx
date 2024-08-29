@@ -16,7 +16,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import ActionLoader from "../Loader/ActionLoader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteCartApi, getArticleCartApi } from "../../api/cart.api";
+import { checkoutCartApi, deleteCartApi, getArticleCartApi } from "../../api/cart.api";
 import { decodeUser } from "../../api/api";
 import { getDataAddedToCart, removeDataFromCart } from "../../api/data.api";
 
@@ -81,6 +81,8 @@ const Cart = () => {
 
     return  getArticleCartApi({user_id})
     },
+    refetchInterval:false,
+    refetchOnWindowFocus:false
   })
 
   const {isLoading:loadingDataCart,data:dataAddedTOcart} = useQuery({
@@ -90,7 +92,16 @@ const Cart = () => {
 
     return  getDataAddedToCart({user_id})
     },
+    refetchInterval:false,
+    refetchOnWindowFocus:false
   })
+  const {isPending,mutate} = useMutation({
+    mutationFn:checkoutCartApi,
+    onSuccess:(data)=>{
+      console.log({Result:data})
+    }
+  })
+  
 
 
   if(isLoading||loadingDataCart){
@@ -185,6 +196,35 @@ data?.map(d=>d.price).reduce((accumulator, currentValue) => {
       </div> */}
       <button
       style={{display:'block','padding':'24px 1rem',borderRadius:'6px',backgroundColor:'#4EB573',color:'white',width:'605px',outline:'none',border:'none',margin:'1rem auto'}}
+      onClick={()=>{
+        // mutate
+        console.log({
+          dataAddedTOcart,
+          articleData:data
+        })
+        const dataCart = []
+        dataAddedTOcart?.map(d=>(
+          dataCart.push({
+            id:d.id,
+            price:d.price,
+            currency:'NGN',
+            quantity:1
+          })
+        ))
+        const user_id = decodeUser(token).user_id
+        const total_amount =dataAddedTOcart?.map(d=>d.price).reduce((accumulator, currentValue) => {
+          return accumulator + currentValue;
+        }, 0)+
+        data?.map(d=>d.price).reduce((accumulator, currentValue) => {
+          return accumulator + currentValue;
+        }, 0)
+        const result ={
+          cart_item:dataCart,
+          user_id,
+          total_amount
+        }
+        mutate(result)
+      }}
       >Checkout</button>
       {/* <PaymentDeclined/> */}
       {/* <PaymentSuccessful/> */}

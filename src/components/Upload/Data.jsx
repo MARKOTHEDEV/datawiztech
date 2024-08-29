@@ -27,7 +27,9 @@ const Data = ({ search }) => {
 
   const {isLoading,data} = useQuery({
     queryKey:'getDataApi',
-    queryFn:getDataApi
+    queryFn:getDataApi,
+    refetchInterval:false,
+    refetchOnWindowFocus:false
   })
 
   const {} = useMutation({

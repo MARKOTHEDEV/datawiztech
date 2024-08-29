@@ -25,6 +25,8 @@ const Article = ({ search=''}) => {
   const {data,isLoading,error} = useQuery({
     queryFn:getArticleApi,
     queryKey:'getArticleApi',
+    refetchInterval:false,
+    refetchOnWindowFocus:false
     // 'on'
 
   })

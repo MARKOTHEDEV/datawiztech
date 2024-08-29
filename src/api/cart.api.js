@@ -24,5 +24,8 @@ export const deleteCartApi = async ({article_id,user_id})=>{
     return response.data
 }
 
-
+export const checkoutCartApi = async (data)=>{
+    const response = await api.post(`/payments/checkout/`,data);
+    return response.data
+}
 // /api/v1/carts
