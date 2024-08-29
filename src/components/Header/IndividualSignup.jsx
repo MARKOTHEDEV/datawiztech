@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom"
 import countriesAndCodes from "../../hooks/countriesAndCodes";
 import { handleErrorPopUp } from "../../api/api";
 import countriesAndPhoneNumberCode from "../../hooks/countriesAndPhoneNumberCode";
+import PasswordStrengthChecker from "../PasswordChecker";
 
 const IndividualSignup = ({
   individualContent,
@@ -265,7 +266,7 @@ const IndividualSignup = ({
                 Email address
               </label>
             </div>
-            <div className="input__wrapper passinputcontainer mb-3">
+            {/* <div className="input__wrapper passinputcontainer mb-3">
               <input
                 type={passwordSee2?'text':"password"}
 
@@ -291,6 +292,17 @@ const IndividualSignup = ({
                 setPasswordSee2(!passwordSee2)
               }}
               ></i>
+            </div> */}
+
+            <div>
+              <PasswordStrengthChecker 
+              handleInputChange={handleInputChange}
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
+              formPassword={FormData.password}
+              name={'password'}
+              id={'individualpassword'}
+              />
             </div>
 
             <div className="input__wrapper passinputcontainer mb-3">

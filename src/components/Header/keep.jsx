@@ -222,7 +222,7 @@ const Header = () => {
                 <div className="signup-col-2 mb-4 login-acct">
                   <div className="signup-content">
                     <div className="login-text-container pt-3">
-                      <p className="signup-text">Sign Up</p>
+                      <p className="signup-text">Sign Ups</p>
                       <p onClick={toggleSignupForm}>
                         {" "}
                         <img

@@ -12,3 +12,12 @@
 .markomodalnav_link:hover{
     color: #4EB573;
 }
+
+.requirement {
+    color: red;
+  }
+  
+  .met {
+    color: green;
+    text-decoration: line-through;
+  }

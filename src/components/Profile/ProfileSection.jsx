@@ -12,6 +12,9 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ActionLoader from "../Loader/ActionLoader";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { decodeUser, handleErrorPopUp } from "../../api/api";
+import { getUserProfileApi, updateUserProfileApi } from "../../api/user.api";
 
 const ProfileSection = () => {
   const [profiledp, setProfileDp] = useState(
@@ -20,6 +23,47 @@ const ProfileSection = () => {
   const [image, setImage] = useState("");
   const [dpLoading, setDbLoading] = useState(false);
   const { currentUser, role, token } = UserAuth();
+
+
+  const handleChangeProfilePic = async (e) => {
+    e.preventDefault();
+    const user_id = decodeUser(token).user_id;
+    const form = new FormData();
+    form.append('user_id',`${user_id}`)
+    form.append('image',image)
+    mutate(form)
+  };
+
+  const {isLoading,data} = useQuery({
+    queryKey:'getUserProfileApi',
+    queryFn:()=>{
+    const user_id = decodeUser(token).user_id
+
+    return  getUserProfileApi({user_id})
+    },
+    refetchInterval:false,
+    refetchOnWindowFocus:false,
+    enabled: token?true:false
+  })
+
+  // if(isLoading){
+  //   return <ActionLoader />
+  // }
+  const client= useQueryClient()
+
+  const {mutate,isPending} =useMutation({
+    mutationFn:updateUserProfileApi,
+    'onSuccess':(data)=>{
+      toast.success('Profile Updated Successfully')
+    client.invalidateQueries('getUserProfileApi')
+
+      // client.invalidateQueries('getDataAddedToCart')
+    },
+    onError:(error)=>{
+      handleErrorPopUp(error)
+    }
+  })
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file.size > 1 * 1024 * 1024) {
@@ -27,88 +71,43 @@ const ProfileSection = () => {
       return;
     }
     setImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileDp(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onloadend = () => {
+    //     setProfileDp(reader.result);
+    //   };
+    //   reader.readAsDataURL(file);
+    // }
+
   };
-
-  const handleChangeProfilePic = async (e) => {
-    e.preventDefault();
-    const user = JSON.parse(localStorage.getItem("datawizuser"));
-    if (!image || !image.name) {
-      toast.error("Choose an image");
-      return;
-    }
-    setDbLoading(true);
-
-    try {
-      const pictureExtension = image.name.split(".").pop().toLowerCase();
-      const picFileName = `${pictureExtension}.${uuidv4()}-profile`;
-      const pictureStorageRef = ref(storage, `profilepic/${picFileName}`);
-      await uploadBytes(pictureStorageRef, image);
-
-      const pictureUrl = await getDownloadURL(pictureStorageRef);
-      const response = await axios.post(
-        "https://datawiztechapi.onrender.com/api/v1/update-picture",
-        { image: pictureUrl },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-
-      if (response && response.status === 200) {
-        const data = response.data;
-        toast.success(data.message);
-        setDbLoading(false);
-        if (user && typeof user === "object") {
-          user.image = pictureUrl;
-          localStorage.setItem("datawizuser", JSON.stringify(user));
-        }
-      } else {
-        toast.error(response.data.message);
-        setDbLoading(false);
-      }
-    } catch (error) {
-      console.log(error.message);
-      if (error && error.response && error.response.data) {
-        const err = error.response.data;
-        toast.error(err.message);
-      } else {
-        toast.error("Error Occured !");
-      }
-      setDbLoading(false);
-    } finally {
-      setDbLoading(false);
-    }
-  };
-
   return (
     <div className="container profile-bg">
       <div className="row">
         <div className="col-lg-4 profile-pic-col">
-          <div className="position-relative">
-            <input
-              type="file"
-              id="picture"
-              accept="image/*"
-              className="d-none"
-              onChange={handleImageChange}
-            />
-            <img
-              src={currentUser.image ?? profiledp}
-              alt=".."
-              className="profileimage"
-            />
-            <label htmlFor="picture">
-              <img src={cameraicon} alt=".." className="cameraicon" />
-            </label>
-          </div>
+          {isLoading?
+        <h2>Loading..</h2> :
+        <div className="position-relative">
+        <input
+          type="file"
+          id="picture"
+          accept="image/*"
+          className="d-none"
+          onChange={handleImageChange}
+        />
+        <img
+          src={
+            data?.image??profiledp
+            // currentUser.image ?? profiledp
+          }
+          alt=".."
+          className="profileimage"
+        />
+        <label htmlFor="picture">
+          <img src={cameraicon} alt=".." className="cameraicon" />
+        </label>
+      </div>
+        }
+
           <div
             className={`changeprofilepic mt-4 ${
               dpLoading
@@ -120,7 +119,7 @@ const ProfileSection = () => {
             }}
             onClick={handleChangeProfilePic}
           >
-            {dpLoading ? <ActionLoader /> : "Change profile picture"}
+            {isPending ? <ActionLoader /> : "Change profile picture"}
           </div>
         </div>
         <div className="col-lg-8">
