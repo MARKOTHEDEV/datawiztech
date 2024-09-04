@@ -98,7 +98,8 @@ const Cart = () => {
   const {isPending,mutate} = useMutation({
     mutationFn:checkoutCartApi,
     onSuccess:(data)=>{
-      console.log({Result:data})
+      // console.log({Result:data})
+      window.open(data.data.link,'_blank');
     }
   })
   
@@ -197,11 +198,7 @@ data?.map(d=>d.price).reduce((accumulator, currentValue) => {
       <button
       style={{display:'block','padding':'24px 1rem',borderRadius:'6px',backgroundColor:'#4EB573',color:'white',width:'605px',outline:'none',border:'none',margin:'1rem auto'}}
       onClick={()=>{
-        // mutate
-        console.log({
-          dataAddedTOcart,
-          articleData:data
-        })
+        
         const dataCart = []
         dataAddedTOcart?.map(d=>(
           dataCart.push({
@@ -219,13 +216,15 @@ data?.map(d=>d.price).reduce((accumulator, currentValue) => {
           return accumulator + currentValue;
         }, 0)
         const result ={
-          cart_item:dataCart,
+          items_id:dataCart.map(d=>d.id),
           user_id,
-          total_amount
+          total_amount,
+          currency:'NGN'
         }
+        // console.log({result})
         mutate(result)
       }}
-      >Checkout</button>
+      >{isPending?'Loading...':'Checkout'}</button>
       {/* <PaymentDeclined/> */}
       {/* <PaymentSuccessful/> */}
     </div>
