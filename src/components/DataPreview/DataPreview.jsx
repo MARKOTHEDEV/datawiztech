@@ -29,10 +29,13 @@ import toast from "react-hot-toast";
 import {useMediaQuery} from 'react-responsive'
 import { addDataToCartRightOne } from "../../api/data.api";
 import { UserAuth } from "../../useContext/useContext";
+import { SuccessModal } from "../DataSearch/Modal";
 // import NotFound from "./NotFound";
 
 const DataPreview = () => {
   // const [searchHistory, setHistory] = useState(false);
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const [cartItem, setCartItem] = useState([]);
   const {token} = UserAuth()
   const [currentSelectedData,setCurrentSelectedData] = useState(null)
@@ -59,7 +62,12 @@ const DataPreview = () => {
     mutationFn:addDataToCartRightOne,
     'onSuccess':(data)=>{
       setIsAddingCart(false)
-      toast.success('Item added to cart')
+      // toast.success(' added to cart')
+      setOpenSuc(true)
+      setSuc({
+        head:'Cart Added',
+        body:'Item added to cart succesfully'
+      })
       client.invalidateQueries('getDataAddedToCart')
       // on success
     },
@@ -121,7 +129,12 @@ const DataPreview = () => {
   };
   return (
     <div>
-
+ <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <Header active={"home"}/>
       <div className="container">
         <div>

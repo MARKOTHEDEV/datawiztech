@@ -10,6 +10,7 @@ import { coAuthorsOfArticleApi, updateArticleCoAuhorApi } from "../../api/articl
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useFieldArray, useForm } from "react-hook-form";
 import { decodeUser } from "../../api/api";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const PartnershipTableDropdown = ({ item, currentUser }) => {
   const profilepic =
@@ -28,7 +29,8 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
   })
 
 
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const {
     register,
     handleSubmit,
@@ -51,7 +53,12 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
     mutationFn:updateArticleCoAuhorApi,
     'onSuccess':(data)=>{
       setSaving(false)
-      toast.success("Saved Successfully")
+      // toast.success("")
+      setOpenSuc(true)
+      setSuc({
+        head:'Success',
+        body:'Saved Successfully'
+      })
       // setValue('coAuthors',[])
       // route('/upload')
     },
@@ -469,6 +476,13 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
           Save
         </div>
       </div>
+
+      <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
     </div>
   );
 };

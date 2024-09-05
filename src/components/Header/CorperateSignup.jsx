@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import countriesAndCodes from "../../hooks/countriesAndCodes";
 import { handleErrorPopUp } from "../../api/api";
 import countriesAndPhoneNumberCode from "../../hooks/countriesAndPhoneNumberCode";
+import { SuccessModal } from "../DataSearch/Modal";
 function isValidEmail(email) {
     const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return pattern.test(email);
@@ -28,7 +29,8 @@ const CorperateSignup = ({
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { saveTokenAndUserDetails, setToken } = UserAuth();
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -115,8 +117,12 @@ setLoading(true);
       // console.log(response)
       if (response && response.status === 201) {
         setLoading(false);
-      toast.success("Account created, please check for a verification mail");
-
+      // toast.success("");
+      setOpenSuc(true)
+      setSuc({
+        head:'Account Created',
+        body:'Account created, please check for a verification mail'
+      })
         // setToken(response.data.token);
         // localStorage.setItem("datawiztoken", response.data.token);
         // toast.success(response.data.message);
@@ -145,6 +151,13 @@ setLoading(true);
   };
   return (
     <div className={`cooperate-content ${cooperateContent ? "active" : ""}`}>
+  
+  <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       {cooperateContentA && (
         <div className="cooperateA pt-3">
           <div className="input__wrapper firstNameinputcontainer mb-3">

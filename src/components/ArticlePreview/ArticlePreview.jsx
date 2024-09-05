@@ -36,9 +36,12 @@ import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/re
 import { getArticleApi } from "../../api/article.api";
 import { decodeUser } from "../../api/api";
 import { addAriticleToCart } from "../../api/cart.api";
+import { SuccessModal } from "../DataSearch/Modal";
 // import NotFound from "./NotFound";
 
 const ArticlePreview = () => {
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const reload = () => {
     window.location.reload();
   };
@@ -106,7 +109,12 @@ const ArticlePreview = () => {
     onSuccess:(resp)=>{
       setCartLoading(false)
       // console.log({cartResp:resp})
-      toast.success('Article added to cart succesfully')
+      setOpenSuc(true)
+      setSuc({
+        head:'Cart Added',
+        body:'Article added to cart succesfully'
+      })
+      // toast.success('Article added to cart succesfully')
       client.invalidateQueries('getArticleCart')
       route('/cart')
     },
@@ -131,7 +139,12 @@ const ArticlePreview = () => {
         }
       );
       if (response.status === 200) {
-        toast.success("Article added to cart");
+        setOpenSuc(true)
+      setSuc({
+        head:'Cart Added',
+        body:'Article added to cart succesfully'
+      })
+        // toast.success("Article added to cart");
         // localStorage.setItem("datawizuser", JSON.stringify(response.data.user));
       } else if (response.status === 400) {
         toast.error("Bad request !");
@@ -180,6 +193,16 @@ const ArticlePreview = () => {
   }
   return (
     <div>
+      {
+        openSuc?
+      <SuccessModal 
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
+:''
+      }
       <Header active={active} />
       <div className="container">
         <div>

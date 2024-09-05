@@ -18,6 +18,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { createArticleApi } from "../../api/article.api";
 import { decodeUser, findDuplicateEmails, handleErrorPopUp } from "../../api/api";
+import { SuccessModal } from "../DataSearch/Modal";
 function validateEmail(email) {
   const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
   return re.test(email);
@@ -57,7 +58,8 @@ const UploadArticle = () => {
   const [articleLoading, setArticleLoading] = useState(false);
   const [coAuthors, setCoAuthors] = useState([]);
   const fileInputRef = useRef(null);
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const [fileupload, setFileUpload] = useState("");
   const [article, setArticle] = useState({});
   const [showFile, setShowFile] = useState(false);
@@ -201,7 +203,12 @@ const error =null
     'onSuccess':(data)=>{
       setCreating(false)
       setArticleLoading(false)
-      toast.success("Article created")
+      // toast.success("Article created")
+      setOpenSuc(true)
+      setSuc({
+        head:'Article',
+        body:'Article created'
+      })
       client.invalidateQueries('getArticleApi')
       route('/upload')
     },
@@ -416,6 +423,12 @@ const error =null
   }
   return (
     <div>
+         <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <Header active={active} />
       <div className="container">
         <nav aria-label="breadcrumb">

@@ -15,6 +15,7 @@ import ActionLoader from "../Loader/ActionLoader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { decodeUser, handleErrorPopUp } from "../../api/api";
 import { getUserProfileApi, updateUserProfileApi } from "../../api/user.api";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const ProfileSection = () => {
   const [profiledp, setProfileDp] = useState(
@@ -23,7 +24,8 @@ const ProfileSection = () => {
   const [image, setImage] = useState("");
   const [dpLoading, setDbLoading] = useState(false);
   const { currentUser, role, token } = UserAuth();
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
 
   const handleChangeProfilePic = async (e) => {
     e.preventDefault();
@@ -54,7 +56,12 @@ const ProfileSection = () => {
   const {mutate,isPending} =useMutation({
     mutationFn:updateUserProfileApi,
     'onSuccess':(data)=>{
-      toast.success('Profile Updated Successfully')
+      // toast.success('Profile Updated Successfully')
+      setOpenSuc(true)
+      setSuc({
+        head:'Profile',
+        body:'Profile Updated Successfully'
+      })
     client.invalidateQueries('getUserProfileApi')
 
       // client.invalidateQueries('getDataAddedToCart')
@@ -82,6 +89,12 @@ const ProfileSection = () => {
   };
   return (
     <div className="container profile-bg">
+        <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <div className="row">
         <div className="col-lg-4 profile-pic-col">
           {isLoading?

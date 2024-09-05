@@ -11,6 +11,7 @@ import ActionLoader from "../Loader/ActionLoader";
 import axios from "axios";
 import nextIcon from "../../assets/images/icon-color-ZJR.png";
 import prevIcon from "../../assets/images/icon-color-GLh.png";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const TablePreview = ({ cartItem, setCartItem, searchTerm }) => {
   let { id } = useParams();
@@ -21,7 +22,8 @@ const TablePreview = ({ cartItem, setCartItem, searchTerm }) => {
   const [selectedQuarter, setSelectedQuarter] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
   const [selectedDay, setSelectedDay] = useState("");
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const Navigate = useNavigate();
   const { currentUser, token, setCartLength, cartLength } = UserAuth();
   const truncateText = (text, maxLength) => {
@@ -92,7 +94,12 @@ const TablePreview = ({ cartItem, setCartItem, searchTerm }) => {
       );
 
       if (response.status === 200) {
-        toast.success(response.data.message);
+        // toast.success(response.data.message);
+        setOpenSuc(true)
+        setSuc({
+          head:'Table Preview',
+          body:response.data.message
+        })
         showChat(response.data.chat);
         Navigate(`/profile/messages?chat=${userId}`);
       } else {
@@ -245,7 +252,12 @@ const TablePreview = ({ cartItem, setCartItem, searchTerm }) => {
         }
       );
       if (response.status === 200) {
-        toast.success("Data added to cart");
+        // toast.success();
+        setOpenSuc(true)
+        setSuc({
+          head:'Cart',
+          body:"Data added to cart"
+        })
         setCartLength(cartLength + 1);
         setCartItem([]);
         setSelectedItems([]);
@@ -401,6 +413,12 @@ const TablePreview = ({ cartItem, setCartItem, searchTerm }) => {
 
   return (
     <div className="tablepreview py-4  mb-5 ">
+       <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <div className="preview-heading">
         <div className="periodicity">
           Periodicity: <span>{filtered.periodicity ?? ""}</span>

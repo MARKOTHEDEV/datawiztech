@@ -19,9 +19,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { checkoutCartApi, deleteCartApi, getArticleCartApi } from "../../api/cart.api";
 import { decodeUser } from "../../api/api";
 import { getDataAddedToCart, removeDataFromCart } from "../../api/data.api";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const Cart = () => {
   const { token } = UserAuth();
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const [showDecline, setShowDecline] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -54,7 +57,12 @@ const Cart = () => {
       });
 
       if (response.status === 200) {
-        toast.success(response.data.message);
+        // toast.success(response.data.message);
+        setOpenSuc(true)
+        setSuc({
+          head:'Cart',
+          body:response.data.message
+        })
         console.log(response.data.redirect_url);
 
         window.location.href = response.data.redirect_url;
@@ -111,6 +119,12 @@ const Cart = () => {
   // console.log({dataAddedTOcart})
   return (
     <div>
+      <SuccessModal 
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <Header active="home" />
       <div className="container-fluid">
         <div className="container">
@@ -239,7 +253,8 @@ const ArticleCart = ({product_type ='Data',price,title,id,cartData=null})=>{
   const [isLoading,setIsLoading] = useState(false);
   const { token } = UserAuth();
   const client = useQueryClient()
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   // let [searchParams, setSearchParams] = useSearchParams();
 
   const  {mutate:deleteCart} = useMutation({
@@ -248,7 +263,12 @@ const ArticleCart = ({product_type ='Data',price,title,id,cartData=null})=>{
       setIsLoading(false)
       client.invalidateQueries('getArticleCartApi')
       console.log({resp})
-      toast.success("Article removed from cart successfully");
+      setOpenSuc(true)
+        setSuc({
+          head:'Article',
+          body:"Article removed from cart successfully"
+        })
+      // toast.success("Article removed from cart successfully");
       //
     },
     onError:(err)=>{
@@ -263,7 +283,12 @@ const ArticleCart = ({product_type ='Data',price,title,id,cartData=null})=>{
       setIsLoading(false)
       client.invalidateQueries('getDataAddedToCart')
       // console.log({resp})
-      toast.success("Data removed from cart successfully");
+      // toast.success("Data removed from cart successfully");
+      setOpenSuc(true)
+        setSuc({
+          head:'Article',
+          body:"Data removed from cart successfully"
+        })
       //
     },
     onError:(err)=>{
@@ -276,6 +301,12 @@ const ArticleCart = ({product_type ='Data',price,title,id,cartData=null})=>{
   
   return (
     <div className="cart-box mb-3">
+      <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
     <div className="d-flex align-items-center">
       <div className="cart-title" 
       // onClick={() => toggleDropDown(index)}

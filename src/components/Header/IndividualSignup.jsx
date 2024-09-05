@@ -7,6 +7,7 @@ import countriesAndCodes from "../../hooks/countriesAndCodes";
 import { handleErrorPopUp } from "../../api/api";
 import countriesAndPhoneNumberCode from "../../hooks/countriesAndPhoneNumberCode";
 import PasswordStrengthChecker from "../PasswordChecker";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const IndividualSignup = ({
   individualContent,
@@ -16,6 +17,8 @@ const IndividualSignup = ({
   signupToggle,
 }) => {
   const Navigate = useNavigate()
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const [loading, setLoading] = useState(false);
   const { createIndividualAuth } = UserAuth();
   const [formData, setFormData] = useState({
@@ -82,7 +85,12 @@ const IndividualSignup = ({
       // console.log(response)
       if (response.status === 201) {
         setLoading(false);
-        toast.success(response.message)
+        // toast.success()
+         setOpenSuc(true)
+      setSuc({
+        head:'Sign up',
+        body:response.message
+      })
         signupToggle(formData.email)
         setFormData({
           first_name: "",
@@ -108,6 +116,12 @@ const IndividualSignup = ({
 
   return (
     <>
+     <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
         <form onSubmit={handleSignup}>
           <div
             className={`individual-content ${

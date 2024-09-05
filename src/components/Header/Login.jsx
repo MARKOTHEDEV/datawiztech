@@ -12,6 +12,7 @@ import { BASE_URL, decodeUser, handleErrorPopUp, removeAllQueryParam } from '../
 // import { useMutation } from "react-query";
 import { resetPasswordApi, sendForgotPasswordVerificationEmail } from "../../api/user.api";
 import { useMutation } from "@tanstack/react-query";
+import { SuccessModal } from "../DataSearch/Modal";
 // import { BASE_URL } from "../../api/api";
 
 // import { Link } from "react-router-dom";
@@ -42,6 +43,8 @@ const Login = ({
 }) => {
   const { saveTokenAndUserDetails,setIsAuthenticated ,setLoginDrop} = UserAuth();
   const Navigate = useNavigate();
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const [otp, setOtp] = useState("");
   const [showPassword, setshowPassword] = useState(false);
   const [showPasswordPassword, setShowPasswordPassword] = useState(false);
@@ -85,9 +88,13 @@ const Login = ({
     onSuccess:()=>{
       setResetLoading(false)
       toggleLogin();
-      toast.success('Password Reset Successful')
+      // toast.success('Password Reset Successful')
 
-
+      setOpenSuc(true)
+      setSuc({
+        head:'Login',
+        body:'Password Reset Successful'
+      })
     },
     onError:(error)=>{
       setResetLoading(false)
@@ -209,7 +216,12 @@ const Login = ({
         )
         setLoginLoading(false);
         setLoginDrop(false)
-        toast.success('Login successful')
+        // toast.success('')
+        setOpenSuc(true)
+        setSuc({
+          head:'Login',
+          body:'Login successful'
+        })
         toggleLoginForm(false);
         Navigate('/profile')
         return 
@@ -314,7 +326,12 @@ const Login = ({
       console.log(response);
       if (response && response.status === 200) {
         const data = response.data;
-        toast.success(data.message);
+        // toast.success();
+        setOpenSuc(true)
+        setSuc({
+          head:'Login',
+          body:data.message
+        })
         setSendOtpLoading(false);
         toggleOtp();
 
@@ -354,7 +371,12 @@ const Login = ({
       // console.log(response);
       if (response && response.status === 200) {
         const data = response.data;
-        toast.success(data.message);
+        // toast.success(data.message);
+         setOpenSuc(true)
+        setSuc({
+          head:'Login',
+          body:data.message
+        })
         setVerifyOtpLoading(false);
         toggleResetPassword();
         return;
@@ -384,6 +406,12 @@ const Login = ({
         isLoginFormOpen || loginDropdown ? "open" : ""
       }`}
     >
+         <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <div className="container">
         <div className="row">
           <div className="col-lg-3"></div>

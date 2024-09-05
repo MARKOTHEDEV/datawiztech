@@ -356,7 +356,7 @@ const ModalNav =()=>{
         onClick={e=>{
           // route
           if(window.location.pathname==='/search/data/result/'){
-            toast.success('Clicked')
+            // toast.success('Clicked')
             // setOpen(true)
             if(onClickData){
               onClickData({
@@ -365,7 +365,7 @@ const ModalNav =()=>{
             }
             // setCurrentData(data)
           }else{
-            toast.success('Rounte Clicked')
+            // toast.success('Rounte Clicked')
 
             route(`/search/data/result/?searchTerm=${searchTerm}`)
           }

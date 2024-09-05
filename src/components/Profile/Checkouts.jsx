@@ -12,6 +12,7 @@ import ActionLoader from "../Loader/ActionLoader";
 import { UserAuth } from "../../useContext/useContext";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const Checkouts = () => {
   // download/:checkoutId/:productId
@@ -22,7 +23,8 @@ const Checkouts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
   const [requestLoading, setRequestLoading] = useState(false);
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const downloadData = async (downloadId) => {
     setRequestLoading(true);
     try {
@@ -40,7 +42,12 @@ const Checkouts = () => {
       if (response.status === 200) {
         // setBtnStatus("Download Url");
         console.log(response.data);
-        toast.success(response.data.message);
+        // toast.success(response.data.message);
+        setOpenSuc(true)
+        setSuc({
+          head:'Success',
+          body:response.data.message
+        })
       } else {
         toast.error("Error Occured !");
       }
@@ -90,6 +97,12 @@ const Checkouts = () => {
 
   return (
     <div className="py-5">
+          <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <div className="row">
         {checkouts.map((product, index) => (
           <div className="col-lg-4" key={index}>

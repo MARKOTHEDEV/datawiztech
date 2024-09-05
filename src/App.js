@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Home from "./components/Home/Home";
 import { Routes, Route } from "react-router-dom";
@@ -32,9 +32,15 @@ import Payment from "./components/Payment/Payment";
 import EmailLoader from "./components/Header/Email/EmailLoader";
 import './index.css'
 import TestApp from "./TestApp";
+import CustomModal from "./components/DataSearch/Modal";
+import { IoMdCheckmarkCircle } from "react-icons/io";
+
 function App() {
+  const [open,setOpen] = useState(false)
+
   return (
     <div className="App">
+
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/test" element={<TestApp />} />

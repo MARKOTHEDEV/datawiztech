@@ -10,8 +10,11 @@ import axios from "axios";
 import { UserAuth } from "../../useContext/useContext";
 import ActionLoader from "../Loader/ActionLoader";
 import SearchTerms from "../DataSearch/SearchTerms";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const SearchBox = () => {
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const [searchHistory, setHistory] = useState(false);
   const [filterBtn, setFilterBtn] = useState(false);
   const [filter, setFilter] = useState(false);
@@ -38,7 +41,12 @@ const SearchBox = () => {
         search: search,
       });
       if (response.status === 200) {
-        toast.success(response.data.message);
+        // toast.success(response.data.message);
+        setOpenSuc(true)
+        setSuc({
+          head:'Success',
+          body:response.data.message
+        })
         setSearchTerm(searchTerm);
         Navigate(`/search?searchTerm=${search}`);
         window.location.reload();
@@ -85,6 +93,12 @@ const SearchBox = () => {
   };
   return (
     <div>
+            <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <div className="row">
         <div className="col-lg-2"></div>
         <div className="col-lg-8 search-box-container">

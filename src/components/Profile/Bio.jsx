@@ -7,9 +7,12 @@ import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { decodeUser, handleErrorPopUp } from "../../api/api";
 import { getUserProfileApi, updateUserProfileApi } from "../../api/user.api";
+import { SuccessModal } from "../DataSearch/Modal";
 
 const Bio = () => {
   const navigate = useNavigate();
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
   const [bioLoading, setBioLoading] = useState(false);
   const { currentUser, token } = UserAuth();
   const [profileData, setProfileData] = useState({
@@ -21,7 +24,12 @@ const Bio = () => {
     mutationFn:updateUserProfileApi,
     'onSuccess':(data)=>{
       setBioLoading(false)
-      toast.success('Profile Updated Successfully')
+      // toast.success('Profile Updated Successfully')
+      setOpenSuc(true)
+      setSuc({
+        head:'Profile Update',
+        body:'Profile Updated Successfully'
+      })
       // client.invalidateQueries('getDataAddedToCart')
     },
     onError:(error)=>{
@@ -96,6 +104,12 @@ const Bio = () => {
   }
   return (
     <div>
+       <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
       <div className="row">
         <div className="col-lg-6">
           <div className="shopping-cart pt-3 pb-4">Update Profile</div>

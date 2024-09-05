@@ -15,6 +15,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { decodeUser } from "../../api/api";
 import { validateAndSaveDataApi } from "../../api/data.api";
 import { useMutation } from "@tanstack/react-query";
+import { SuccessModal } from "../DataSearch/Modal";
 
 // const TruncatedCell = ({ value, maxWords }) => {
 //   if (!value) return null;
@@ -66,14 +67,20 @@ const UploadDataTable = ({
   const { fields, append, } = useFieldArray({control,name:'tableList'})
   const { token, currentUser ,} = UserAuth();
   const route = useNavigate()
-
+  const [openSuc,setOpenSuc] = useState(false)
+  const [suc,setSuc] = useState({head:'',body:''})
 
   const {mutate} = useMutation({
     mutationFn:validateAndSaveDataApi,
     onSuccess:(resp)=>{
     setIsloading(false)
     clearErrors('tableList')
-    toast.success('Data Uploaded Successfully')
+    // toast.success('')
+    setOpenSuc(true)
+    setSuc({
+      head:'Data Upload',
+      body:'Data Uploaded Successfully'
+    })
     route('/upload')
       // console.log({resp})
     },
@@ -124,7 +131,8 @@ const UploadDataTable = ({
 
   const validateAll =()=>{
     if(!(checkBox.approval&&checkBox.terms)){
-      toast.success('Please check the terms and approval boxes')
+     
+      toast.error('Please check the terms and approval boxes')
       return 
     }
     const values = getValues();
@@ -138,6 +146,12 @@ const UploadDataTable = ({
   }
   return (
     <div>
+          <SuccessModal
+      open={openSuc}
+      setOpen={setOpenSuc}
+      body={suc.body}
+      head={suc.head}
+      />
 <div>
     <div className="container-fluid upload-table-box p-lg-5 p-3">
         <div  className="upload-data-table-container">
