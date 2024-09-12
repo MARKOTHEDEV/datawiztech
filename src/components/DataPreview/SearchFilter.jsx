@@ -207,7 +207,7 @@ const countries = [
   {"name": "Zimbabwe", "short_name": "ZWE"}
 ]
 
-const SearchFilter = ({setSearchTerm, searchTerm}) => {
+const SearchFilter = ({setSearchTerm, searchTerm,onSetFilter}) => {
   const [countryName,setCountryName]= useState(null);
   const [yearSelect,setYearSelect] = useState([
     {id:'11',label:'1971',value:'1971'}
@@ -288,6 +288,9 @@ for (let year = 1960; year <= 2024; year++) {
         }))
         toast.success('Filter Set')
         setOpen(false)
+        if(onSetFilter){
+          onSetFilter()
+        }
       }}
       >Filter</div>
   

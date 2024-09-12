@@ -127,6 +127,23 @@ const DataPreview = () => {
     }
     return `${text.substr(0, maxLength)}...`;
   };
+  const getTable = (clickedData)=>{
+                
+    let  dataFilter = JSON.parse(localStorage.getItem('data-filter'))
+    console.log({dataFilter,'selected':clickedData.selectedD.indicator_code})
+  setLoading(true)
+  const dataM ={
+    year_list:dataFilter.yearSelect.map(d=>parseInt(d.value)),
+    start_year:0,
+    end_year:0,
+    countries:dataFilter.countryName.map(d=>d.value),
+    indicator_code:clickedData.selectedD.indicator_code
+  }
+  // console.log({})
+  setCurrentSelectedData(dataM)
+  localStorage.setItem('currentIndicatorCode',clickedData.selectedD.indicator_code)
+  mutate(dataM)
+  }
   return (
     <div>
  <SuccessModal
@@ -158,7 +175,19 @@ const DataPreview = () => {
             </ol>
           </nav>
         </div>
-        <SearchFilter setSearchTerm={setSearchParams} searchTerm={searchTerm} />
+        <SearchFilter setSearchTerm={setSearchParams} 
+        
+        searchTerm={searchTerm}
+        onSetFilter={()=>{
+          let clickedData = localStorage.getItem('datacard');
+          if(clickedData){
+            clickedData= JSON.parse(clickedData)
+          getTable(clickedData)
+
+          }
+          
+        }}
+        />
         {/* <NotFound /> */}
       </div>
       {/* <div className="container-fluid pt-4">
@@ -208,21 +237,7 @@ const DataPreview = () => {
                 //   countries:[],
                 //   indicator_code:clickedData.selectedD.indicator_code
                 // })
-            
-              let  dataFilter = JSON.parse(localStorage.getItem('data-filter'))
-                  console.log({dataFilter,'selected':clickedData.selectedD.indicator_code})
-                setLoading(true)
-                const dataM ={
-                  year_list:dataFilter.yearSelect.map(d=>parseInt(d.value)),
-                  start_year:0,
-                  end_year:0,
-                  countries:dataFilter.countryName.map(d=>d.value),
-                  indicator_code:clickedData.selectedD.indicator_code
-                }
-                // console.log({})
-                setCurrentSelectedData(dataM)
-                localStorage.setItem('currentIndicatorCode',clickedData.selectedD.indicator_code)
-                mutate(dataM)
+                getTable(clickedData)
               }}
               responseData={
                 data?.data_bank?data.data_bank:[]
