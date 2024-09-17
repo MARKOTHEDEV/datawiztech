@@ -110,8 +110,16 @@ const UploadDataTable = ({
     // console.log({user:decodeUser(token)})
     data.data_by_country.map((d,index)=>{
         const eachDataKeys= Object.keys(d)
+
         console.log(eachDataKeys)
-        setHeaders(eachDataKeys)
+        if(isNaN(eachDataKeys[0])){
+          setHeaders(eachDataKeys)
+        }else{
+          setHeaders(eachDataKeys.reverse())
+
+
+        }
+        
         eachDataKeys.map(eachKey=>{
         setValue(`tableList.${index}.${eachKey}`,d[eachKey])
             
