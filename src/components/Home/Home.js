@@ -15,23 +15,53 @@ import { UserAuth } from '../../useContext/useContext';
 
 
 
-function FileConverter(fileData) {
-  // const fileData = localStorage.getItem('blob'); // The string data
-    // Create a Blob from the string data
-    const blob = new Blob([fileData], { type: 'application/octet-stream' });
+// function FileConverter(fileData) {
+//   // const fileData = localStorage.getItem('blob'); // The string data
+//     // Create a Blob from the string data
+//     const blob = new Blob([fileData], { type: 'application/octet-stream' });
 
-    // Create a link element
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
+//     // Create a link element
+//     const link = document.createElement('a');
+//     link.href = URL.createObjectURL(blob);
 
-    // Set the file name and trigger download
-    link.download = 'file.xlsx'; // Change the file name and extension as required
-    link.click();
+//     // Set the file name and trigger download
+//     link.download = 'file.xlsx'; // Change the file name and extension as required
+//     link.click();
 
-    // Clean up the URL object
-    URL.revokeObjectURL(link.href);
+//     // Clean up the URL object
+//     URL.revokeObjectURL(link.href);
   
+// }
+function FileConverter(fileData) {
+  // Try to determine the MIME type from the fileData or set a default
+  let mimeType = '';
+  
+  if (fileData.startsWith('data:')) {
+    // Extract MIME type from base64 string, if present
+    mimeType = fileData.split(';')[0].split(':')[1];
+  } else {
+    // Fallback to a default binary type if no MIME type is found
+    mimeType = 'application/octet-stream';
+  }
+
+  // Create a Blob from the fileData
+  const blob = new Blob([fileData], { type: mimeType });
+
+  // Create a link element for downloading
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+
+  // Set file name and extension dynamically
+  const extension = mimeType.split('/')[1] || 'txt'; // Extract extension from MIME type or fallback to .txt
+  link.download = `file.${extension}`; // Set the file name dynamically
+
+  // Trigger download
+  link.click();
+
+  // Clean up the URL object
+  URL.revokeObjectURL(link.href);
 }
+
 
 export const dowloadApiLinksV2 = async({idAndDownloadType,token})=>{
 
