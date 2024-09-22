@@ -75,7 +75,7 @@ const Article = ({articles}) => {
         <div className="px-2 py-1 active">
           <div className="search-result-card active">
             <Link
-              to={`/search/article/result/${data._id}`}
+              to={`/search/article/result?id=${data.id}`}
               className="search-card-title pb-3"
             >
               {data.title}
@@ -94,7 +94,7 @@ const Article = ({articles}) => {
                 }}
               >
                 <div class="search-profile-menu py-2">
-                  {data.partnership.map((partner, index) => (
+                  {data?.partnership?.map((partner, index) => (
                     <Link to="#" class="search-dropdown-item" key={index}>
                       <div class="search-dropdown-pic">
                         <img
@@ -130,7 +130,7 @@ const Article = ({articles}) => {
                     />
                   </div>
                   <div class="search-card-pic-num">
-                    {data.partnership.length}
+                    {data?.partnership?.length}
                   </div>
                 </div>
                 <div class="search-card-name">
@@ -164,13 +164,13 @@ const Article = ({articles}) => {
             <div className="d-flex justify-content-between pt-3">
               <div className="search-card-star">
                 <div>
-                  {[...Array(Math.floor(data.rating))].map((_, index) => (
+                  {[...Array(Math.floor(data?.rating||0))].map((_, index) => (
                     <GoStarFill key={index} size={20} color="#4eb473" />
                   ))}
                   {data.rating % 1 !== 0 && (
                     <FaRegStarHalfStroke size={20} color="#4eb473" />
                   )}
-                  {[...Array(5 - Math.ceil(data.rating))].map((_, index) => (
+                  {[...Array(5 - Math.ceil(data.rating||0))].map((_, index) => (
                     <GoStarFill key={index} size={20} color="#e0e0e0" />
                   ))}
                 </div>

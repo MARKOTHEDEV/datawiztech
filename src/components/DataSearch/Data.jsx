@@ -132,6 +132,7 @@ const ModalNav =()=>{
         return 
       }
       if(onClickData){
+
         localStorage.setItem('data-filter',JSON.stringify({
           countryName,
           yearSelect,
@@ -154,8 +155,11 @@ const ModalNav =()=>{
 useEffect(()=>{
   if(onClickData){
     try{
-      const d = responseData[0]
-      localStorage.setItem('datacard',JSON.stringify({selectedD:d}));
+      if(!localStorage.getItem('datacard')){
+          const d = responseData[0]
+          localStorage.setItem('datacard',JSON.stringify({selectedD:d}));
+      }
+    
     }catch{
       //
     }
@@ -168,10 +172,13 @@ useEffect(()=>{
         
         onClick={e=>{
           // route
+          localStorage.setItem('currentIndicatorCode',data.indicator_code)
+
           if(window.location.pathname==='/search/data/result/'){
             // toast.success('Clicked')
             // setOpen(true)
             if(onClickData){
+
               onClickData({
                 selectedD:data
               })
@@ -185,7 +192,7 @@ useEffect(()=>{
         }}
         >
           {/* currentIndicatorCode */}
-          {}
+       
           <div className="search-result-card active"
           style={{
             border:localStorage.getItem('currentIndicatorCode')===data.indicator_code? '1px solid #4eb473':'',

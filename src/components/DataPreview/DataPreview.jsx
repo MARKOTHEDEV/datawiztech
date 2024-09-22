@@ -36,7 +36,7 @@ const DataPreview = () => {
   // const [searchHistory, setHistory] = useState(false);
   const [openSuc,setOpenSuc] = useState(false)
   const [suc,setSuc] = useState({head:'',body:''})
-  const [cartItem, setCartItem] = useState([]);
+  const [dataResp, setDataResp] = useState([]);
   const {token} = UserAuth()
   const [currentSelectedData,setCurrentSelectedData] = useState(null)
   // const [searchTermState, setSearchTerm] = useState("")
@@ -52,10 +52,18 @@ const DataPreview = () => {
     queryKey:['getSearchResults',searchTerm],
     refetchInterval:false,
     refetchOnWindowFocus:false,
-    enabled:typeof searchTerm=='string'
+    enabled:typeof searchTerm=='string',
+   
     // 'on'
 
   })
+  useEffect(()=>{
+    setDataResp(
+      data?.data_bank?data.data_bank:[]
+    )
+        
+
+  },[data])
   const client = useQueryClient();
   const [isAddingCart,setIsAddingCart] = useState(false);
   const {mutate:addDataToCart,} =useMutation({
@@ -141,7 +149,14 @@ const DataPreview = () => {
   }
   // console.log({})
   setCurrentSelectedData(dataM)
-  localStorage.setItem('currentIndicatorCode',clickedData.selectedD.indicator_code)
+  if(!localStorage.getItem('currentIndicatorCode')){
+    localStorage.setItem('currentIndicatorCode',clickedData.selectedD.indicator_code)
+
+  }
+  const currentIndicatorCode =localStorage.getItem('currentIndicatorCode');
+  const itemToMove = dataResp.find(item => item.id === currentIndicatorCode);
+  const remainingItems = dataResp.filter(item => item.id !== currentIndicatorCode);
+  setDataResp([itemToMove, ...remainingItems]);
   mutate(dataM)
   }
   return (
@@ -240,7 +255,8 @@ const DataPreview = () => {
                 getTable(clickedData)
               }}
               responseData={
-                data?.data_bank?data.data_bank:[]
+                dataResp
+                // data?.data_bank?data.data_bank:[]
               } />
 
               </div>

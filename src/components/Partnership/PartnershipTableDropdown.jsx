@@ -381,8 +381,10 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
                 // onChange={(e) =>{
                   // handleCoAuthorChange(index, "percentage", e.target.value)
                 // }
-                {...register(`coAuthors.${index}.email`)}
-
+                {...register(`coAuthors.${index}.email`,)}
+                disabled={
+                   w['coAuthors'][index]['role']==='Author'
+                }
               />
               <label
                 htmlFor={`percentage-${index}`}
@@ -408,7 +410,7 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
                     // {...register(`coAuthors.${index}.role`,{
                       
                     // })}
-
+                    disabled={true}
                   />
                   <label
                     htmlFor={`percentage-${index}`}
@@ -457,7 +459,9 @@ const PartnershipTableDropdown = ({ item, currentUser }) => {
       <div
         className="add-another-author"
         style={{ cursor: "pointer" }}
-        onClick={()=>append({})}
+        onClick={()=>append({
+          'role':'Co-author'
+        })}
       >
         Add another author
       </div>
