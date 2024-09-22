@@ -20,6 +20,7 @@ import { checkoutCartApi, deleteCartApi, getArticleCartApi } from "../../api/car
 import { decodeUser } from "../../api/api";
 import { getDataAddedToCart, removeDataFromCart } from "../../api/data.api";
 import { SuccessModal } from "../DataSearch/Modal";
+import { dowloadApiLinks, dowloadApiLinksV2 } from "../Home/Home";
 
 const Cart = () => {
   const { token } = UserAuth();
@@ -219,7 +220,17 @@ data?.map(d=>d.price).reduce((accumulator, currentValue) => {
             id:d.id,
             price:d.price,
             currency:'NGN',
-            quantity:1
+            quantity:1,
+            type:'data'
+          })
+        ))
+        data?.map(d=>(
+          dataCart.push({
+            id:d.id,
+            price:d.price,
+            currency:'NGN',
+            quantity:1,
+            type:'article'
           })
         ))
         const user_id = decodeUser(token).user_id
@@ -235,8 +246,14 @@ data?.map(d=>d.price).reduce((accumulator, currentValue) => {
           total_amount,
           currency:'NGN'
         }
-        // console.log({result})
+        // console.log({dataCart})
+        if(total_amount===0){
+          dowloadApiLinksV2({token,'idAndDownloadType':dataCart})
+          
+        }else{
         mutate(result)
+
+        }
       }}
       >{isPending?'Loading...':'Checkout'}</button>
       {/* <PaymentDeclined/> */}

@@ -33,8 +33,45 @@ function FileConverter(fileData) {
   
 }
 
+export const dowloadApiLinksV2 = async({idAndDownloadType,token})=>{
 
+  const user_id = decodeUser(token).user_id
+  const urlPromises = idAndDownloadType.map(item=>{
+    if(item.type === 'data'){
+      return  api.get(`/payments/download-data/${item.id}`)
+    }else{
+      return  api.get(`/payments/download-article/${item.id}`)
+    }
+  })
+  const results = await Promise.all(urlPromises);
+  results.map(d=>{
+    // console.log({'the D':d.data})
+    FileConverter(d.data)
+  })
+}
+export const dowloadApiLinks = async(token) =>{
+  // {user_id}
 
+  const user_id = decodeUser(token).user_id
+    try{
+      const resp = await axios.get(`https://datawiztech-backend.onrender.com/api/v1/payments/fetch-download-links/${user_id}`,{
+        headers:{
+          "Content-Type":'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        }
+      });
+      console.log(resp.data);
+      const urlPromises = resp.data.download_urls.map(url=> api.get(url));
+      const results = await Promise.all(urlPromises);
+      console.log(results)
+      results.map(d=>{
+        console.log({'the D':d.data})
+        FileConverter(d.data)
+      })
+    }catch(err){
+      //
+    }
+
+}
 const Home = () => {
   const [active, setActive] = useState("home");
   const [loading, setLoading] = useState(true);
@@ -49,33 +86,11 @@ const Home = () => {
 
     return () => clearTimeout(timeout);
   }, []);
-  const dowloadApiLinks = async() =>{
-    // {user_id}
-
-    const user_id = decodeUser(token).user_id
-      try{
-        const resp = await axios.get(`https://datawiztech-backend.onrender.com/api/v1/payments/fetch-download-links/${user_id}`,{
-          headers:{
-            "Content-Type":'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-          }
-        });
-        console.log(resp.data);
-        const urlPromises = resp.data.download_urls.map(url=> api.get(url));
-        const results = await Promise.all(urlPromises);
-        console.log(results)
-        results.map(d=>{
-          console.log({'the D':d.data})
-          FileConverter(d.data)
-        })
-      }catch(err){
-        //
-      }
-
-  }
+  
   useEffect(()=>{
     const idForPayment = searchParams.get('id');
     if(idForPayment){
-      dowloadApiLinks({user_id:idForPayment});
+      dowloadApiLinks(token);
     }
 
 
