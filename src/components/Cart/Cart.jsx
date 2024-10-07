@@ -306,7 +306,7 @@ const ArticleCart = ({product_type ='Data',price,title,id,cartData=null})=>{
       // toast.success("Data removed from cart successfully");
       setOpenSuc(true)
         setSuc({
-          head:'Article',
+          head:'Data',
           body:"Data removed from cart successfully"
         })
       //
