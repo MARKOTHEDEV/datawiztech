@@ -56,7 +56,8 @@ const UpdateCart = ({ cartIcon }) => {
     return  getArticleCartApi({user_id})
     },
     refetchInterval:false,
-    refetchOnWindowFocus:false
+    refetchOnWindowFocus:false,
+    retry:1
   })
   const {isLoading:loadingDataCart,data:dataAddedTOcart} = useQuery({
     queryKey:'getDataAddedToCart',
@@ -66,7 +67,9 @@ const UpdateCart = ({ cartIcon }) => {
     return  getDataAddedToCart({user_id})
     },
     refetchInterval:false,
-    refetchOnWindowFocus:false
+    refetchOnWindowFocus:false,
+    retry:1
+
   })
     if (isLoading||loadingDataCart) {
     return <ComponentLoader />;

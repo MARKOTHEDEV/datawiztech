@@ -91,7 +91,8 @@ const Cart = () => {
     return  getArticleCartApi({user_id})
     },
     refetchInterval:false,
-    refetchOnWindowFocus:false
+    refetchOnWindowFocus:false,
+    retry:1
   })
 
   const {isLoading:loadingDataCart,data:dataAddedTOcart} = useQuery({
@@ -102,7 +103,9 @@ const Cart = () => {
     return  getDataAddedToCart({user_id})
     },
     refetchInterval:false,
-    refetchOnWindowFocus:false
+    refetchOnWindowFocus:false,
+    retry:1
+
   })
   const {isPending,mutate} = useMutation({
     mutationFn:checkoutCartApi,

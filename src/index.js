@@ -10,7 +10,16 @@ import ErrorBoundary from "./components/ErrorPage/ErrorBoundary";
 import Error from "./components/ErrorPage/Error";
 
 // const queryClient = new QueryClient();
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions:{
+      queries:{
+        refetchInterval:false,
+        refetchOnWindowFocus:false,
+        retry:1
+      }
+
+    }
+});
 
 ReactDOM.render(
   <React.StrictMode>
