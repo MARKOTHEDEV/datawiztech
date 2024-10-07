@@ -94,7 +94,7 @@ export const dowloadApiLinks = async(token) =>{
       console.log(resp.data);
       const urlPromises = resp.data.download_urls.map(url=> {
         // api.get(url)
-        window.open(`${BASE_URL}${url}`)
+        window.open(`${BASE_URL}/${url}`)
       });
       // const results = await Promise.all(urlPromises);
       // console.log(results)
