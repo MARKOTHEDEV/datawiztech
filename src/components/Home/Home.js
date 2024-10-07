@@ -10,7 +10,7 @@ import Find from './Find/Find';
 import Loader from "../../components/Loader/Loader";
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import api, { decodeUser } from '../../api/api';
+import api, { BASE_URL, decodeUser } from '../../api/api';
 import { UserAuth } from '../../useContext/useContext';
 
 
@@ -68,16 +68,18 @@ export const dowloadApiLinksV2 = async({idAndDownloadType,token})=>{
   const user_id = decodeUser(token).user_id
   const urlPromises = idAndDownloadType.map(item=>{
     if(item.type === 'data'){
-      return  api.get(`/payments/download-data/${item.id}`)
+      window.open(`${BASE_URL}/payments/download-data/${item.id}`,'_blank')
+      // return  api.get(`${BASE_URL}/payments/download-data/${item.id}`)
     }else{
-      return  api.get(`/payments/download-article/${item.id}`)
+      window.open(`${BASE_URL}/payments/download-article/${item.id}`,'_blank')
+      // return  api.get(`${BASE_URL}/payments/download-article/${item.id}`)
     }
   })
-  const results = await Promise.all(urlPromises);
-  results.map(d=>{
-    // console.log({'the D':d.data})
-    FileConverter(d.data)
-  })
+  // const results = await Promise.all(urlPromises);
+  // results.map(d=>{
+  //   // console.log({'the D':d.data})
+  //   FileConverter(d.data)
+  // })
 }
 export const dowloadApiLinks = async(token) =>{
   // {user_id}
@@ -85,18 +87,21 @@ export const dowloadApiLinks = async(token) =>{
   const user_id = decodeUser(token).user_id
     try{
       const resp = await axios.get(`https://datawiztech-backend.onrender.com/api/v1/payments/fetch-download-links/${user_id}`,{
-        headers:{
-          "Content-Type":'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        }
+        // headers:{
+        //   "Content-Type":'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        // }
       });
       console.log(resp.data);
-      const urlPromises = resp.data.download_urls.map(url=> api.get(url));
-      const results = await Promise.all(urlPromises);
-      console.log(results)
-      results.map(d=>{
-        console.log({'the D':d.data})
-        FileConverter(d.data)
-      })
+      const urlPromises = resp.data.download_urls.map(url=> {
+        // api.get(url)
+        window.open(`${BASE_URL}${url}`)
+      });
+      // const results = await Promise.all(urlPromises);
+      // console.log(results)
+      // results.map(d=>{
+      //   console.log({'the D':d.data})
+      //   FileConverter(d.data)
+      // })
     }catch(err){
       //
     }
