@@ -185,8 +185,8 @@ useEffect(()=>{
             }
             // setCurrentData(data)
           }else{
-            // toast.success('Rounte Clicked')
-
+            // toast.success('Rounte Clicked'
+            localStorage.setItem('datacard',JSON.stringify({selectedD:data}))
             route(`/search/data/result/?searchTerm=${searchTerm}`)
           }
         }}
@@ -195,7 +195,7 @@ useEffect(()=>{
        
           <div className="search-result-card active"
           style={{
-            border:localStorage.getItem('currentIndicatorCode')===data.indicator_code? '1px solid #4eb473':'',
+            border:localStorage.getItem('currentIndicatorCode')===data?.indicator_code? '1px solid #4eb473':'',
             cursor:'pointer'
           }}
           >

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import nextIcon from "../../assets/images/icon-color-ZJR.png";
 import prevIcon from "../../assets/images/icon-color-GLh.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import searchCardPic from "../../assets/images/ellipse-27-bg-Sf3.png";
 import like from "../../assets/images/icons8-facebook-like-4qo.png";
 import download from "../../assets/images/icons8-download-from-the-cloud-dqs.png";
@@ -12,6 +12,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { addToCartDataApi, getDataApi } from "../../api/data.api";
 
 const Data = ({ search }) => {
+  const route = useNavigate();
+
   const reload = () => {
     window.location.reload();
   };
@@ -52,6 +54,7 @@ const Data = ({ search }) => {
     );
   }
 
+
   return (
     <div className="mb-5">
       <div className="row mt-2 mb-4">
@@ -61,8 +64,13 @@ const Data = ({ search }) => {
           data?.map((item, index) => (
             <div className="col-lg-4 my-2">
               <div className="upload-result-card">
-                <Link
-                to={'#'}
+                <div
+                onClick={()=>{
+                  console.log({item})
+                  localStorage.setItem('datacard',JSON.stringify({selectedD:item}))
+                  route(`/search/data/result/?searchTerm=${item.title}`)
+                }}
+                // to={'#'}
                 // to={`/search/data/result/${item.id}`}
                 >
                   <div className="upload-card-title pb-3">{item.title}</div>
@@ -127,7 +135,7 @@ const Data = ({ search }) => {
 
                     </div>
                   </div>
-                </Link>
+                </div>
               </div>
             </div>
           ))

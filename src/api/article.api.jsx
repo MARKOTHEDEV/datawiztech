@@ -28,7 +28,11 @@ export const getSearchResults =async (search)=>{
 }
 
 export const getDataBankMarkAPi = async(data)=>{
-    const response = await api.post(`/data/databank`,data);
+   const {is_local,...payload} = data
+    const response = await api.post(
+        is_local?
+        '/data/localdata':
+        `/data/databank`,payload);
     return response.data
 
 }

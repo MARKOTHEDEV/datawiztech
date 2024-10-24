@@ -93,7 +93,9 @@ const DataPreview = () => {
     const user_id = decodeUser(token).user_id
 
     addDataToCart({
-      data:currentSelectedData,
+      // data:currentSelectedData,
+      data:dataTable||[],
+      // dataTable
       user_id
     })
   }
@@ -106,7 +108,6 @@ const DataPreview = () => {
     mutationFn:getDataBankMarkAPi,
     'onSuccess':(data)=>{
       setLoading(false)
-   console.log({'dataBankResult':data})
   if(data?.length !==0){
     setDynamicYearsKeys(Object.keys(data[0]).filter(d=>{
       if(isNaN(parseInt(d))){
@@ -136,16 +137,17 @@ const DataPreview = () => {
     return `${text.substr(0, maxLength)}...`;
   };
   const getTable = (clickedData)=>{
-                
+    // return 
     let  dataFilter = JSON.parse(localStorage.getItem('data-filter'))
-    console.log({dataFilter,'selected':clickedData.selectedD.indicator_code})
   setLoading(true)
+  console.log(clickedData)
   const dataM ={
-    year_list:dataFilter.yearSelect.map(d=>parseInt(d.value)),
+    year_list:dataFilter.yearSelect.map(d=>`${d.value}`),
     start_year:0,
-    end_year:0,
+    stop_year:0,
     countries:dataFilter.countryName.map(d=>d.value),
-    indicator_code:clickedData.selectedD.indicator_code
+    indicator_code:clickedData.selectedD?.is_local?clickedData.selectedD.id:clickedData?.selectedD?.indicator_code,
+    is_local:clickedData.selectedD?.is_local
   }
   // console.log({})
   setCurrentSelectedData(dataM)
@@ -197,6 +199,7 @@ const DataPreview = () => {
           let clickedData = localStorage.getItem('datacard');
           if(clickedData){
             clickedData= JSON.parse(clickedData)
+            console.log({clickedData})
           getTable(clickedData)
 
           }
@@ -241,23 +244,28 @@ const DataPreview = () => {
               // cursor:'pointer'
             }}
               >
-              <Data
-              onClickData={(clickedData)=>{
-                // console.log(clickedData)
-                // setCurrentData(clickedData)
-                // console.log({
-                //   year_list:clickedData.previous.map(d=>parseInt(d.value)),
-                //   start_year:0,
-                //   end_year:0,
-                //   countries:[],
-                //   indicator_code:clickedData.selectedD.indicator_code
-                // })
-                getTable(clickedData)
-              }}
-              responseData={
-                dataResp
-                // data?.data_bank?data.data_bank:[]
-              } />
+                {
+                  dataResp?
+                  <Data
+                  onClickData={(clickedData)=>{
+                    // console.log(clickedData)
+                    // setCurrentData(clickedData)
+                    // console.log({
+                    //   year_list:clickedData.previous.map(d=>parseInt(d.value)),
+                    //   start_year:0,
+                    //   end_year:0,
+                    //   countries:[],
+                    //   indicator_code:clickedData.selectedD.indicator_code
+                    // })
+                    // console.log({clickedData})
+                    getTable(clickedData)
+                  }}
+                  responseData={
+                    dataResp
+                    // data?.data_bank?data.data_bank:[]
+                  } />:''
+                }
+            
 
               </div>
               {/* <DataAside /> */}
@@ -270,7 +278,7 @@ const DataPreview = () => {
  style={{display:'flex','alignItems':'right',justifyContent:"right"}}
 >
   {
-    currentSelectedData?
+    currentSelectedData&&dataTable?.length!==0?
     <div className="preview-add-to-cart" 
     onClick={handleAddTocart}
     // style={{border:'1px solid red'}}
@@ -291,7 +299,7 @@ const DataPreview = () => {
         <div className="table-content revenuetab overflow-x-auto">
           <div className={`table-my-revenue`}>
             <div class="table-headings table-row">
-              <div class="table-heading-item table-col-4">Indicator Code</div>
+              <div class="table-heading-item table-col-4">Indicator Name</div>
               <div class="table-heading-item table-col-2">Country Name</div>
               <div class="table-heading-item table-col-3">Price Per Year</div>
               <div class="table-heading-item table-col-3">Periodicity</div>
@@ -307,7 +315,7 @@ const DataPreview = () => {
               {dataTable?.map((d, index) => (
                 <div class="table-body table-row">
                   <div class="table-body-items table-col-4">
-                   {d.indicator_code}
+                   {d.indicator_name}
                   </div>
                   <div class="table-body-items table-col-2">
                    {d.country_name}
