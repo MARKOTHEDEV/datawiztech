@@ -21,16 +21,16 @@ const NavigationIcons = ({ toggleSignupForm, toggleLoginForm }) => {
       <div className="navbar2">
         {user ? (
           <>
-            <Link to="/search">
+            {/* <Link to="/search">
               <div className="nav-icon-container">
                 <img className="nav-icons" src={search} alt="..." />
               </div>
-            </Link>
-            <Link to="/profile/notifications">
+            </Link> */}
+            {/* <Link to="/profile/notifications">
               <div className="nav-icon-container">
                 <img className="nav-icons" src={notificationbell} alt=".." />
               </div>
-            </Link>
+            </Link> */}
             <Link to="/cart">
               <div className="cart-btn nav-icon-container">
                 <UpdateCart cartIcon={cartIcon} />

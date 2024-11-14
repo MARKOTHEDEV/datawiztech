@@ -56,7 +56,7 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
                 Home
               </Link>
             </p>
-            <p>
+            {/* <p>
               <Link
                 to="/upload"
                 className={`nav-items d-lg-flex d-none ${
@@ -65,8 +65,48 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
               >
                 Upload
               </Link>
+            </p> */}
+
+
+            <div>
+           <p
+             data-bs-toggle="collapse"
+             href="#linkCollapse1"
+             role="button"
+             aria-expanded="false"
+             aria-controls="linkCollapse1"
+             className={`
+              nav-items d-lg-flex d-none
+              `}
+            >
+            Big Data
             </p>
-            <p>
+
+            <div
+             role="menu"
+             className="v-menu__content theme--light v-menu__content--fixed menuable__content__active collapse multi-collapse overflow-hidden"
+              style={{
+                padding:'1rem',
+                backgroundColor:'white',
+              }}
+             id="linkCollapse1"
+            >
+              <p  style={{paddingBottom:'.7rem'}}>
+                <Link to="/upload"  className="extraLink">
+                Upload
+                </Link>
+              </p>
+              <p>
+                <Link to="/partnership"  className="extraLink">
+                Partnership
+                </Link>
+              </p>
+            </div>
+           </div>
+
+
+
+            {/* <p>
               <Link
                 to="/partnership"
                 className={`nav-items d-lg-flex d-none ${
@@ -75,7 +115,7 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
               >
                 Patnership Management
               </Link>
-            </p>
+            </p> */}
             {/* <p>
               <Link
                 to="/cart"
@@ -86,6 +126,38 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
                 Cart
               </Link>
             </p> */}
+           
+            <p>
+              <Link
+                to="#"
+                className={`nav-items d-lg-flex d-none ${
+                  active === "inquiry" ? "active" : ""
+                }`}
+              >
+                AI Solutions 
+              </Link>
+            </p>
+            <p>
+              <Link
+                to="#"
+                className={`nav-items d-lg-flex d-none ${
+                  active === "inquiry" ? "active" : ""
+                }`}
+              >
+                Academy 
+              </Link>
+            </p>
+            <p>
+              <Link
+                to="#"
+                className={`nav-items d-lg-flex d-none ${
+                  active === "inquiry" ? "active" : ""
+                }`}
+              >
+                Consultancy 
+              </Link>
+            </p>
+
             <p>
               <Link
                 to="/inquiry"
@@ -96,6 +168,8 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
                 Inquiry
               </Link>
             </p>
+
+
           </div>
 
           <NavigationIcons toggleSignupForm={toggleSignupForm} toggleLoginForm ={toggleLoginForm} />

@@ -870,3 +870,12 @@ a{
     flex-shrink: 0;
 }
 
+
+
+.extraLink{
+    color: black;
+}
+
+.extraLink:hover{
+    text-decoration: underline;
+}

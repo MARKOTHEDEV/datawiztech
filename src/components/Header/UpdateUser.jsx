@@ -61,7 +61,9 @@ const UpdateUser = ({ currentUser, profilepic }) => {
   // }
 
   return (
-    <div className="profile-pic nav-icon-container">
+    <div 
+    className="profile-pic nav-icon-container"
+    >
       <img
         src={currentUser?.image ?? profilepic}
         data-bs-toggle="collapse"
