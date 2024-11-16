@@ -3,6 +3,7 @@ import ActionLoader from "../Loader/ActionLoader";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { UserAuth } from "../../useContext/useContext";
+import emailjs from "@emailjs/browser";
 
 const InquiryForm = () => {
   const { token } = UserAuth();
@@ -39,53 +40,25 @@ const InquiryForm = () => {
       return;
     }
     setinquiryLoading(true);
-    try {
-      const response = await axios.post(
-        "https://datawiztechapi.onrender.com/api/v1/inquiry",
-        {
-          category: inquiry.category,
-          full_name: inquiry.full_name,
-          phone_number: inquiry.phone_number,
-          email: inquiry.email,
-          description: inquiry.description,
-        },
-        {
-          headers: {
-            Authorization: token,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response && response.status === 200 && response.data) {
-        // const data = await response.json();
-        toast.success(response.data.message);
-        setInquiry({
-          category: "",
-          full_name: "",
-          email: "",
-          phone_number: "",
-          description: "",
-        });
+    emailjs
+    .send(
+      "service_94f8kgw", // Replace with your service ID
+      "template_r4gp38h", // Replace with your template ID
+      {...inquiry}
+      , // Template parameters
+      "NIQEhDZWs1zcZFOCy" // Replace with your public key
+    )
+    .then(
+      (result) => {
+        toast.success("Email sent successfully", );
+        setinquiryLoading(false)
+      },
+      (error) => {
+        setinquiryLoading(false)
 
-        setinquiryLoading(false);
-        return;
-      } else {
-        setinquiryLoading(false);
-        toast.error("Error occured");
-
-        return;
+        toast.error("Email sending failed",);
       }
-    } catch (error) {
-      setinquiryLoading(false);
-      console.log("Error sending inquiry:", error.message);
-      if (error.response.data) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Error Occured !");
-      }
-    } finally {
-      setinquiryLoading(false);
-    }
+    );
   };
 
   return (

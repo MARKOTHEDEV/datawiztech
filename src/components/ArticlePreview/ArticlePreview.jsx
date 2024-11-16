@@ -33,7 +33,7 @@ import { UserAuth } from "../../useContext/useContext";
 import ActionLoader from "../Loader/ActionLoader";
 import FetchAllArticles from "../../hooks/AllArticles";
 import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getArticleApi } from "../../api/article.api";
+import { getArticleApi, getSearchResults } from "../../api/article.api";
 import { decodeUser } from "../../api/api";
 import { addAriticleToCart } from "../../api/cart.api";
 import { SuccessModal } from "../DataSearch/Modal";
@@ -55,13 +55,14 @@ const ArticlePreview = () => {
   // const { data, isLoading, error } = FetchAllArticles();
   const [article,setArticle] = useState()
   let [searchParams, setSearchParams] = useSearchParams();
-
+  const searchTerm =searchParams.get('searchTerm')
   const client  = useQueryClient()
   const {data,isLoading,error,isSuccess} = useQuery({
-    queryFn:getArticleApi,
-    queryKey:'getArticleApi',
+    queryFn:()=>getSearchResults(searchTerm),
+    queryKey:['getArticleApi',searchTerm],
     refetchInterval:false,
-    refetchOnWindowFocus:false
+    refetchOnWindowFocus:false,
+    enabled:typeof searchTerm==='string'
     // 'on'
 
   })
@@ -182,7 +183,7 @@ const ArticlePreview = () => {
   useEffect(()=>{
     if(isSuccess){
       // console.log({'Article':data?.filter(d=>d.id==searchParams.get('id')),id:searchParams.get('id')})
-      setArticle(data?.filter(d=>d.id==searchParams.get('id'))[0])
+      setArticle(data?.articles?.filter(d=>d.id===searchParams.get('id'))[0])
     }
   },[isSuccess])
 
@@ -257,7 +258,7 @@ const ArticlePreview = () => {
                   <p class="showall-text">Show all results</p>
                 </div>
               </div>
-              <ArticleAside articles={data}  setArticle={setArticle}/>
+              <ArticleAside articles={data?.articles}  setArticle={setArticle}/>
             </div>
           </div>
           <div className="col-lg-8 preview-section pt-4">

@@ -38,6 +38,8 @@ const ArticleAside = ({ articles ,setArticle}) => {
     return formattedDate.replace(`${day}`, `${day}${daySuffix}`);
   };
   let [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm =searchParams.get('searchTerm')
+
 
   return (
     <div
@@ -48,7 +50,7 @@ const ArticleAside = ({ articles ,setArticle}) => {
         <div className="pb-1 " style={{'cursor':'pointer'}}
         onClick={()=>{
           if(setArticle){
-            setSearchParams({'id':data.id})
+            setSearchParams({'id':data.id,'searchTerm':searchTerm})
             setArticle(data)
 
           }

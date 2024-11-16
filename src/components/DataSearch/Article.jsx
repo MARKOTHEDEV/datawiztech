@@ -4,13 +4,15 @@ import download from "../../assets/images/icons8-download-from-the-cloud-dqs.png
 import share from "../../assets/images/icons8-forward-arrow-100-2-F53.png";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { GoStarFill } from "react-icons/go";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import "./Article.css";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
 import FetchAllArticles from "../../hooks/AllArticles";
 import FetchSearch from "../../hooks/Search";
 
 const Article = ({articles}) => {
+  let [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm =searchParams.get('searchTerm')
   const profilepic =
     "https://firebasestorage.googleapis.com/v0/b/datawiztech-9a46a.appspot.com/o/profilepic%2Fprofile-circle.png?alt=media&token=ec19eaec-b6f7-472d-8fc4-affdbd330f78";
 
@@ -75,7 +77,7 @@ const Article = ({articles}) => {
         <div className="px-2 py-1 active">
           <div className="search-result-card active">
             <Link
-              to={`/search/article/result?id=${data.id}`}
+              to={`/search/article/result?id=${data.id}&searchTerm=${searchTerm}`}
               className="search-card-title pb-3"
             >
               {data.title}
