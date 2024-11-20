@@ -130,9 +130,7 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
             <p>
               <Link
                 to="#"
-                className={`nav-items d-lg-flex d-none ${
-                  active === "inquiry" ? "active" : ""
-                }`}
+                className={`nav-items d-lg-flex d-none `}
               >
                 AI Solutions 
               </Link>
@@ -140,9 +138,7 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
             <p>
               <Link
                 to="#"
-                className={`nav-items d-lg-flex d-none ${
-                  active === "inquiry" ? "active" : ""
-                }`}
+                className={`nav-items d-lg-flex d-none `}
               >
                 Academy 
               </Link>
@@ -150,9 +146,7 @@ const Head = ({ toggleLoginForm, toggleSignupForm, active }) => {
             <p>
               <Link
                 to="#"
-                className={`nav-items d-lg-flex d-none ${
-                  active === "inquiry" ? "active" : ""
-                }`}
+                className={`nav-items d-lg-flex d-none `}
               >
                 Consultancy 
               </Link>

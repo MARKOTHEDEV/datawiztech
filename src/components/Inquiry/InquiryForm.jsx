@@ -42,7 +42,7 @@ const InquiryForm = () => {
     setinquiryLoading(true);
     emailjs
     .send(
-      "service_94f8kgw", // Replace with your service ID
+      "service_2evgwi9", // Replace with your service ID
       "template_p3tpvwx", // Replace with your template ID
       {...inquiry}
       , // Template parameters
@@ -52,6 +52,13 @@ const InquiryForm = () => {
       (result) => {
         toast.success("Email sent successfully", );
         setinquiryLoading(false)
+        setInquiry({
+          category: "",
+          full_name: "",
+          email: "",
+          phone_number: "",
+          description: "",
+        })
       },
       (error) => {
         setinquiryLoading(false)
