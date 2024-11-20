@@ -64,7 +64,14 @@ const ArticlePreview = () => {
     refetchOnWindowFocus:false,
     enabled:typeof searchTerm==='string'
     // 'on'
-
+  })
+  const {data:art,isLoading:isloading,error:Err,isSuccess:IsSucc} = useQuery({
+    queryFn:()=>getArticleApi(),
+    queryKey:['getArticleApiAll',searchTerm],
+    refetchInterval:false,
+    refetchOnWindowFocus:false,
+    enabled:typeof searchTerm!=='string'
+    // 'on'
   })
 
   // if (error) {
@@ -185,13 +192,15 @@ const ArticlePreview = () => {
       // console.log({'Article':data?.filter(d=>d.id==searchParams.get('id')),id:searchParams.get('id')})
       setArticle(data?.articles?.filter(d=>d.id===searchParams.get('id'))[0])
     }
-  },[isSuccess])
+  },[isSuccess,IsSucc])
 
 
 
-  if (isLoading) {
+  if (isLoading||isloading) {
     return <DataLoader />;
   }
+
+  console.log({art})
   return (
     <div>
       {
@@ -258,7 +267,13 @@ const ArticlePreview = () => {
                   <p class="showall-text">Show all results</p>
                 </div>
               </div>
+              {
+                typeof searchTerm==='string'?
               <ArticleAside articles={data?.articles}  setArticle={setArticle}/>
+              :
+              <ArticleAside articles={art}  setArticle={setArticle}/>
+
+              }
             </div>
           </div>
           <div className="col-lg-8 preview-section pt-4">

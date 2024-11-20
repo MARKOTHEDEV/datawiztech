@@ -43,10 +43,10 @@ const InquiryForm = () => {
     emailjs
     .send(
       "service_94f8kgw", // Replace with your service ID
-      "template_r4gp38h", // Replace with your template ID
+      "template_p3tpvwx", // Replace with your template ID
       {...inquiry}
       , // Template parameters
-      "NIQEhDZWs1zcZFOCy" // Replace with your public key
+      "XBPeL-X92xbVhIC-1" // Replace with your public key
     )
     .then(
       (result) => {

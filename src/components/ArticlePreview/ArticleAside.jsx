@@ -125,7 +125,7 @@ const ArticleAside = ({ articles ,setArticle}) => {
                 </div> */}
               </div>
               <div class="search-card-amount">
-                N{!data.price || data.price === 0 ? "Free" : data.price}
+                {!data.price || data.price === 0 ? "Free" : `N ${data.price}`}
               </div>
             </div>
             <Link
