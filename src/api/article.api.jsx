@@ -1,6 +1,6 @@
 import axios from "axios"
 import api, { BASE_URL } from "./api"
-
+import { jwtDecode } from "jwt-decode";
 
 
 export const createArticleApi = async ({form})=>{
@@ -19,7 +19,15 @@ export const getArticleApi = async ()=>{
 
     return response.data
 }
+export const getArticleForUserApi= async ()=>{
+    const data = JSON.parse(localStorage.getItem('datawiztoken'))
+    const userObject = jwtDecode(data.data.access_token);
+    console.log({userObject})
+    const response = await api.get(`/articles/authors/${userObject.user_id}`,);
+    return response.data;
+}
 
+// /api/v1/articles/authors/{author_id}
 
 export const getSearchResults =async (search)=>{
     console.log({search})

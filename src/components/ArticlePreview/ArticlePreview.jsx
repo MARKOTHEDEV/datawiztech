@@ -274,6 +274,7 @@ const ArticlePreview = () => {
               <ArticleAside articles={art}  setArticle={setArticle}/>
 
               }
+              
             </div>
           </div>
           <div className="col-lg-8 preview-section pt-4">

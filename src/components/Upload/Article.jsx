@@ -12,7 +12,7 @@ import "./Article.css";
 import FetchArticles from "../../hooks/Articles";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
 import { useQuery } from '@tanstack/react-query';
-import { getArticleApi } from "../../api/article.api";
+import { getArticleApi, getArticleForUserApi } from "../../api/article.api";
 
 const Article = ({ search=''}) => {
   const reload = () => {

@@ -58,6 +58,7 @@ const ArticleAside = ({ articles ,setArticle}) => {
         <div className="pb-1 " style={{'cursor':'pointer'}}
         onClick={()=>{
           if(setArticle){
+            console.log({selectedItem})
             setSearchParams({'id':selectedItem?.id,'searchTerm':searchTerm})
             setArticle(selectedItem)
 
@@ -112,7 +113,12 @@ const ArticleAside = ({ articles ,setArticle}) => {
         <div className="pb-1 " style={{'cursor':'pointer'}}
         onClick={()=>{
           if(setArticle){
-            setSearchParams({'id':data.id,'searchTerm':searchTerm})
+            if(data?.keywords.length===0){
+              setSearchParams({'id':data.id,})
+            }else{
+              setSearchParams({'id':data.id,searchTerm:data?.keywords[0]})
+            }
+            // 'searchTerm':searchTerm
             setArticle(data)
 
           }
@@ -150,7 +156,7 @@ const ArticleAside = ({ articles ,setArticle}) => {
               </div>
             </div>
             <Link
-              to={`/search/article/result/${data._id}`}
+              // to={`/search/article/result/${data._id}`}
               className="search-card-info py-2"
             >
               {truncateText(data.summary, 145)}

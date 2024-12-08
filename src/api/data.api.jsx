@@ -1,5 +1,6 @@
 import axios from "axios"
 import api, { BASE_URL } from "./api"
+import { jwtDecode } from "jwt-decode";
 
 
 
@@ -16,6 +17,14 @@ export const validateAndSaveDataApi= async ({data,user_id})=>{
 
 export const getDataApi = async ()=>{
     const response = await api.get(`/data`,);
+    return response.data
+}
+export const getDataByUserID = async ()=>{
+    const data = JSON.parse(localStorage.getItem('datawiztoken'))
+    const userObject = jwtDecode(data.data.access_token);
+    // console.log({userObject})
+
+    const response = await api.get(`/data${userObject.user_id}`,);
     return response.data
 }
 

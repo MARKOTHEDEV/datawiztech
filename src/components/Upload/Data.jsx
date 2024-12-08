@@ -9,7 +9,7 @@ import share from "../../assets/images/icons8-forward-arrow-100-2-F53.png";
 import DataLoader from "../../hooks/DataLoader/DataLoader";
 import FetchData from "../../hooks/FetchDatas";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { addToCartDataApi, getDataApi } from "../../api/data.api";
+import { addToCartDataApi, getDataApi, getDataByUserID } from "../../api/data.api";
 
 const Data = ({ search }) => {
   const route = useNavigate();
@@ -28,8 +28,8 @@ const Data = ({ search }) => {
   // const currentDatas =[]
 
   const {isLoading,data} = useQuery({
-    queryKey:'getDataApi',
-    queryFn:getDataApi,
+    queryKey:'getDataByUserID',
+    queryFn:getDataByUserID,
     refetchInterval:false,
     refetchOnWindowFocus:false
   })
