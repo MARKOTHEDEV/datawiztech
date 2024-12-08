@@ -23,8 +23,8 @@ const Article = ({ search=''}) => {
   // const error =null
   // const { data, isLoading, error } = FetchArticles();
   const {data,isLoading,error} = useQuery({
-    queryFn:getArticleApi,
-    queryKey:'getArticleApi',
+    queryFn:getArticleForUserApi,
+    queryKey:'getArticleForUserApi',
     refetchInterval:false,
     refetchOnWindowFocus:false
     // 'on'
