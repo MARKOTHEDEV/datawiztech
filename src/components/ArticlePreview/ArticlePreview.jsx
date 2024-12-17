@@ -269,10 +269,9 @@ const ArticlePreview = () => {
               </div>
               {
                 typeof searchTerm==='string'?
-              <ArticleAside articles={data?.articles}  setArticle={setArticle}/>
+              <ArticleAside articles={data?.articles||data?.search}  setArticle={setArticle}/>
               :
               <ArticleAside articles={art}  setArticle={setArticle}/>
-
               }
               
             </div>

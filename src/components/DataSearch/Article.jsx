@@ -144,7 +144,8 @@ const Article = ({articles}) => {
               </div>
             </div>
             <Link
-              to={`/search/article/result/${data._id}`}
+              to={`/search/article/result?id=${data.id}&searchTerm=${searchTerm}`}
+
               className="search-card-info py-2"
             >
               {truncateText(data.summary, 145)}

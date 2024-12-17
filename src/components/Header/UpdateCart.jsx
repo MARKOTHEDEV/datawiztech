@@ -4,7 +4,7 @@ import FectchCarts from "../../hooks/Carts";
 import ComponentLoader from "../../hooks/ComponentLoader/ComponentLoader";
 import { useQuery } from "@tanstack/react-query";
 import { decodeUser } from "../../api/api";
-import { getArticleCartApi } from "../../api/cart.api";
+import { getArticleCartApi, getCartCount } from "../../api/cart.api";
 import { getDataAddedToCart } from "../../api/data.api";
 
 const UpdateCart = ({ cartIcon }) => {
@@ -47,37 +47,39 @@ const UpdateCart = ({ cartIcon }) => {
   //   );
   // }
 
-
+ 
   const {isLoading,data} = useQuery({
-    queryKey:'getArticleCartApi',
+    queryKey:'getCartCount',
     queryFn:()=>{
     const user_id = decodeUser(token).user_id
 
-    return  getArticleCartApi({user_id})
+    return  getCartCount({user_id})
     },
     refetchInterval:false,
     refetchOnWindowFocus:false,
     retry:1
   })
-  const {isLoading:loadingDataCart,data:dataAddedTOcart} = useQuery({
-    queryKey:'getDataAddedToCart',
-    queryFn:()=>{
-    const user_id = decodeUser(token).user_id
+  // const {isLoading:loadingDataCart,data:dataAddedTOcart} = useQuery({
+  //   queryKey:'getDataAddedToCart',
+  //   queryFn:()=>{
+  //   const user_id = decodeUser(token).user_id
 
-    return  getDataAddedToCart({user_id})
-    },
-    refetchInterval:false,
-    refetchOnWindowFocus:false,
-    retry:1
+  //   return  getDataAddedToCart({user_id})
+  //   },
+  //   refetchInterval:false,
+  //   refetchOnWindowFocus:false,
+  //   retry:1
 
-  })
-    if (isLoading||loadingDataCart) {
+  // })
+    if (isLoading) {
     return <ComponentLoader />;
   }
+
+  // console.log({data})
   return (
     <div>
       <img className="nav-icons cart-icon" src={cartIcon} alt=".." />
-      <div className="cart-number">{(data?.length||0)+(dataAddedTOcart?.length||0)}</div>
+      <div className="cart-number">{data?.no_items}</div>
     </div>
   );
 };

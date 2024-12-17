@@ -58,8 +58,13 @@ const ArticleAside = ({ articles ,setArticle}) => {
         <div className="pb-1 " style={{'cursor':'pointer'}}
         onClick={()=>{
           if(setArticle){
-            console.log({selectedItem})
-            setSearchParams({'id':selectedItem?.id,'searchTerm':searchTerm})
+            console.log({selectedItem,searchTerm})
+            if(!searchTerm){
+              setSearchParams({'id':selectedItem?.id,})
+            }else{
+              setSearchParams({'id':selectedItem?.id, 'searchTerm':searchTerm})
+            }
+           
             setArticle(selectedItem)
 
           }
@@ -113,12 +118,14 @@ const ArticleAside = ({ articles ,setArticle}) => {
         <div className="pb-1 " style={{'cursor':'pointer'}}
         onClick={()=>{
           if(setArticle){
-            if(data?.keywords.length===0){
-              setSearchParams({'id':data.id,})
-            }else{
-              setSearchParams({'id':data.id,searchTerm:data?.keywords[0]})
-            }
-            // 'searchTerm':searchTerm
+            console.log({keyword:data?.keywords})
+            // if(data?.keywords.length===0|| data?.keywords==='null'){
+            //   setSearchParams({'id':data.id,})
+            // }else{
+            //   setSearchParams({'id':data.id,searchTerm:data?.keywords[0]})
+            // }
+            setSearchParams({'id':data.id,})
+
             setArticle(data)
 
           }

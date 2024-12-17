@@ -314,7 +314,7 @@ const DataPreview = () => {
             <div className="table-body-container">
               {dataTable?.map((d, index) => (
                 <div class="table-body table-row">
-                  <div class="table-body-items table-col-4">
+                  <div class="table-body-items table-col-4" style={{textWrap:'wrap',}}>
                    {d.indicator_name}
                   </div>
                   <div class="table-body-items table-col-2">

@@ -29,3 +29,8 @@ export const checkoutCartApi = async (data)=>{
     return response.data
 }
 // /api/v1/carts
+export const getCartCount= async ({user_id})=>{
+
+    const response = await api.get(`/carts/items/${user_id}`,);
+    return response.data
+}
