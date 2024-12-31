@@ -1,0 +1,121 @@
+.chart-legends {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-type {
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  @media screen and (max-width: 980px) {
+    font-size: 0.6rem;
+    font-weight: 500;
+  }
+}
+
+.chart-legend-text {
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  @media screen and (max-width: 980px) {
+    font-size: 0.5rem;
+  }
+}
+
+.data-sold-legend {
+  background-color: #4eb473;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+}
+.data-bought-legend {
+  background-color: red;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+}
+
+.chart-headings {
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  row-gap: 1.2rem;
+  align-items: center;
+  @media screen and (max-width: 980px) {
+    width: 100%;
+    /* justify-content: space-between; */
+  }
+}
+
+.toggle-container {
+  position: relative;
+  display: inline-block;
+  align-items: center;
+  width: 2.2rem;
+  height: 1.1rem;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 15px;
+  transition: 0.4s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 0.65rem;
+  width: 0.65rem;
+  left: 10%;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.toggle-container.left .toggle-slider::before {
+  left: 10%;
+}
+.toggle-container.right .toggle-slider::before {
+  left: 60%;
+}
+
+.toggle-slider.left {
+  background-color: #ccc;
+}
+
+.toggle-slider.right {
+  background-color: #4eb473;
+}
+
+.toggle-btn {
+  display: none;
+}
+
+
+.chart-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+.Chart-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+@media screen and (max-width: 980px) {
+  .Chart-container .ResponsiveChart {
+    width: 50rem;
+    margin: 0 auto; /* Center the chart */
+  }
+}

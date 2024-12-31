@@ -1,0 +1,52 @@
+.partners-tab-name {
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #a6a6a6;
+  width: 30%;
+  text-align: center;
+  padding: 0 0 0.6rem 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.partners-tab-name.active {
+  color: #4eb473;
+}
+
+.partners-tab-name::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  overflow: hidden;
+  transition: width 0.5s;
+}
+
+.partners-tab-name.active::before {
+  background-color: #4eb473;
+  width: 100%;
+  transition: width 0.5s;
+}
+
+.revenuetab {
+  border: 0.1rem solid #e3e3e3;
+  border-radius: 0.3rem;
+}
+
+.data-search::placeholder {
+  font-size: 1rem;
+  color: #d8d8d8;
+}
+
+.data-search {
+  color: #d8d8d8;
+}
+
+
+

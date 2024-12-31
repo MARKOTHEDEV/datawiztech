@@ -1,0 +1,13 @@
+.usertype-heading{
+    display: flex;
+    width: 100%;
+}
+
+.usertype-heading .individual-type{
+    width: 50%;
+    text-align: center;
+}
+.usertype-heading .corperate-type{
+    width: 50%;
+    text-align: center;
+}

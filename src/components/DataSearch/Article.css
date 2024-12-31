@@ -1,0 +1,52 @@
+.dropdown-profile-menu {
+    padding: 0.5rem;
+    position: absolute;
+    left: 2.4rem;
+    top: 5.9rem;
+    box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.25);
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+  }
+.search-profile-menu {
+    align-items: center;
+    display: flex;
+    row-gap: 1rem;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+  }
+ .search-dropdown-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.5s ease;
+  }
+
+  .search-dropdown-item:hover{
+    padding: 0.3rem;
+    background-color: #4eb473;
+    transition: 0.5s ease;
+    border-radius: 0.4rem;
+    color: white;
+  }
+
+  .search-dropdown-item:hover .search-dropdown-name{
+    color: white;
+    transition: 0.5s ease;
+  }
+
+.search-dropdown-pic {
+    /* margin-right: 0.8rem; */
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 1.6rem;
+  }
+ .search-dropdown-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+  }

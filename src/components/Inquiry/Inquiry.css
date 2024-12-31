@@ -1,0 +1,22 @@
+.inquiry_input:placeholder-shown ~ .textarea__label {
+    font-size: 13px;
+    cursor: text;
+    top: 10%;
+    transition: top 0.5s ease;
+  }
+
+
+.textarea__label,
+.inquiry_input:focus~.textarea__label{
+    position: absolute;
+    top: -5%;
+    transition: top 0.5s ease;
+    display: block;
+    left: 3%;
+    background-color: white;
+    width: fit-content;
+    font-size: 0.8rem;
+    color: #17b24e;
+    transition: 0.3s;
+    padding: 0 0.2rem 0.3rem 0.5rem;
+}

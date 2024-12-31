@@ -1,0 +1,19 @@
+.showall-content{
+    display: flex;
+    gap: 5px;
+}
+
+.showall-icon{
+    width: 2rem;
+    height: 1rem;
+}
+
+.showall-text{
+    text-align: right;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #4eb473;
+  font-family: Open Sans, 'Source Sans Pro';
+  white-space: nowrap;
+}

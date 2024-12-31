@@ -1,0 +1,23 @@
+
+
+.markomodalnav_link{
+    font-size: 15px;
+    color: #BDBDBD;
+    text-align: center;
+    text-wrap: nowrap;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.markomodalnav_link:hover{
+    color: #4EB573;
+}
+
+.requirement {
+    color: red;
+  }
+  
+  .met {
+    color: green;
+    text-decoration: line-through;
+  }

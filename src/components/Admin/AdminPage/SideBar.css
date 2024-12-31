@@ -1,0 +1,101 @@
+.side-menu-container{
+    padding: 1rem 0.6rem;
+}
+
+.logo-container{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logo-menu{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-logo{
+    width: 55%;
+    height: 1.8rem;
+}
+
+.admin-menu-burger{
+    width: 2.2rem;
+    height: 2.2rem;
+}
+
+.admin-user-icon{
+  color: #D8D8D8;
+}
+
+.admin-user-icon.clicked{
+  color: white;
+}
+
+.admin-user-management-container{
+  padding:0.9rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  border-radius: 0.25rem;
+  flex-shrink: 0;
+  transition: 0.5s ease-in;
+  cursor: pointer;
+}
+
+.admin-user-management-container.active{
+  gap: 0;
+  justify-content: center;
+}
+
+.admin-user-management{
+    font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3625;
+  color: #7b7b7b;
+  font-family: Open Sans, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.admin-user-management-container:hover{
+  background: linear-gradient(90deg, #17b24e 69.83%, rgba(23, 178, 78, 0) 196.67%);
+  transition: 0.5s ease-in;
+}
+
+.admin-user-management-container:hover .admin-user-management{
+    color: white;
+}
+
+.admin-user-management-container:hover .admin-user-icon{
+  color: white;
+}
+
+
+
+
+/* .partnership-icon{
+  height:1.5rem;
+} */
+
+
+.admin-user-management.active{
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+}
+
+.admin-user-management-container.clicked{
+  background-color: #17b24e !important;
+}
+
+.admin-user-management.clicked{
+  color: white;
+}
+
+.admin-logo.active{
+  width: 0px;
+  overflow: hidden;
+  height: 0px;
+}

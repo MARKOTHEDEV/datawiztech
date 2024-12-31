@@ -1,0 +1,93 @@
+.verification-header {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1.2125;
+  color: #454545;
+  font-family: Inter, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+.verification-sub-header {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 2;
+  color: #7b7b7b;
+  font-family: Open Sans, "Source Sans Pro";
+  white-space: nowrap;
+}
+
+
+.verify-btn{
+    overflow: hidden;
+    font-size: 0.85rem;
+    padding: 0.8rem 0;
+    font-weight: 600;
+    line-height: 1.3333333333;
+    color: #ffffff;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0.2rem 0.4rem rgba(23, 178, 78, 0.2300000042);
+    background-color: #4eb473;
+    border-radius: 0.3rem;
+}
+
+
+.upload-container{
+    border: dashed 0.12rem #a6a6a6;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-radius: 0.4rem;
+    padding: 0.8rem;
+    height: 45vh;
+    width: 80%;
+}
+
+.upload-content{
+    background-color: #f7f7f7;
+  border-radius: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.upload-info{
+    font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.3333333333;
+  color: #7b7b7b;
+  font-family: Open Sans, 'Source Sans Pro';
+  white-space: nowrap;
+}
+
+.upload-icon{
+    width: 30%;
+    height: 40%;
+    object-fit: contain;
+    vertical-align: top;
+}
+
+.picked-file{
+  color: #7b7b7b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: Open Sans, 'Source Sans Pro';
+  background-color: #ffffff;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+}
+
+.verify-account-container{
+    height: 0px;
+    overflow: hidden;
+    transition: height 0.5s ease;
+}
+
+.verify-account-container.active{
+    height: fit-content;
+    transition: height 0.5s ease;
+}

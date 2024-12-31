@@ -1,0 +1,84 @@
+.table-container-bg{
+    padding: 1.3rem;
+  background-color: #f7f7f7;
+  border-radius: 0.4rem;
+  @media screen and (max-width: 980px) {
+    padding: 0.5rem;
+  }
+}
+
+.table-content{
+    background-color: #ffffff;
+    border-radius: 0.4rem;
+}
+
+.table-inner{
+    width: 100%;
+    @media screen and (max-width: 980px) {
+        width: 80rem;
+    }
+}
+
+.table-my-revenue{
+    width: 100%;
+    @media screen and (max-width: 980px) {
+        width: 50rem;
+    }
+}
+
+
+.table-headings {
+    display: flex;
+    padding: 1rem 2rem;
+    align-items: center;
+  }
+ .table-heading-item {
+    font-size: 0.83rem;
+    font-weight: 700;
+    line-height: 1.3625;
+    color: #454545;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+
+  .table-col-4{
+    width: 35%;
+    text-align: start;
+  }
+  .table-col-3{
+    width: 25%;
+    text-align: start;
+  }
+
+  .table-col-1{
+    width: 10%;
+    text-align: start;
+  }
+  .table-col-2{
+    width: 15%;
+    text-align: start;
+  }
+  .table-col-3{
+    width: 25%;
+    text-align: start;
+  }
+ 
+
+
+  .table-body {
+    display: flex;
+    padding: 2rem 2rem;
+    align-items: center;
+    border-top: 1px solid #7b7b7b2c;
+  }
+  .table-body-items {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3625;
+    color: #7b7b7b;
+    font-family: Open Sans, 'Source Sans Pro';
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
